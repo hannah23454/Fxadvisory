@@ -1,8 +1,11 @@
 'use client';
 
 import React from 'react';
+import { useI18n } from "@/components/i18n/i18n"
 
 const BusinessLendingHero: React.FC = () => {
+  const { t } = useI18n()
+
   return (
     <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#DCE5E1' }}>
       <div className="max-w-6xl mx-auto">
@@ -12,7 +15,7 @@ const BusinessLendingHero: React.FC = () => {
             <div className="w-full max-w-sm sm:max-w-md">
               <img 
                 src="https://b386363e680359b5cc19-97ec1140354919029c7985d2568f0e82.ssl.cf1.rackcdn.com/assets/uploads/post/featured_image/62375/7318baade298246fa6f64effa7208d2c.png"
-                alt="Business delivery and logistics"
+                alt={t('lending_alt')}
                 className="w-full h-auto"
                 loading="lazy"
               />
@@ -31,7 +34,7 @@ const BusinessLendingHero: React.FC = () => {
                     color: '#12261F'
                   }}
                 >
-                  BUSINESS LENDING
+                  {t('lending_badge')}
                 </span>
               </div>
 
@@ -40,7 +43,7 @@ const BusinessLendingHero: React.FC = () => {
                 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight"
                 style={{ color: '#BD6908' }}
               >
-                Flexible lending solutions to help you realise your ambitions.
+                {t('lending_title')}
               </h1>
 
               {/* Description */}
@@ -48,7 +51,7 @@ const BusinessLendingHero: React.FC = () => {
                 className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0"
                 style={{ color: '#12261F', opacity: 0.85 }}
               >
-                Access our fast and hassle-free trade finance facility when needed to fund your purchases.
+                {t('lending_desc')}
               </p>
 
               {/* CTA Button */}
@@ -57,9 +60,9 @@ const BusinessLendingHero: React.FC = () => {
                   className="px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2"
                   style={{ backgroundColor: '#BD6908' }}
                   onClick={() => console.log('Explore more clicked')}
-                  aria-label="Explore more about business lending"
+                  aria-label={t('lending_cta')}
                 >
-                  Explore more
+                  {t('lending_cta')}
                 </button>
               </div>
             </div>

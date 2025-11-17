@@ -25,7 +25,7 @@ export default function DashboardNav() {
             Settings
           </Link>
         </nav>
-        <Button variant="ghost" className="text-white hover:bg-[#1a3a2f] gap-2">
+        <Button variant="ghost" className="text-white hover:bg-[#0f201a] gap-2">
           <LogOut size={18} />
           <span className="hidden sm:inline">Sign Out</span>
         </Button>

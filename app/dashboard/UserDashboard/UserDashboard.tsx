@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { User } from "@supabase/supabase-js";
+import { useI18n } from "@/components/i18n/i18n";
 
 // Import types
 import { DashboardSection, Topic, Meeting, ContentItem } from "./types";
@@ -15,6 +16,7 @@ import OverviewSection from "./sections/OverviewSection";
 import MeetingRequest from "./components/MeetingRequest";
 
 export default function UserDashboard() {
+  const { t } = useI18n();
   const supabase = createClientComponentClient();
   const [user, setUser] = useState<User | null>(null);
   const [activeSection, setActiveSection] = useState<DashboardSection>("overview");
@@ -125,12 +127,23 @@ export default function UserDashboard() {
     window.location.href = "/login";
   };
 
+  const statusText = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return t('status_approved');
+      case 'rejected':
+        return t('status_rejected');
+      default:
+        return t('status_pending');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#bd6908] mx-auto"></div>
+          <p className="mt-4 text-[#4a5a55]">{t('admin_loading')}</p>
         </div>
       </div>
     );
@@ -139,7 +152,7 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ${
+      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#12261f] border-r border-[#1a3a2f] transform transition-transform duration-300 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <UserSidebar
@@ -182,28 +195,28 @@ export default function UserDashboard() {
 
             {activeSection === "topics" && (
               <div className="text-center py-12">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Topics Section</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('user_topics_title')}</h3>
                 <p className="text-gray-500">Topics management coming soon...</p>
               </div>
             )}
 
             {activeSection === "currencies" && (
               <div className="text-center py-12">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Currencies Section</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('user_currencies_title')}</h3>
                 <p className="text-gray-500">Currency management coming soon...</p>
               </div>
             )}
 
             {activeSection === "meetings" && (
               <div className="py-6 space-y-6">
-                <h3 className="text-xl font-bold text-gray-900">Meetings</h3>
+                <h3 className="text-xl font-bold text-gray-900">{t('user_meetings_title')}</h3>
                 <MeetingRequest
                   userId={user?.id}
                   onCreated={(m) => setMeetings((prev) => [m, ...prev])}
                 />
                 <div className="mt-4">
                   {meetings.length === 0 ? (
-                    <p className="text-gray-500">No meetings yet.</p>
+                    <p className="text-gray-500">{t('user_no_meetings_yet')}</p>
                   ) : (
                     <ul className="space-y-2">
                       {meetings.map((m) => (
@@ -211,9 +224,9 @@ export default function UserDashboard() {
                           <div className="font-medium">{m.title}</div>
                           <div className="text-sm text-gray-600">{m.description}</div>
                           {m.preferred_time && (
-                            <div className="text-xs text-gray-500">Preferred: {new Date(m.preferred_time).toISOString().replace('T',' ').slice(0,16)}</div>
+                            <div className="text-xs text-gray-500">{t('user_meeting_preferred_time_label')} {new Date(m.preferred_time).toISOString().replace('T',' ').slice(0,16)}</div>
                           )}
-                          <div className="text-xs">Status: {m.status}</div>
+                          <div className="text-xs">Status: {statusText(m.status)}</div>
                         </li>
                       ))}
                     </ul>
@@ -224,14 +237,14 @@ export default function UserDashboard() {
 
             {activeSection === "content" && (
               <div className="text-center py-12">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Content Feed</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('user_content_title')}</h3>
                 <p className="text-gray-500">Content feed coming soon...</p>
               </div>
             )}
 
             {activeSection === "settings" && (
               <div className="text-center py-12">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Settings</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('user_settings_title')}</h3>
                 <p className="text-gray-500">Settings page coming soon...</p>
               </div>
             )}

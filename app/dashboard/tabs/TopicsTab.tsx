@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Eye, EyeOff, Users, Calendar, Target } from 'lucide-react';
 import { Topic } from "../AdminDashboard/types";
+import { useI18n } from "@/components/i18n/i18n";
 
 interface TopicsTabProps {
   topics: Topic[];
@@ -21,27 +22,48 @@ export default function TopicsTab({
   onDeleteTopic,
   onToggleActive
 }: TopicsTabProps) {
+  const { t } = useI18n();
+
+  const catLabel = (cat: string) => {
+    switch (cat) {
+      case 'hedging':
+        return t('admin_cat_hedging');
+      case 'market-analysis':
+        return t('admin_cat_market_analysis');
+      case 'currency-pairs':
+        return t('admin_cat_currency_pairs');
+      case 'regulatory':
+        return t('admin_cat_regulatory');
+      case 'treasury':
+        return t('admin_cat_treasury');
+      case 'risk-management':
+        return t('admin_cat_risk_management');
+      default:
+        return cat.replace('-', ' ');
+    }
+  };
+
   if (topics.length === 0) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Topic Management</h2>
-            <p className="text-gray-500 mt-1">Manage topics that users can subscribe to</p>
+            <h2 className="text-2xl font-bold text-[#12261f]">{t('admin_topic_management_title')}</h2>
+            <p className="text-[#4a5a55] mt-1">{t('admin_topic_management_desc')}</p>
           </div>
-          <Button onClick={onAddTopic} className="bg-orange-500 hover:bg-orange-600 text-white">
+          <Button onClick={onAddTopic} className="bg-[#bd6908] hover:bg-[#a35a07] text-white">
             <Plus className="w-4 h-4 mr-2" />
-            Add Topic
+            {t('admin_add_topic')}
           </Button>
         </div>
 
-        <Card className="p-12 text-center">
-          <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No Topics Yet</h3>
-          <p className="text-gray-500 mb-4">Create your first topic to get started</p>
-          <Button onClick={onAddTopic} className="bg-orange-500 hover:bg-orange-600 text-white">
+        <Card className="p-12 text-center border border-[#dce5e1]">
+          <Target className="w-16 h-16 text-[#dce5e1] mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-[#12261f] mb-2">{t('admin_no_topics_title')}</h3>
+          <p className="text-[#4a5a55] mb-4">{t('admin_no_topics_desc')}</p>
+          <Button onClick={onAddTopic} className="bg-[#bd6908] hover:bg-[#a35a07] text-white">
             <Plus className="w-4 h-4 mr-2" />
-            Create Topic
+            {t('admin_create_topic')}
           </Button>
         </Card>
       </div>
@@ -52,39 +74,39 @@ export default function TopicsTab({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Topic Management</h2>
-          <p className="text-gray-500 mt-1">Manage topics that users can subscribe to</p>
+          <h2 className="text-2xl font-bold text-[#12261f]">{t('admin_topic_management_title')}</h2>
+          <p className="text-[#4a5a55] mt-1">{t('admin_topic_management_desc')}</p>
         </div>
-        <Button onClick={onAddTopic} className="bg-orange-500 hover:bg-orange-600 text-white">
+        <Button onClick={onAddTopic} className="bg-[#bd6908] hover:bg-[#a35a07] text-white">
           <Plus className="w-4 h-4 mr-2" />
-          Add Topic
+          {t('admin_add_topic')}
         </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         {topics.map((topic) => (
-          <Card key={topic.id} className="p-6 hover:shadow-md transition-shadow">
+          <Card key={topic.id} className="p-6 hover:shadow-md transition-shadow border border-[#dce5e1]">
             <div className="flex flex-col lg:flex-row items-start justify-between gap-4">
               <div className="flex-1 w-full">
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <h3 className="text-lg font-bold text-gray-900">{topic.name}</h3>
+                  <h3 className="text-lg font-bold text-[#12261f]">{topic.name}</h3>
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    topic.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                    topic.is_active ? 'bg-green-100 text-green-700' : 'bg-[#dce5e1] text-[#12261f]'
                   }`}>
-                    {topic.is_active ? 'ACTIVE' : 'INACTIVE'}
+                    {topic.is_active ? t('status_active') : t('status_inactive')}
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700 capitalize">
-                    {topic.category.replace('-', ' ')}
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#dce5e1] text-[#12261f] capitalize">
+                    {catLabel(topic.category)}
                   </span>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
+                <div className="flex items-center gap-4 text-sm text-[#4a5a55]">
                   <div className="flex items-center gap-1">
                     <Users className="w-4 h-4" />
-                    <span>{topic.subscribers} subscribers</span>
+                    <span>{topic.subscribers} {t('admin_subscribers')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
-                    <span>Created {new Date(topic.created_at).toISOString().slice(0,10)}</span>
+                    <span>{t('admin_created')} {new Date(topic.created_at).toISOString().slice(0,10)}</span>
                   </div>
                 </div>
               </div>
@@ -93,15 +115,16 @@ export default function TopicsTab({
                   onClick={() => onToggleActive(topic.id, topic.is_active)}
                   variant="outline"
                   size="sm"
-                  className={topic.is_active ? 'text-gray-600' : 'text-green-600 border-green-600'}
+                  className={topic.is_active ? 'text-[#12261f] border-[#dce5e1]' : 'text-[#bd6908] border-[#bd6908]'}
                 >
                   {topic.is_active ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
-                  {topic.is_active ? 'Deactivate' : 'Activate'}
+                  {topic.is_active ? t('admin_deactivate') : t('admin_activate')}
                 </Button>
                 <Button
                   onClick={() => onEditTopic(topic)}
                   variant="outline"
                   size="sm"
+                  className="border-[#dce5e1] text-[#12261f]"
                 >
                   <Edit className="w-4 h-4" />
                 </Button>

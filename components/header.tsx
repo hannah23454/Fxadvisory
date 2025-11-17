@@ -6,11 +6,8 @@ import { useRouter } from "next/navigation"
 import { Menu, X, LogOut, LayoutDashboard } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { User } from "@supabase/supabase-js"
+import { useI18n } from "@/components/i18n/i18n"
 
-/**
- * Define a custom type for the user state for better type safety.
- * This ensures 'user' is always a Supabase User object or null.
- */
 type CurrentUser = User | null
 
 export default function Header() {
@@ -21,8 +18,7 @@ export default function Header() {
   const [goToDashboard, setGoToDashboard] = useState(false)
   const router = useRouter()
   const supabase = createClientComponentClient()
-
-  // --- Utility Functions ---
+  const { t, locale, setLocale } = useI18n()
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
@@ -33,15 +29,11 @@ export default function Header() {
     return currentUser?.email ? adminEmails.includes(currentUser.email) : false
   }, [])
 
-  // --- Effects ---
-
-  // 1. Scroll detection
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
 
-  // 2. Load current user and listen for auth changes
   useEffect(() => {
     const loadUser = async () => {
       const { data: { session } } = await supabase.auth.getSession()
@@ -57,13 +49,11 @@ export default function Header() {
       setIsAdmin(checkAdminStatus(currentUser))
     })
 
-    // Defensive periodic re-check (handles reload edge cases)
     const interval = setInterval(loadUser, 30000)
 
     return () => { listener.subscription.unsubscribe(); clearInterval(interval); }
   }, [checkAdminStatus, supabase])
 
-  // 3. Redirect handler
   useEffect(() => {
     if (goToDashboard) {
       const path = isAdmin ? "/dashboard/admin" : "/dashboard/user"
@@ -72,11 +62,9 @@ export default function Header() {
     }
   }, [goToDashboard, isAdmin, router])
 
-  // --- Handlers ---
-
   const handleDashboardClick = () => {
     setMobileMenuOpen(false)
-    setGoToDashboard(true) // Triggers redirect via useEffect
+    setGoToDashboard(true)
   }
 
   const handleSignOut = async () => {
@@ -84,13 +72,13 @@ export default function Header() {
     router.push("/")
   }
 
-  // User name safe fallback
-  const userName =
-    user?.user_metadata?.full_name?.split(" ")[0] ||
-    user?.email?.split("@")[0] ||
-    "User"
-
-  // --- Render ---
+  const navItems = [
+    { key: 'nav_home', path: '/' },
+    { key: 'nav_about', path: '/about' },
+    { key: 'nav_services', path: '/services' },
+    { key: 'nav_market_insights', path: '/market-insights' },
+    { key: 'nav_contact', path: '/contact' },
+  ]
 
   return (
     <header
@@ -116,44 +104,38 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8">
-            {["Home", "About", "Services", "Market Insights", "Contact"].map(
-              (item) => {
-                const path =
-                  item === "Home"
-                    ? "/"
-                    : "/" + item.toLowerCase().replace(" ", "-")
-                return (
-                  <Link
-                    key={item}
-                    href={path}
-                    className={`transition text-sm font-medium ${
-                      isScrolled
-                        ? "text-[#4A5A55] hover:text-[#12261F]"
-                        : "text-gray-300 hover:text-white"
-                    }`}
-                  >
-                    {item}
-                  </Link>
-                )
-              }
-            )}
+          <nav className="hidden md:flex gap-8 items-center">
+            {navItems.map(({ key, path }) => (
+              <Link
+                key={key}
+                href={path}
+                className={`transition text-sm font-medium ${
+                  isScrolled
+                    ? "text-[#4A5A55] hover:text-[#12261F]"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                {t(key)}
+              </Link>
+            ))}
+
+            {/* Language switcher */}
+            <select
+              value={locale}
+              onChange={(e) => setLocale(e.target.value as any)}
+              className={`text-sm rounded px-2 py-1 bg-transparent focus:outline-none focus:ring-0 ${
+                isScrolled ? "text-[#12261F]" : "text-white"
+              }`}
+            >
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+            </select>
           </nav>
 
-          {/* Desktop Auth - Separated Buttons (New Requirement) */}
+          {/* Desktop Auth */}
           <div className="hidden md:flex gap-3 items-center">
             {user ? (
               <>
-                {/* 1. User Name/Welcome Text */}
-                <div
-                  className={`text-sm font-medium pr-2 ${
-                    isScrolled ? "text-[#12261F]" : "text-white"
-                  }`}
-                >
-                  Welcome, **{userName}**
-                </div>
-
-                {/* 2. Dashboard Button */}
                 <button
                   onClick={handleDashboardClick}
                   className={`px-4 py-2 rounded-full transition text-sm font-medium flex items-center gap-1 border ${
@@ -162,20 +144,17 @@ export default function Header() {
                       : "text-white border-white hover:bg-white/10"
                   }`}
                 >
-                  <LayoutDashboard size={16} /> Dashboard
+                  <LayoutDashboard size={16} /> {t('dashboard')}
                 </button>
-
-                {/* 3. Logout Button */}
                 <button
                   onClick={handleSignOut}
                   className="px-4 py-2 rounded-full transition text-sm font-medium flex items-center gap-1 bg-red-600 text-white hover:bg-red-700"
                 >
-                  <LogOut size={16} /> Logout
+                  <LogOut size={16} /> {t('logout')}
                 </button>
               </>
             ) : (
               <>
-                {/* Unauthenticated Links */}
                 <Link
                   href="/login"
                   className={`px-6 py-2 rounded-full border text-sm font-medium transition ${
@@ -184,14 +163,14 @@ export default function Header() {
                       : "text-white border-white hover:bg-white/10"
                   }`}
                 >
-                  Login
+                  {t('cta_login')}
                 </Link>
 
                 <Link
                   href="/contact"
                   className="px-6 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium hover:bg-opacity-90"
                 >
-                  Book a Call
+                  {t('cta_book_call')}
                 </Link>
               </>
             )}
@@ -199,9 +178,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden p-2 ${
-              isScrolled ? "text-[#12261F]" : "text-white"
-            }`}
+            className={`md:hidden p-2 ${isScrolled ? "text-[#12261F]" : "text-white"}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -211,95 +188,72 @@ export default function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <nav className="md:hidden pb-4 space-y-2">
-            {["Home", "About", "Services", "Market Insights", "Contact"].map(
-              (item) => {
-                const path =
-                  item === "Home"
-                    ? "/"
-                    : "/" + item.toLowerCase().replace(" ", "-")
+            {navItems.map(({ key, path }) => (
+              <Link
+                key={key}
+                href={path}
+                className={`block px-4 py-2 rounded text-sm ${
+                  isScrolled
+                    ? "text-[#12261F] hover:bg-[#F5F7F6]"
+                    : "text-white hover:bg-white/10"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t(key)}
+              </Link>
+            ))}
 
-                return (
-                  <Link
-                    key={item}
-                    href={path}
-                    className={`block px-4 py-2 rounded text-sm ${
-                      isScrolled
-                        ? "text-[#12261F] hover:bg-[#F5F7F6]"
-                        : "text-white hover:bg-white/10"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item}
-                  </Link>
-                )
-              }
-            )}
+            {/* Mobile Language switcher */}
+            <div className="px-4">
+              <select
+                value={locale}
+                onChange={(e) => setLocale(e.target.value as any)}
+                className="w-full text-sm rounded px-2 py-2 bg-white text-[#12261F] focus:outline-none focus:ring-0"
+              >
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+              </select>
+            </div>
 
             {/* Mobile Auth */}
-            {user ? (
-              <>
-                <div className="px-4 py-2 border-t mt-2 pt-4">
-                  <p
-                    className={`text-xs font-medium ${
-                      isScrolled ? "text-[#4A5A55]" : "text-gray-400"
-                    }`}
+            <div className="px-4 flex flex-col gap-2 mt-2">
+              {user ? (
+                <>
+                  <button
+                    onClick={() => { handleDashboardClick(); setMobileMenuOpen(false) }}
+                    className="w-full px-4 py-2 rounded-full border text-sm font-medium flex items-center gap-1 hover:bg-gray-100"
                   >
-                    Logged in as
-                  </p>
-                  <p
-                    className={`text-sm font-medium ${
-                      isScrolled ? "text-[#12261F]" : "text-white"
-                    }`}
+                    <LayoutDashboard size={16} /> {t('dashboard')}
+                  </button>
+                  <button
+                    onClick={() => { handleSignOut(); setMobileMenuOpen(false) }}
+                    className="w-full px-4 py-2 rounded-full bg-red-600 text-white text-sm font-medium hover:bg-red-700 flex items-center gap-1 justify-center"
                   >
-                    {user?.user_metadata?.full_name || userName}
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleDashboardClick}
-                  className={`w-full px-4 py-2 rounded text-sm flex items-center gap-2 ${
-                    isScrolled
-                      ? "text-[#12261F] hover:bg-[#F5F7F6]"
-                      : "text-white hover:bg-white/10"
-                  }`}
-                >
-                  <LayoutDashboard size={16} /> Dashboard
-                </button>
-
-                <button
-                  onClick={handleSignOut}
-                  className="w-full px-4 py-2 rounded text-sm text-left text-red-600 hover:bg-red-50 flex items-center gap-2"
-                >
-                  <LogOut size={16} /> Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className={`block w-full px-4 py-2 rounded text-sm text-center border mt-4 ${
-                    isScrolled
-                      ? "text-[#12261F] border-[#12261F] hover:bg-[#F5F7F6]"
-                      : "text-white border-white hover:bg-white/10"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="w-full px-6 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium block text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Book a Call
-                </Link>
-              </>
-            )}
+                    <LogOut size={16} /> {t('logout')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="w-full px-4 py-2 rounded-full border text-sm font-medium text-center hover:bg-gray-100"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('cta_login')}
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="w-full px-4 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium text-center hover:bg-opacity-90"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('cta_book_call')}
+                  </Link>
+                </>
+              )}
+            </div>
           </nav>
         )}
       </div>
-      
     </header>
   )
 }

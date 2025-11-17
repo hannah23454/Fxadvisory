@@ -1,28 +1,31 @@
 'use client';
 
 import React from 'react';
+import { useI18n } from "@/components/i18n/i18n"
 
 export default function HowWeWork() {
+  const { t } = useI18n()
+  
   const steps = [
     {
       number: "1",
-      title: "Assess",
-      description: "We analyze your FX exposure, cash flows, and risk tolerance to understand your unique situation.",
+      title: t('step_1_title'),
+      description: t('step_1_desc'),
     },
     {
       number: "2",
-      title: "Hedge",
-      description: "Design and execute tailored strategies. Forward contracts, options, or custom structures.",
+      title: t('step_2_title'),
+      description: t('step_2_desc'),
     },
     {
       number: "3",
-      title: "Track",
-      description: "Real-time monitoring and reporting. Transparent dashboards showing P&L and position management.",
+      title: t('step_3_title'),
+      description: t('step_3_desc'),
     },
     {
       number: "4",
-      title: "Report",
-      description: "Monthly compliance and strategy reviews. Ongoing optimizations based on market conditions.",
+      title: t('step_4_title'),
+      description: t('step_4_desc'),
     },
   ];
 
@@ -35,13 +38,13 @@ export default function HowWeWork() {
             className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4"
             style={{ color: '#12261F' }}
           >
-            How We Work
+            {t('how_we_work_title')}
           </h2>
           <p 
             className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: '#4A5A55' }}
           >
-            Our proven 4-step process ensures comprehensive FX risk management from start to finish.
+            {t('how_we_work_desc')}
           </p>
         </div>
 

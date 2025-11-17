@@ -7,8 +7,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { useI18n } from "@/components/i18n/i18n";
 
 export default function Login() {
+  const { t } = useI18n();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -17,7 +19,7 @@ export default function Login() {
   const router = useRouter();
   const supabase = createClientComponentClient();
 
-  // 1️⃣ Redirect if already logged in
+  // Redirect if already logged in
   useEffect(() => {
     const checkSession = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -40,7 +42,6 @@ export default function Login() {
             .maybeSingle();
           role = (profile?.role as string) || 'user';
         }
-        // Give time for Supabase to set cookies
         await new Promise(resolve => setTimeout(resolve, 500));
         window.location.href = role === 'admin' ? '/dashboard/admin' : '/dashboard/user';
       }
@@ -48,7 +49,6 @@ export default function Login() {
     checkSession();
   }, [supabase]);
 
-  // 2️⃣ Handle login form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -79,17 +79,13 @@ export default function Login() {
             .maybeSingle();
           role = (profile?.role as string) || 'user';
         }
-        
-        // Give time for Supabase to set cookies, then hard redirect
         await new Promise(resolve => setTimeout(resolve, 500));
         window.location.href = role === 'admin' ? '/dashboard/admin' : '/dashboard/user';
       } else {
-        setError(
-          "Check your email to confirm login before accessing the dashboard."
-        );
+        setError(t('login_error_confirm'));
       }
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(err.message || t('login_sign_in'));
     } finally {
       setLoading(false);
     }
@@ -103,9 +99,9 @@ export default function Login() {
           <Card className="bg-white border border-[#DCE5E1] p-8">
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold text-[#12261F] mb-2">
-                Welcome Back
+                {t('login_title')}
               </h1>
-              <p className="text-[#4A5A55]">Access your FX hedge dashboard</p>
+              <p className="text-[#4A5A55]">{t('login_subtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 mb-6">
@@ -115,7 +111,7 @@ export default function Login() {
 
               <div>
                 <label className="block text-sm font-medium text-[#12261F] mb-2">
-                  Email
+                  {t('login_email')}
                 </label>
                 <input
                   type="email"
@@ -128,7 +124,7 @@ export default function Login() {
 
               <div>
                 <label className="block text-sm font-medium text-[#12261F] mb-2">
-                  Password
+                  {t('login_password')}
                 </label>
                 <input
                   type="password"
@@ -144,18 +140,18 @@ export default function Login() {
                 disabled={loading}
                 className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3"
               >
-                {loading ? "Signing In..." : "Sign In"}
+                {loading ? t('login_signing_in') : t('login_sign_in')}
               </Button>
             </form>
 
             <div className="text-center mt-4">
               <p className="text-sm text-[#4A5A55]">
-                Don't have an account?{" "}
+                {t('login_no_account')}{" "}
                 <a
                   href="/register"
                   className="text-[#BD6908] hover:underline font-medium"
                 >
-                  Sign up here
+                  {t('login_signup_here')}
                 </a>
               </p>
             </div>

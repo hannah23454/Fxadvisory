@@ -1,12 +1,15 @@
 "use client"
 
 import { CheckCircle2 } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n"
 
 export default function CorporateFXHero() {
+  const { t } = useI18n()
+  
   const features = [
-    "Simple to use and enhanced reporting to help you make smarter decisions.",
-    "Robust and fully secure payment infrastructure to enable reliable transfers across the globe.",
-    "Transact seamlessly using our online platform or with the help of your dedicated relationship manager."
+    t('corp_fx_feature_1'),
+    t('corp_fx_feature_2'),
+    t('corp_fx_feature_3')
   ]
 
   return (
@@ -21,11 +24,11 @@ export default function CorporateFXHero() {
           <div className="space-y-4 sm:space-y-5">
             <div className="space-y-2 sm:space-y-3">
               <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-[#12261F] leading-tight">
-                Manage your{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BD6908] to-[#BD6908]">
-                  finances
+                {t('corp_fx_title')}{" "}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-[#BD6908] to-[#BD6908]">
+                  {t('corp_fx_title_highlight')}
                 </span>{" "}
-                with ease.
+                {t('corp_fx_title_end')}
               </h1>
             </div>
 
@@ -33,7 +36,7 @@ export default function CorporateFXHero() {
             <div className="space-y-3 sm:space-y-4">
               {features.map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-2.5 sm:gap-3 group">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#BD6908] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
                       <CheckCircle2 className="text-white" size={14} strokeWidth={2.5} />
                     </div>
@@ -48,7 +51,7 @@ export default function CorporateFXHero() {
             {/* CTA Button */}
             <div className="pt-2 sm:pt-3">
               <button className="w-full sm:w-auto group px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#BD6908] hover:bg-[#a05807] text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                See features
+                {t('corp_fx_cta')}
               </button>
             </div>
           </div>
@@ -70,7 +73,7 @@ export default function CorporateFXHero() {
             <div className="relative z-10">
               <img 
                 src="https://zilmoney.com/wp-content/uploads/2022/11/Print-Payroll-Checks-Save-your-Time-and-Money-ZM.png" 
-                alt="Manage finances illustration"
+                alt={t('corp_fx_alt')}
                 className="w-full h-auto max-w-full drop-shadow-2xl"
               />
             </div>

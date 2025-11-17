@@ -8,6 +8,7 @@ import NewsletterSignup from "@/components/newsletter-signup"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { TrendingUp, TrendingDown } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n"
 
 // Mock data - will be replaced with Airtable API call
 const mockArticles = [
@@ -71,6 +72,7 @@ const currencyPairs = ["All", "AUD/USD", "AUD/EUR", "AUD/GBP", "AUD/JPY", "AUD/C
 
 export default function MarketCommentary() {
 	const [selectedCurrency, setSelectedCurrency] = useState("All")
+  const { t } = useI18n()
 
 	const filteredArticles =
 		selectedCurrency === "All" ? mockArticles : mockArticles.filter((a) => a.currency === selectedCurrency)
@@ -84,7 +86,7 @@ export default function MarketCommentary() {
 			{/* Hero */}
 			<section className="bg-[#12261f] text-white py-20 px-6">
 				<div className="max-w-4xl mx-auto">
-					<h1 className="text-5xl font-bold mb-6 text-balance">Market Commentary</h1>
+					<h1 className="text-5xl font-bold mb-6 text-balance">{t('market_commentary')}</h1>
 					<p className="text-xl text-[#dce5e1]">
 						Expert insights on FX trends, policy shifts, and strategic implications for your treasury. Curated by our
 					team of FX specialists.
@@ -94,10 +96,10 @@ export default function MarketCommentary() {
 
 			{/* Featured Article */}
 			{featuredArticle && (
-				<section className="bg-gradient-to-r from-[#12261f] to-[#1a3a2f] text-white py-16 px-6">
+				<section className="bg-linear-to-r from-[#12261f] to-[#1a3a2f] text-white py-16 px-6">
 					<div className="max-w-6xl mx-auto">
 						<span className="inline-block px-3 py-1 rounded-full bg-[#bd6908] text-white text-xs font-bold mb-4">
-							FEATURED
+							{t('featured')}
 						</span>
 						<h2 className="text-4xl font-bold mb-4 text-balance">{featuredArticle.title}</h2>
 						<p className="text-lg text-[#dce5e1] mb-6 leading-relaxed">{featuredArticle.excerpt}</p>
@@ -109,7 +111,7 @@ export default function MarketCommentary() {
 								{featuredArticle.currency}
 							</span>
 							<Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold">
-								Read Full Article →
+								{t('read_more')} →
 							</Button>
 						</div>
 					</div>
@@ -185,7 +187,7 @@ export default function MarketCommentary() {
 												{new Date(article.date).toISOString().slice(0, 10)}
 											</span>
 											<span className="text-[#bd6908] text-sm font-bold group-hover:gap-2 transition">
-												Read More →
+												{t('read_more')} →
 											</span>
 										</div>
 									</div>
@@ -203,10 +205,9 @@ export default function MarketCommentary() {
 			{/* Newsletter Deep Section */}
 			<section className="bg-[#12261f] text-white py-16 px-6">
 				<div className="max-w-2xl mx-auto text-center">
-					<h2 className="text-3xl font-bold mb-4">Never Miss Market Insights</h2>
+					<h2 className="text-3xl font-bold mb-4">{t('newsletter_cta_title')}</h2>
 					<p className="text-[#dce5e1] mb-8">
-						Subscribe to receive curated FX commentary, policy updates, and hedging recommendations delivered to your
-						inbox.
+						{t('newsletter_cta_desc')}
 					</p>
 					<NewsletterSignup />
 				</div>

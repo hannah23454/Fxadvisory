@@ -8,8 +8,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useI18n } from "@/components/i18n/i18n";
 
 export default function RegisterComponent() {
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -19,20 +21,13 @@ export default function RegisterComponent() {
   const [loading, setLoading] = useState(false);
   const [rateLimitWait, setRateLimitWait] = useState(0);
 
-  // Expandable sections state
-  const [expandedSections, setExpandedSections] = useState<{
-    currencies: boolean;
-    hedging: boolean;
-    marketAnalysis: boolean;
-    treasury: boolean;
-  }>({
+  const [expandedSections, setExpandedSections] = useState({
     currencies: false,
     hedging: false,
     marketAnalysis: false,
     treasury: false,
   });
 
-  // Optional selections
   const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([]);
   const [selectedHedging, setSelectedHedging] = useState<string[]>([]);
   const [selectedMarketAnalysis, setSelectedMarketAnalysis] = useState<string[]>([]);
@@ -40,7 +35,6 @@ export default function RegisterComponent() {
 
   const router = useRouter();
 
-  // Currency options
   const currencyOptions = {
     major: ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD"],
     emerging: ["MXN", "BRL", "ZAR", "TRY", "RUB", "INR", "CNY"],
@@ -49,63 +43,34 @@ export default function RegisterComponent() {
   };
 
   const hedgingOptions = [
-    "Forward Contracts",
-    "Options Strategies",
-    "Natural Hedging",
-    "Dynamic Hedging",
-    "Cross-Currency Swaps",
-    "Currency Collars",
+    t('register_opt_forward_contracts'),
+    t('register_opt_options_strategies'),
+    t('register_opt_natural_hedging'),
+    t('register_opt_dynamic_hedging'),
+    t('register_opt_cross_currency_swaps'),
+    t('register_opt_currency_collars'),
   ];
 
   const marketAnalysisOptions = [
-    "Technical Analysis",
-    "Fundamental Analysis",
-    "Central Bank Policy",
-    "Economic Indicators",
-    "Market Sentiment",
-    "Geopolitical Events",
+    t('register_opt_technical_analysis'),
+    t('register_opt_fundamental_analysis'),
+    t('register_opt_central_bank_policy'),
+    t('register_opt_economic_indicators'),
+    t('register_opt_market_sentiment'),
+    t('register_opt_geopolitical_events'),
   ];
 
   const treasuryOptions = [
-    "Cash Flow Management",
-    "Risk Assessment Tools",
-    "Exposure Monitoring",
-    "Compliance Reporting",
-    "Budget Rate Setting",
-    "Multi-Currency Forecasting",
+    t('register_opt_cash_flow_management'),
+    t('register_opt_risk_assessment_tools'),
+    t('register_opt_exposure_monitoring'),
+    t('register_opt_compliance_reporting'),
+    t('register_opt_budget_rate_setting'),
+    t('register_opt_multi_currency_forecasting'),
   ];
 
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
-  const handleCurrencyToggle = (currency: string) => {
-    setSelectedCurrencies((prev) =>
-      prev.includes(currency)
-        ? prev.filter((c) => c !== currency)
-        : [...prev, currency]
-    );
-  };
-
-  const handleHedgingToggle = (option: string) => {
-    setSelectedHedging((prev) =>
-      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
-    );
-  };
-
-  const handleMarketAnalysisToggle = (option: string) => {
-    setSelectedMarketAnalysis((prev) =>
-      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
-    );
-  };
-
-  const handleTreasuryToggle = (option: string) => {
-    setSelectedTreasury((prev) =>
-      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
-    );
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -151,37 +116,11 @@ export default function RegisterComponent() {
         throw authError;
       }
 
-      if (authData.user) {
-        console.log("User registered successfully:", authData.user.id);
-
-        // Save as lead (optional)
-        try {
-          await fetch("/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email,
-              full_name: name,
-              company_name: organization,
-              currencies: selectedCurrencies,
-              hedging_interests: selectedHedging,
-              market_analysis_interests: selectedMarketAnalysis,
-              treasury_interests: selectedTreasury,
-              source: "registration",
-            }),
-          });
-        } catch (leadError) {
-          console.log("Lead creation skipped:", leadError);
-        }
-      }
-
       if (authData.user && !authData.session) {
-        setSuccess(
-          "Registration successful! Please check your email to verify your account."
-        );
+        setSuccess(t('register_success_check_email'));
         setTimeout(() => router.push("/login"), 3000);
       } else if (authData.session) {
-        setSuccess("Registration successful! Redirecting to dashboard...");
+        setSuccess(t('register_success_redirecting'));
         setTimeout(() => router.push("/dashboard/user"), 2000);
       }
     } catch (err: any) {
@@ -209,29 +148,6 @@ export default function RegisterComponent() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setError("");
-    setSuccess("");
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
-          },
-        },
-      });
-
-      if (error) throw error;
-    } catch (err: any) {
-      setError(err.message || "Google sign-in failed");
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       <Header />
@@ -239,20 +155,16 @@ export default function RegisterComponent() {
         <div className="max-w-2xl mx-auto py-12 px-6">
           <Card className="p-8 border border-[#DCE5E1]">
             <div className="mb-6 text-center">
-              <h1 className="text-3xl font-bold text-[#12261F] mb-2">Sign Up</h1>
-              <p className="text-[#4A5A55]">
-                Access your personalized FX risk management dashboard
-              </p>
+              <h1 className="text-3xl font-bold text-[#12261F] mb-2">{t('register_title')}</h1>
+              <p className="text-[#4A5A55]">{t('register_subtitle')}</p>
             </div>
-
 
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded text-sm">
                 {error}
                 {rateLimitWait > 0 && (
                   <div className="mt-2 text-xs">
-                    Please wait: {Math.floor(rateLimitWait / 60)}:
-                    {(rateLimitWait % 60).toString().padStart(2, "0")} minutes
+                    Please wait: {Math.floor(rateLimitWait / 60)}:{(rateLimitWait % 60).toString().padStart(2, "0")} minutes
                   </div>
                 )}
               </div>
@@ -268,11 +180,11 @@ export default function RegisterComponent() {
               {/* Required Fields */}
               <div className="space-y-4 pb-4 border-b border-[#DCE5E1]">
                 <h3 className="text-sm font-semibold text-[#12261F] uppercase tracking-wide">
-                  Required Information
+                  {t('register_required_info')}
                 </h3>
                 <input
                   type="text"
-                  placeholder="Full Name *"
+                  placeholder={t('register_full_name_placeholder')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -281,7 +193,7 @@ export default function RegisterComponent() {
                 />
                 <input
                   type="text"
-                  placeholder="Company Name *"
+                  placeholder={t('register_company_placeholder')}
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
                   required
@@ -290,7 +202,7 @@ export default function RegisterComponent() {
                 />
                 <input
                   type="email"
-                  placeholder="Email *"
+                  placeholder={t('register_email_placeholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -299,7 +211,7 @@ export default function RegisterComponent() {
                 />
                 <input
                   type="password"
-                  placeholder="Password (min 6 characters) *"
+                  placeholder={t('register_password_placeholder')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -312,11 +224,10 @@ export default function RegisterComponent() {
               {/* Optional Sections */}
               <div className="space-y-3 pt-4">
                 <h3 className="text-sm font-semibold text-[#12261F] uppercase tracking-wide">
-                  Personalize Your Dashboard (Optional)
+                  {t('register_personalize_title')}
                 </h3>
                 <p className="text-xs text-[#4A5A55] mb-4">
-                  Select your areas of interest to receive personalized content. You can
-                  skip this and add preferences later from your dashboard.
+                  {t('register_personalize_desc')}
                 </p>
 
                 {/* Currencies Section */}
@@ -329,7 +240,7 @@ export default function RegisterComponent() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-[#12261F]">
-                        Currencies Traded
+                        {t('register_currencies_traded')}
                       </span>
                       {selectedCurrencies.length > 0 && (
                         <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
@@ -360,7 +271,7 @@ export default function RegisterComponent() {
                                 <input
                                   type="checkbox"
                                   checked={selectedCurrencies.includes(currency)}
-                                  onChange={() => handleCurrencyToggle(currency)}
+                                  onChange={() => setSelectedCurrencies(prev => prev.includes(currency) ? prev.filter(c => c !== currency) : [...prev, currency])}
                                   className="accent-[#BD6908] cursor-pointer"
                                   disabled={loading}
                                 />
@@ -386,7 +297,7 @@ export default function RegisterComponent() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-[#12261F]">
-                        Hedging Strategies
+                        {t('register_hedging_strategies')}
                       </span>
                       {selectedHedging.length > 0 && (
                         <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
@@ -411,7 +322,7 @@ export default function RegisterComponent() {
                           <input
                             type="checkbox"
                             checked={selectedHedging.includes(option)}
-                            onChange={() => handleHedgingToggle(option)}
+                            onChange={() => setSelectedHedging(prev => prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option])}
                             className="accent-[#BD6908] cursor-pointer"
                             disabled={loading}
                           />
@@ -432,7 +343,7 @@ export default function RegisterComponent() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-[#12261F]">
-                        Market Analysis
+                        {t('register_market_analysis')}
                       </span>
                       {selectedMarketAnalysis.length > 0 && (
                         <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
@@ -457,7 +368,7 @@ export default function RegisterComponent() {
                           <input
                             type="checkbox"
                             checked={selectedMarketAnalysis.includes(option)}
-                            onChange={() => handleMarketAnalysisToggle(option)}
+                            onChange={() => setSelectedMarketAnalysis(prev => prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option])}
                             className="accent-[#BD6908] cursor-pointer"
                             disabled={loading}
                           />
@@ -478,7 +389,7 @@ export default function RegisterComponent() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-[#12261F]">
-                        Treasury Tools
+                        {t('register_treasury_tools')}
                       </span>
                       {selectedTreasury.length > 0 && (
                         <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
@@ -503,7 +414,7 @@ export default function RegisterComponent() {
                           <input
                             type="checkbox"
                             checked={selectedTreasury.includes(option)}
-                            onChange={() => handleTreasuryToggle(option)}
+                            onChange={() => setSelectedTreasury(prev => prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option])}
                             className="accent-[#BD6908] cursor-pointer"
                             disabled={loading}
                           />
@@ -521,22 +432,22 @@ export default function RegisterComponent() {
                 className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
               >
                 {loading
-                  ? "Creating Account..."
+                  ? t('register_creating_account')
                   : rateLimitWait > 0
                   ? `Wait ${Math.floor(rateLimitWait / 60)}:${(rateLimitWait % 60)
                       .toString()
                       .padStart(2, "0")}`
-                  : "Create Account"}
+                  : t('register_create_account')}
               </Button>
             </form>
 
             <div className="text-center mt-4 text-sm text-[#4A5A55]">
-              Already have an account?{" "}
+              {t('register_already_have')}{" "}
               <a
                 href="/login"
                 className="text-[#BD6908] hover:underline font-medium"
               >
-                Login here
+                {t('register_login_here')}
               </a>
             </div>
           </Card>

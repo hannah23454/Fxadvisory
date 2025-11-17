@@ -5,6 +5,7 @@ import "./globals.css"
 import SupabaseProvider from "@/components/supabase-provider"
 import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
+import { I18nProvider } from "@/components/i18n/i18n"
 
 export const metadata: Metadata = {
   title: "SwitchYard FX - Corporate FX Solutions for CFOs",
@@ -29,7 +30,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`} suppressHydrationWarning>
-        <SupabaseProvider initialSession={session}>{children}</SupabaseProvider>
+        <I18nProvider>
+          <SupabaseProvider initialSession={session}>{children}</SupabaseProvider>
+        </I18nProvider>
         <Analytics />
       </body>
     </html>

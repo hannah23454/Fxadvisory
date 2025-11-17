@@ -2,8 +2,11 @@
 
 import Link from "next/link"
 import { Mail, Phone, MapPin } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n"
 
 export default function Footer() {
+  const { t } = useI18n()
+
   return (
     <footer className="bg-[#12261F] text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,32 +19,32 @@ export default function Footer() {
               <div className="text-xs text-[#BD6908] font-medium">FX ADVISORY</div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Trusted FX solutions for mid-market corporates. Simplify treasury risk management.
+              {t('footer_tagline')}
             </p>
           </div>
 
           {/* Product Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Products</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer_products')}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Forward Contracts
+                  {t('footer_forward')}
                 </Link>
               </li>
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Options & Strategies
+                  {t('footer_options')}
                 </Link>
               </li>
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Payment Services
+                  {t('footer_payment')}
                 </Link>
               </li>
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Treasury Support
+                  {t('footer_treasury')}
                 </Link>
               </li>
             </ul>
@@ -49,26 +52,26 @@ export default function Footer() {
 
           {/* Company Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Company</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer_company')}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  About Us
+                  {t('footer_about')}
                 </Link>
               </li>
               <li>
                 <Link href="/market" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Market Insights
+                  {t('footer_market')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Contact
+                  {t('footer_contact')}
                 </Link>
               </li>
               <li>
                 <Link href="/" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
-                  Login
+                  {t('footer_login')}
                 </Link>
               </li>
             </ul>
@@ -76,7 +79,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Get in Touch</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer_get_touch')}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-[#BD6908] flex-shrink-0 mt-0.5" />
@@ -88,7 +91,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#BD6908] flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">Sydney, Australia</span>
+                <span className="text-gray-400 text-sm">{t('footer_sydney')}</span>
               </li>
             </ul>
           </div>
@@ -100,10 +103,9 @@ export default function Footer() {
         {/* AFSL Compliance Footer */}
         <div className="bg-[#1a3a2f] rounded-lg p-6 mb-6">
           <p className="text-xs text-gray-300 leading-relaxed text-center">
-            <strong>Payment & FX services provided by Ebury Partners Australia Pty Ltd</strong> | AFSL 520548 | ABN 54
-            632 570 702
+            <strong>{t('footer_afsl')}</strong> | {t('footer_afsl_detail')}
             <br />
-            <span className="text-gray-400">SwitchYard is engaged as a Programme Manager under this licence.</span>
+            <span className="text-gray-400">{t('footer_switchyard')}</span>
           </p>
         </div>
 
@@ -111,16 +113,16 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
           <div className="flex gap-6">
             <Link href="/" className="hover:text-[#BD6908] transition">
-              Privacy Policy
+              {t('footer_privacy')}
             </Link>
             <Link href="/" className="hover:text-[#BD6908] transition">
-              Terms of Service
+              {t('footer_terms')}
             </Link>
             <Link href="/" className="hover:text-[#BD6908] transition">
-              Compliance
+              {t('footer_compliance')}
             </Link>
           </div>
-          <p>&copy; 2025 SwitchYard FX. All rights reserved.</p>
+          <p>{t('footer_copyright')}</p>
         </div>
       </div>
     </footer>
