@@ -36,7 +36,7 @@ export default function NewsletterSignup() {
       <select
         value={role}
         onChange={(e) => setRole(e.target.value)}
-        className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+        className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white  text-black"
       >
         <option value="">Select Your Role</option>
         <option value="cfo">CFO / Finance Director</option>
@@ -48,13 +48,13 @@ export default function NewsletterSignup() {
       <select
         value={frequency}
         onChange={(e) => setFrequency(e.target.value)}
-        className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+        className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white  text-black"
       >
         <option value="daily">Daily Insights</option>
         <option value="weekly">Weekly Summary</option>
       </select>
 
-      <Button type="submit" className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3">
+      <Button type="submit" className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-black font-bold py-3">
         {submitted ? "Subscribed!" : "Subscribe"}
       </Button>
     </form>

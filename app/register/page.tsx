@@ -1,169 +1,548 @@
-"use client"
+"use client";
 
-import type React from "react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabaseClient";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import Link from "next/link"
+export default function RegisterComponent() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [rateLimitWait, setRateLimitWait] = useState(0);
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-    role: "",
-    fxVolume: "",
-    providers: "",
-  })
+  // Expandable sections state
+  const [expandedSections, setExpandedSections] = useState<{
+    currencies: boolean;
+    hedging: boolean;
+    marketAnalysis: boolean;
+    treasury: boolean;
+  }>({
+    currencies: false,
+    hedging: false,
+    marketAnalysis: false,
+    treasury: false,
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  // Optional selections
+  const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([]);
+  const [selectedHedging, setSelectedHedging] = useState<string[]>([]);
+  const [selectedMarketAnalysis, setSelectedMarketAnalysis] = useState<string[]>([]);
+  const [selectedTreasury, setSelectedTreasury] = useState<string[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("[v0] Registration submitted:", formData)
-  }
+  const router = useRouter();
+
+  // Currency options
+  const currencyOptions = {
+    major: ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD"],
+    emerging: ["MXN", "BRL", "ZAR", "TRY", "RUB", "INR", "CNY"],
+    asian: ["SGD", "HKD", "THB", "MYR", "KRW", "TWD", "PHP"],
+    exotic: ["NOK", "SEK", "DKK", "PLN", "CZK", "HUF", "ILS"],
+  };
+
+  const hedgingOptions = [
+    "Forward Contracts",
+    "Options Strategies",
+    "Natural Hedging",
+    "Dynamic Hedging",
+    "Cross-Currency Swaps",
+    "Currency Collars",
+  ];
+
+  const marketAnalysisOptions = [
+    "Technical Analysis",
+    "Fundamental Analysis",
+    "Central Bank Policy",
+    "Economic Indicators",
+    "Market Sentiment",
+    "Geopolitical Events",
+  ];
+
+  const treasuryOptions = [
+    "Cash Flow Management",
+    "Risk Assessment Tools",
+    "Exposure Monitoring",
+    "Compliance Reporting",
+    "Budget Rate Setting",
+    "Multi-Currency Forecasting",
+  ];
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const handleCurrencyToggle = (currency: string) => {
+    setSelectedCurrencies((prev) =>
+      prev.includes(currency)
+        ? prev.filter((c) => c !== currency)
+        : [...prev, currency]
+    );
+  };
+
+  const handleHedgingToggle = (option: string) => {
+    setSelectedHedging((prev) =>
+      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
+    );
+  };
+
+  const handleMarketAnalysisToggle = (option: string) => {
+    setSelectedMarketAnalysis((prev) =>
+      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
+    );
+  };
+
+  const handleTreasuryToggle = (option: string) => {
+    setSelectedTreasury((prev) =>
+      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+            company_name: organization,
+            currencies: selectedCurrencies,
+            hedging_interests: selectedHedging,
+            market_analysis_interests: selectedMarketAnalysis,
+            treasury_interests: selectedTreasury,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (authError) {
+        if (
+          authError.message.includes("rate limit") ||
+          authError.message.toLowerCase().includes("email rate limit exceeded")
+        ) {
+          throw new Error(
+            "Too many registration attempts. Please wait 5-10 minutes and try again."
+          );
+        }
+        if (
+          authError.message.includes("already registered") ||
+          authError.message.includes("User already registered")
+        ) {
+          throw new Error(
+            "This email is already registered. Please try logging in instead."
+          );
+        }
+        throw authError;
+      }
+
+      if (authData.user) {
+        console.log("User registered successfully:", authData.user.id);
+
+        // Save as lead (optional)
+        try {
+          await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              full_name: name,
+              company_name: organization,
+              currencies: selectedCurrencies,
+              hedging_interests: selectedHedging,
+              market_analysis_interests: selectedMarketAnalysis,
+              treasury_interests: selectedTreasury,
+              source: "registration",
+            }),
+          });
+        } catch (leadError) {
+          console.log("Lead creation skipped:", leadError);
+        }
+      }
+
+      if (authData.user && !authData.session) {
+        setSuccess(
+          "Registration successful! Please check your email to verify your account."
+        );
+        setTimeout(() => router.push("/login"), 3000);
+      } else if (authData.session) {
+        setSuccess("Registration successful! Redirecting to dashboard...");
+        setTimeout(() => router.push("/dashboard/user"), 2000);
+      }
+    } catch (err: any) {
+      const errorMessage = err.message || "Registration failed. Please try again.";
+
+      if (
+        errorMessage.toLowerCase().includes("rate limit") ||
+        errorMessage.toLowerCase().includes("too many")
+      ) {
+        setRateLimitWait(300);
+        const interval = setInterval(() => {
+          setRateLimitWait((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError("");
+    setSuccess("");
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
+
+      if (error) throw error;
+    } catch (err: any) {
+      setError(err.message || "Google sign-in failed");
+      setLoading(false);
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-white">
+    <>
       <Header />
-
-      <section className="py-20 px-6">
-        <div className="max-w-md mx-auto">
-          <Card className="bg-white border border-[#dce5e1] p-8">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl font-bold text-[#12261f] mb-2">Request Access</h1>
-              <p className="text-[#4a5a55]">Join SwitchYard to manage your FX hedges</p>
+      <main className="min-h-screen bg-white">
+        <div className="max-w-2xl mx-auto py-12 px-6">
+          <Card className="p-8 border border-[#DCE5E1]">
+            <div className="mb-6 text-center">
+              <h1 className="text-3xl font-bold text-[#12261F] mb-2">Sign Up</h1>
+              <p className="text-[#4A5A55]">
+                Access your personalized FX risk management dashboard
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Full Name</label>
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded text-sm">
+                {error}
+                {rateLimitWait > 0 && (
+                  <div className="mt-2 text-xs">
+                    Please wait: {Math.floor(rateLimitWait / 60)}:
+                    {(rateLimitWait % 60).toString().padStart(2, "0")} minutes
+                  </div>
+                )}
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded text-sm">
+                {success}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Required Fields */}
+              <div className="space-y-4 pb-4 border-b border-[#DCE5E1]">
+                <h3 className="text-sm font-semibold text-[#12261F] uppercase tracking-wide">
+                  Required Information
+                </h3>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
+                  placeholder="Full Name *"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] disabled:opacity-50"
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Work Email</label>
+                <input
+                  type="text"
+                  placeholder="Company Name *"
+                  value={organization}
+                  onChange={(e) => setOrganization(e.target.value)}
+                  required
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] disabled:opacity-50"
+                />
                 <input
                   type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  placeholder="Email *"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] disabled:opacity-50"
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Company</label>
                 <input
-                  type="text"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
+                  type="password"
+                  placeholder="Password (min 6 characters) *"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
+                  minLength={6}
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] disabled:opacity-50"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
-                />
+              {/* Optional Sections */}
+              <div className="space-y-3 pt-4">
+                <h3 className="text-sm font-semibold text-[#12261F] uppercase tracking-wide">
+                  Personalize Your Dashboard (Optional)
+                </h3>
+                <p className="text-xs text-[#4A5A55] mb-4">
+                  Select your areas of interest to receive personalized content. You can
+                  skip this and add preferences later from your dashboard.
+                </p>
+
+                {/* Currencies Section */}
+                <div className="border border-[#DCE5E1] rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleSection("currencies")}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    disabled={loading}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-[#12261F]">
+                        Currencies Traded
+                      </span>
+                      {selectedCurrencies.length > 0 && (
+                        <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
+                          {selectedCurrencies.length}
+                        </span>
+                      )}
+                    </div>
+                    {expandedSections.currencies ? (
+                      <ChevronUp className="w-5 h-5 text-[#4A5A55]" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-[#4A5A55]" />
+                    )}
+                  </button>
+
+                  {expandedSections.currencies && (
+                    <div className="px-4 pb-4 space-y-4">
+                      {Object.entries(currencyOptions).map(([category, currencies]) => (
+                        <div key={category}>
+                          <h4 className="text-xs font-semibold text-[#4A5A55] uppercase mb-2">
+                            {category}
+                          </h4>
+                          <div className="grid grid-cols-4 gap-2">
+                            {currencies.map((currency) => (
+                              <label
+                                key={currency}
+                                className="flex items-center space-x-2 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedCurrencies.includes(currency)}
+                                  onChange={() => handleCurrencyToggle(currency)}
+                                  className="accent-[#BD6908] cursor-pointer"
+                                  disabled={loading}
+                                />
+                                <span className="text-sm text-[#12261F]">
+                                  {currency}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Hedging Interests */}
+                <div className="border border-[#DCE5E1] rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleSection("hedging")}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    disabled={loading}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-[#12261F]">
+                        Hedging Strategies
+                      </span>
+                      {selectedHedging.length > 0 && (
+                        <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
+                          {selectedHedging.length}
+                        </span>
+                      )}
+                    </div>
+                    {expandedSections.hedging ? (
+                      <ChevronUp className="w-5 h-5 text-[#4A5A55]" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-[#4A5A55]" />
+                    )}
+                  </button>
+
+                  {expandedSections.hedging && (
+                    <div className="px-4 pb-4 space-y-2">
+                      {hedgingOptions.map((option) => (
+                        <label
+                          key={option}
+                          className="flex items-center space-x-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedHedging.includes(option)}
+                            onChange={() => handleHedgingToggle(option)}
+                            className="accent-[#BD6908] cursor-pointer"
+                            disabled={loading}
+                          />
+                          <span className="text-sm text-[#12261F]">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Market Analysis */}
+                <div className="border border-[#DCE5E1] rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleSection("marketAnalysis")}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    disabled={loading}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-[#12261F]">
+                        Market Analysis
+                      </span>
+                      {selectedMarketAnalysis.length > 0 && (
+                        <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
+                          {selectedMarketAnalysis.length}
+                        </span>
+                      )}
+                    </div>
+                    {expandedSections.marketAnalysis ? (
+                      <ChevronUp className="w-5 h-5 text-[#4A5A55]" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-[#4A5A55]" />
+                    )}
+                  </button>
+
+                  {expandedSections.marketAnalysis && (
+                    <div className="px-4 pb-4 space-y-2">
+                      {marketAnalysisOptions.map((option) => (
+                        <label
+                          key={option}
+                          className="flex items-center space-x-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedMarketAnalysis.includes(option)}
+                            onChange={() => handleMarketAnalysisToggle(option)}
+                            className="accent-[#BD6908] cursor-pointer"
+                            disabled={loading}
+                          />
+                          <span className="text-sm text-[#12261F]">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Treasury Management */}
+                <div className="border border-[#DCE5E1] rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleSection("treasury")}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    disabled={loading}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-[#12261F]">
+                        Treasury Tools
+                      </span>
+                      {selectedTreasury.length > 0 && (
+                        <span className="text-xs bg-[#BD6908] text-white px-2 py-0.5 rounded-full">
+                          {selectedTreasury.length}
+                        </span>
+                      )}
+                    </div>
+                    {expandedSections.treasury ? (
+                      <ChevronUp className="w-5 h-5 text-[#4A5A55]" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-[#4A5A55]" />
+                    )}
+                  </button>
+
+                  {expandedSections.treasury && (
+                    <div className="px-4 pb-4 space-y-2">
+                      {treasuryOptions.map((option) => (
+                        <label
+                          key={option}
+                          className="flex items-center space-x-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedTreasury.includes(option)}
+                            onChange={() => handleTreasuryToggle(option)}
+                            className="accent-[#BD6908] cursor-pointer"
+                            disabled={loading}
+                          />
+                          <span className="text-sm text-[#12261F]">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Your Role</label>
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
-                >
-                  <option value="">Select your role</option>
-                  <option value="cfo">CFO / Finance Director</option>
-                  <option value="treasury">Treasury Manager</option>
-                  <option value="controller">Controller</option>
-                  <option value="owner">Business Owner</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Estimated Annual FX Volume</label>
-                <select
-                  name="fxVolume"
-                  value={formData.fxVolume}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
-                >
-                  <option value="">Select range</option>
-                  <option value="<1m">Less than $1M</option>
-                  <option value="1-5m">$1M - $5M</option>
-                  <option value="5-20m">$5M - $20M</option>
-                  <option value="20-50m">$20M - $50M</option>
-                  <option value=">50m">Over $50M</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#12261f] mb-2">Current FX Providers</label>
-                <textarea
-                  name="providers"
-                  placeholder="e.g., NAB, Westpac, OFX..."
-                  value={formData.providers}
-                  onChange={handleChange}
-                  rows={2}
-                  className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908]"
-                />
-              </div>
-
-              <Button type="submit" className="w-full bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold py-3">
-                Request Access
+              <Button
+                type="submit"
+                disabled={loading || rateLimitWait > 0}
+                className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              >
+                {loading
+                  ? "Creating Account..."
+                  : rateLimitWait > 0
+                  ? `Wait ${Math.floor(rateLimitWait / 60)}:${(rateLimitWait % 60)
+                      .toString()
+                      .padStart(2, "0")}`
+                  : "Create Account"}
               </Button>
             </form>
 
-            <div className="text-center">
-              <p className="text-sm text-[#4a5a55]">
-                Already have access?{" "}
-                <Link href="/login" className="text-[#bd6908] hover:underline font-medium">
-                  Sign in
-                </Link>
-              </p>
+            <div className="text-center mt-4 text-sm text-[#4A5A55]">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="text-[#BD6908] hover:underline font-medium"
+              >
+                Login here
+              </a>
             </div>
           </Card>
-
-          <div className="mt-8 p-4 bg-[#f5f7f6] rounded text-xs text-[#4a5a55] text-center">
-            <p className="font-bold mb-2">Demo Note:</p>
-            <p>
-              Connect to Clerk for full authentication. This collects pre-qualifier information for access requests.
-            </p>
-          </div>
         </div>
-      </section>
-
+      </main>
       <Footer />
-    </main>
-  )
+    </>
+  );
 }

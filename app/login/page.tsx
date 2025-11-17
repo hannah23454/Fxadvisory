@@ -1,26 +1,81 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("[v0] Login attempt:", { email })
-  }
+  const router = useRouter();
+
+  // 1️⃣ Redirect if already logged in
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+
+      if (session) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .maybeSingle();
+
+        const role = profile?.role || "user";
+        router.push(role === "admin" ? "/dashboard/admin" : "/dashboard/user");
+      }
+    };
+    checkSession();
+  }, [router]);
+
+  // 2️⃣ Handle login form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) throw signInError;
+
+      if (data.session) {
+        // Logged in successfully
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", data.session.user.id)
+          .maybeSingle();
+
+        const role = profile?.role || "user";
+        router.push(role === "admin" ? "/dashboard/admin" : "/dashboard/user");
+      } else {
+        // No session → email confirmation required
+        setError(
+          "Check your email to confirm login before accessing the dashboard."
+        );
+      }
+    } catch (err: any) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-white">
       <Header />
-
       <section className="py-20 px-6">
         <div className="max-w-md mx-auto">
           <Card className="bg-white border border-[#DCE5E1] p-8">
@@ -30,6 +85,8 @@ export default function Login() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+              {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+
               <div>
                 <label className="block text-sm font-medium text-[#12261F] mb-2">Email</label>
                 <input
@@ -52,26 +109,27 @@ export default function Login() {
                 />
               </div>
 
-              <Button className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3">Sign In</Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3"
+              >
+                {loading ? "Signing In..." : "Sign In"}
+              </Button>
             </form>
 
-            <div className="text-center">
+            <div className="text-center mt-4">
               <p className="text-sm text-[#4A5A55]">
                 Don't have an account?{" "}
-                <a href="#" className="text-[#BD6908] hover:underline font-medium">
-                  Request access
+                <a href="/register" className="text-[#BD6908] hover:underline font-medium">
+                  Sign up here
                 </a>
               </p>
             </div>
           </Card>
-
-          <div className="mt-8 p-4 bg-[#F5F7F6] rounded text-xs text-[#4A5A55] text-center">
-            <strong>Demo Note:</strong> This is a placeholder. Connect to Clerk for full authentication with MFA.
-          </div>
         </div>
       </section>
-
       <Footer />
     </main>
-  )
+  );
 }
