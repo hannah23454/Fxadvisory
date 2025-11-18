@@ -82,15 +82,15 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">{t('footer_get_touch')}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Phone size={18} className="text-[#BD6908] flex-shrink-0 mt-0.5" />
+                <Phone size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
                 <span className="text-gray-400 text-sm">+61 2 XXXX XXXX</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={18} className="text-[#BD6908] flex-shrink-0 mt-0.5" />
+                <Mail size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
                 <span className="text-gray-400 text-sm">hello@switchyardfx.com</span>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#BD6908] flex-shrink-0 mt-0.5" />
+                <MapPin size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
                 <span className="text-gray-400 text-sm">{t('footer_sydney')}</span>
               </li>
             </ul>

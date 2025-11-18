@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Menu, X, LogOut, LayoutDashboard } from "lucide-react"
@@ -8,23 +8,24 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { User } from "@supabase/supabase-js"
 import { useI18n } from "@/components/i18n/i18n"
 
-type CurrentUser = User | null
-
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [user, setUser] = useState<CurrentUser>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [goToDashboard, setGoToDashboard] = useState(false)
   const router = useRouter()
-  const supabase = createClientComponentClient()
   const { t, locale, setLocale } = useI18n()
+
+  // Safely create Supabase client only if env vars exist
+  const hasSupabaseEnv = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  const supabaseRef = useRef<ReturnType<typeof createClientComponentClient> | null>(null)
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
   }, [])
 
-  const checkAdminStatus = useCallback((currentUser: CurrentUser) => {
+  const checkAdminStatus = useCallback((currentUser: User | null) => {
     const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",") || []
     return currentUser?.email ? adminEmails.includes(currentUser.email) : false
   }, [])
@@ -35,15 +36,25 @@ export default function Header() {
   }, [handleScroll])
 
   useEffect(() => {
+    if (!hasSupabaseEnv) {
+      // No Supabase configured; ensure logged-out state
+      setUser(null)
+      setIsAdmin(false)
+      return
+    }
+
+    // Lazy init client on mount
+    supabaseRef.current = createClientComponentClient()
+
     const loadUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabaseRef.current!.auth.getSession()
       const currentUser = session?.user ?? null
       setUser(currentUser)
       setIsAdmin(checkAdminStatus(currentUser))
     }
 
     loadUser()
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabaseRef.current.auth.onAuthStateChange((_event, session) => {
       const currentUser = session?.user ?? null
       setUser(currentUser)
       setIsAdmin(checkAdminStatus(currentUser))
@@ -52,7 +63,7 @@ export default function Header() {
     const interval = setInterval(loadUser, 30000)
 
     return () => { listener.subscription.unsubscribe(); clearInterval(interval); }
-  }, [checkAdminStatus, supabase])
+  }, [checkAdminStatus, hasSupabaseEnv])
 
   useEffect(() => {
     if (goToDashboard) {
@@ -68,7 +79,8 @@ export default function Header() {
   }
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    if (!hasSupabaseEnv) return
+    await supabaseRef.current?.auth.signOut()
     router.push("/")
   }
 

@@ -16,16 +16,33 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  const cookieStore = await cookies()
-  const supabase = createServerClient(url, anonKey, {
-    cookies: {
-      getAll() { return cookieStore.getAll() },
-      setAll(cookiesToSet) { try { cookiesToSet.forEach(({ name, value, options }) => cookieStore.set({ name, value, ...options })) } catch {} },
+  // Safely read env vars
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  let session: any = null
+
+  if (url && anonKey) {
+    try {
+      const cookieStore = await cookies()
+      const supabase = createServerClient(url, anonKey, {
+        cookies: {
+          getAll() { return cookieStore.getAll() },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) => cookieStore.set({ name, value, ...options }))
+            } catch {}
+          },
+        },
+      })
+      const { data } = await supabase.auth.getSession()
+      session = data.session
+    } catch (e) {
+      console.warn('Supabase server client init failed, continuing without session:', e)
     }
-  })
-  const { data: { session } } = await supabase.auth.getSession()
+  } else {
+    console.warn('NEXT_PUBLIC_SUPABASE_URL/ANON_KEY not set. Rendering without Supabase session.')
+  }
 
   return (
     <html lang="en">

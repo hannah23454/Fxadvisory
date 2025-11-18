@@ -6,30 +6,32 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 const SupabaseCtx = createContext<SupabaseClient | null>(null);
 
 export default function SupabaseProvider({ children, initialSession }: { children: React.ReactNode; initialSession: any }) {
-  const [client] = useState(() => createClientComponentClient());
+  const hasEnv = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  const [client, setClient] = useState<SupabaseClient | null>(null);
 
   useEffect(() => {
-    // Set up auth state listener to maintain session
-    const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email || 'no session');
-      if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-        // Force a hard reload to sync cookies properly
-        if (typeof window !== 'undefined' && event === 'TOKEN_REFRESHED') {
-          console.log('Token refreshed, cookies should be updated');
-        }
+    if (!hasEnv) {
+      console.warn('Supabase env variables missing. Rendering without Supabase client.');
+      return;
+    }
+    const c = createClientComponentClient();
+    setClient(c);
+
+    const { data } = c.auth.onAuthStateChange((event, session) => {
+      // No-op; keep for cookie sync if needed
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Auth state changed:', event, session?.user?.email || 'no session');
       }
     });
 
-    return () => subscription.unsubscribe();
-  }, [client]);
+    return () => {
+      data.subscription.unsubscribe();
+    };
+  }, [hasEnv]);
 
   return <SupabaseCtx.Provider value={client}>{children}</SupabaseCtx.Provider>;
 }
 
 export function useSupabase() {
-  const context = useContext(SupabaseCtx);
-  if (!context) {
-    throw new Error('useSupabase must be used within SupabaseProvider');
-  }
-  return context;
+  return useContext(SupabaseCtx);
 }

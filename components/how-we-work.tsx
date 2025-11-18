@@ -85,7 +85,7 @@ export default function HowWeWork() {
 
                 {/* Description */}
                 <p 
-                  className="text-sm md:text-base leading-relaxed flex-grow"
+                  className="text-sm md:text-base leading-relaxed grow"
                   style={{ color: '#4A5A55' }}
                 >
                   {step.description}
