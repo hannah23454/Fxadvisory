@@ -1,88 +1,25 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { User } from "@supabase/supabase-js"
+import { Menu, X } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [goToDashboard, setGoToDashboard] = useState(false)
   const router = useRouter()
   const { t, locale, setLocale } = useI18n()
 
-  // Safely create Supabase client only if env vars exist
-  const hasSupabaseEnv = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-  const supabaseRef = useRef<ReturnType<typeof createClientComponentClient> | null>(null)
-
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
-  }, [])
-
-  const checkAdminStatus = useCallback((currentUser: User | null) => {
-    const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",") || []
-    return currentUser?.email ? adminEmails.includes(currentUser.email) : false
   }, [])
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
-
-  useEffect(() => {
-    if (!hasSupabaseEnv) {
-      // No Supabase configured; ensure logged-out state
-      setUser(null)
-      setIsAdmin(false)
-      return
-    }
-
-    // Lazy init client on mount
-    supabaseRef.current = createClientComponentClient()
-
-    const loadUser = async () => {
-      const { data: { session } } = await supabaseRef.current!.auth.getSession()
-      const currentUser = session?.user ?? null
-      setUser(currentUser)
-      setIsAdmin(checkAdminStatus(currentUser))
-    }
-
-    loadUser()
-    const { data: listener } = supabaseRef.current.auth.onAuthStateChange((_event, session) => {
-      const currentUser = session?.user ?? null
-      setUser(currentUser)
-      setIsAdmin(checkAdminStatus(currentUser))
-    })
-
-    const interval = setInterval(loadUser, 30000)
-
-    return () => { listener.subscription.unsubscribe(); clearInterval(interval); }
-  }, [checkAdminStatus, hasSupabaseEnv])
-
-  useEffect(() => {
-    if (goToDashboard) {
-      const path = isAdmin ? "/dashboard/admin" : "/dashboard/user"
-      router.push(path)
-      setGoToDashboard(false)
-    }
-  }, [goToDashboard, isAdmin, router])
-
-  const handleDashboardClick = () => {
-    setMobileMenuOpen(false)
-    setGoToDashboard(true)
-  }
-
-  const handleSignOut = async () => {
-    if (!hasSupabaseEnv) return
-    await supabaseRef.current?.auth.signOut()
-    router.push("/")
-  }
 
   const navItems = [
     { key: 'nav_home', path: '/' },
@@ -146,46 +83,12 @@ export default function Header() {
 
           {/* Desktop Auth */}
           <div className="hidden md:flex gap-3 items-center">
-            {user ? (
-              <>
-                <button
-                  onClick={handleDashboardClick}
-                  className={`px-4 py-2 rounded-full transition text-sm font-medium flex items-center gap-1 border ${
-                    isScrolled
-                      ? "text-[#12261F] border-[#12261F] hover:bg-[#F5F7F6]"
-                      : "text-white border-white hover:bg-white/10"
-                  }`}
-                >
-                  <LayoutDashboard size={16} /> {t('dashboard')}
-                </button>
-                <button
-                  onClick={handleSignOut}
-                  className="px-4 py-2 rounded-full transition text-sm font-medium flex items-center gap-1 bg-red-600 text-white hover:bg-red-700"
-                >
-                  <LogOut size={16} /> {t('logout')}
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className={`px-6 py-2 rounded-full border text-sm font-medium transition ${
-                    isScrolled
-                      ? "text-[#12261F] border-[#12261F] hover:bg-[#F5F7F6]"
-                      : "text-white border-white hover:bg-white/10"
-                  }`}
-                >
-                  {t('cta_login')}
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="px-6 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium hover:bg-opacity-90"
-                >
-                  {t('cta_book_call')}
-                </Link>
-              </>
-            )}
+            <Link
+              href="/contact"
+              className="px-6 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium hover:bg-opacity-90"
+            >
+              {t('cta_book_call')}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -229,39 +132,13 @@ export default function Header() {
 
             {/* Mobile Auth */}
             <div className="px-4 flex flex-col gap-2 mt-2">
-              {user ? (
-                <>
-                  <button
-                    onClick={() => { handleDashboardClick(); setMobileMenuOpen(false) }}
-                    className="w-full px-4 py-2 rounded-full border text-sm font-medium flex items-center gap-1 hover:bg-gray-100"
-                  >
-                    <LayoutDashboard size={16} /> {t('dashboard')}
-                  </button>
-                  <button
-                    onClick={() => { handleSignOut(); setMobileMenuOpen(false) }}
-                    className="w-full px-4 py-2 rounded-full bg-red-600 text-white text-sm font-medium hover:bg-red-700 flex items-center gap-1 justify-center"
-                  >
-                    <LogOut size={16} /> {t('logout')}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="w-full px-4 py-2 rounded-full border text-sm font-medium text-center hover:bg-gray-100"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {t('cta_login')}
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="w-full px-4 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium text-center hover:bg-opacity-90"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {t('cta_book_call')}
-                  </Link>
-                </>
-              )}
+              <Link
+                href="/contact"
+                className="w-full px-4 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium text-center hover:bg-opacity-90"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('cta_book_call')}
+              </Link>
             </div>
           </nav>
         )}

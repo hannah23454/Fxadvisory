@@ -485,6 +485,47 @@ const dictionaries: Dictionaries = {
     user_meeting_description_placeholder: "Share context, goals, participants, or questions.",
     user_clear: "Clear",
     user_sending: "Sending...",
+    user_no_meetings_yet: "No meetings yet",
+
+    // User Dashboard - Topics Section (Coming Soon)
+    user_topics_subtitle: "Manage your topic subscriptions and interests",
+    user_topics_coming_soon_title: "Topics Management Coming Soon",
+    user_topics_coming_soon_desc: "Soon you'll be able to subscribe to topics and receive personalized content based on your interests.",
+    user_topics_preview_title: "What's Coming",
+    user_topics_preview_1: "Subscribe to topics like Hedging Strategies, Market Analysis, and more",
+    user_topics_preview_2: "Get personalized content recommendations",
+    user_topics_preview_3: "Receive notifications about new content in your topics",
+    user_topics_preview_4: "Track your learning progress",
+
+    // User Dashboard - Currencies Section (Coming Soon)
+    user_currencies_subtitle: "Track and manage your currency pairs",
+    user_currencies_coming_soon_title: "Currency Management Coming Soon",
+    user_currencies_coming_soon_desc: "Track live rates, set alerts, and manage your currency pairs all in one place.",
+    user_currencies_preview_title: "Features Coming Soon",
+    user_currencies_preview_1: "Live FX rates",
+    user_currencies_preview_2: "Rate alerts",
+    user_currencies_preview_3: "Historical charts",
+    user_currencies_preview_4: "Custom watchlists",
+
+    // User Dashboard - Content Section (Coming Soon)
+    user_content_subtitle: "Your personalized FX content feed",
+    user_content_coming_soon_title: "Content Feed Coming Soon",
+    user_content_coming_soon_desc: "Access curated market insights, analysis, and updates tailored to your interests and currency pairs.",
+    user_content_preview_title: "What You'll Get",
+    user_content_preview_1: "Daily market commentary and analysis",
+    user_content_preview_2: "Technical and fundamental insights",
+    user_content_preview_3: "Personalized content based on your topics",
+    user_content_preview_4: "Expert FX strategy recommendations",
+
+    // User Dashboard - Settings Section (Coming Soon)
+    user_settings_subtitle: "Manage your account and preferences",
+    user_settings_coming_soon_title: "Settings Coming Soon",
+    user_settings_coming_soon_desc: "Customize your dashboard experience, manage notifications, and update your profile settings.",
+    user_settings_preview_title: "Settings Options",
+    user_settings_preview_1: "Language and region preferences",
+    user_settings_preview_2: "Email and notification settings",
+    user_settings_preview_3: "Security and privacy controls",
+    user_settings_preview_4: "Display and theme customization",
 
     // Common statuses
     status_pending: "PENDING",
@@ -970,6 +1011,47 @@ const dictionaries: Dictionaries = {
     user_meeting_description_placeholder: "请共享背景、目标、参与者或问题。",
     user_clear: "清空",
     user_sending: "发送中...",
+    user_no_meetings_yet: "暂无会议",
+
+    // User Dashboard - Topics Section (Coming Soon)
+    user_topics_subtitle: "管理您的主题订阅和兴趣",
+    user_topics_coming_soon_title: "主题管理即将推出",
+    user_topics_coming_soon_desc: "很快您就可以订阅主题并根据您的兴趣接收个性化内容。",
+    user_topics_preview_title: "即将推出的功能",
+    user_topics_preview_1: "订阅对冲策略、市场分析等主题",
+    user_topics_preview_2: "获得个性化内容推荐",
+    user_topics_preview_3: "接收您主题中新内容的通知",
+    user_topics_preview_4: "跟踪您的学习进度",
+
+    // User Dashboard - Currencies Section (Coming Soon)
+    user_currencies_subtitle: "跟踪和管理您的货币对",
+    user_currencies_coming_soon_title: "货币管理即将推出",
+    user_currencies_coming_soon_desc: "在一处跟踪实时汇率、设置提醒并管理您的货币对。",
+    user_currencies_preview_title: "即将推出的功能",
+    user_currencies_preview_1: "实时外汇汇率",
+    user_currencies_preview_2: "汇率提醒",
+    user_currencies_preview_3: "历史图表",
+    user_currencies_preview_4: "自定义观察列表",
+
+    // User Dashboard - Content Section (Coming Soon)
+    user_content_subtitle: "您的个性化外汇内容流",
+    user_content_coming_soon_title: "内容流即将推出",
+    user_content_coming_soon_desc: "访问根据您的兴趣和货币对量身定制的精选市场洞察、分析和更新。",
+    user_content_preview_title: "您将获得",
+    user_content_preview_1: "每日市场评论和分析",
+    user_content_preview_2: "技术和基本面洞察",
+    user_content_preview_3: "基于您主题的个性化内容",
+    user_content_preview_4: "专家外汇策略建议",
+
+    // User Dashboard - Settings Section (Coming Soon)
+    user_settings_subtitle: "管理您的账户和偏好",
+    user_settings_coming_soon_title: "设置即将推出",
+    user_settings_coming_soon_desc: "自定义您的控制台体验、管理通知并更新您的个人资料设置。",
+    user_settings_preview_title: "设置选项",
+    user_settings_preview_1: "语言和地区偏好",
+    user_settings_preview_2: "电子邮件和通知设置",
+    user_settings_preview_3: "安全和隐私控制",
+    user_settings_preview_4: "显示和主题自定义",
 
     // Common statuses
     status_pending: "待处理",

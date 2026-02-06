@@ -234,7 +234,7 @@ const slides: Slide[] = [
             { num: "5", title: "Continuous Optimization", desc: "Quarterly strategy review and rebalancing" },
           ].map((step, i) => (
             <div key={i} className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-full bg-[#BD6908] flex items-center justify-center font-bold flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#BD6908] flex items-center justify-center font-bold shrink-0">
                 {step.num}
               </div>
               <div>

@@ -1,64 +1,28 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase());
-
+// Simplified middleware - no authentication required
+// All Supabase functionality has been removed from this project
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const supabase = await createMiddlewareClient({ req, res });
-
-  const { data: { session } } = await supabase.auth.getSession();
-  const pathname = req.nextUrl.pathname;
-
-  let role: string = 'user';
-  let email = '';
-
-  if (session?.user) {
-    email = (session.user.email || '').toLowerCase();
-    // Prefer token metadata
-    const u: any = session.user;
-    role = u?.app_metadata?.role || u?.user_metadata?.role || 'user';
-
-    // Email whitelist override
-    if (adminEmails.includes(email)) {
-      role = 'admin';
-    }
-
-    // Fallback to profiles (support both id and user_id columns) if still user
-    if (role === 'user') {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .or(`id.eq.${session.user.id},user_id.eq.${session.user.id}`)
-        .limit(1)
-        .maybeSingle();
-      if (profile?.role) role = profile.role;
-      if (adminEmails.includes(email)) role = 'admin'; // re-assert
-    }
-  }
-
-  // Debug log
-  console.log('MIDDLEWARE session:', session && session.user ? session.user.email : 'none', 'role:', role, 'pathname:', pathname);
-
-  // Attach diagnostic headers (can be viewed in network tab) for debugging
-  res.headers.set('x-user-email', email || 'none');
-  res.headers.set('x-user-role', role);
-
-  if (session && pathname === '/login') {
-    return NextResponse.redirect(new URL(role === 'admin' ? '/dashboard/admin' : '/dashboard/user', req.url));
-  }
-
-  if (!session && pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
-
-  if (pathname.startsWith('/dashboard/admin') && role !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard/user', req.url));
-  }
-
+  
+  // Add security headers
+  res.headers.set('x-frame-options', 'DENY');
+  res.headers.set('x-content-type-options', 'nosniff');
+  res.headers.set('referrer-policy', 'strict-origin-when-cross-origin');
+  
   return res;
 }
 
 export const config = {
-  matcher: ['/login', '/dashboard/:path*', '/admin/:path*'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 };
