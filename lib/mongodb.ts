@@ -39,5 +39,3 @@ export async function getDatabase(): Promise<Db> {
 }
 
 export default getClientPromise;
-
-export default clientPromise;
