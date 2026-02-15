@@ -52,7 +52,8 @@ function LoginForm() {
         const defaultRedirect = isAdmin ? '/dashboard/admin' : '/dashboard'
         const redirect = searchParams.get('redirect') || defaultRedirect
         
-        router.push(redirect)
+        // Use window.location.href for hard navigation to ensure session cookie is set
+        window.location.href = redirect
       }
     } catch (err) {
       setError("An unexpected error occurred")
