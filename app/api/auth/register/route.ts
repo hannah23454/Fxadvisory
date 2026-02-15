@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import { getDatabase } from '@/lib/mongodb';
 import { User } from '@/lib/types/models';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
   try {
     const { email, password, name, company, position, phone } = await req.json();
