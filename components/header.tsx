@@ -5,12 +5,14 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
+import { useSession } from "next-auth/react"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const router = useRouter()
   const { t, locale, setLocale } = useI18n()
+  const { data: session, status } = useSession()
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
@@ -28,6 +30,14 @@ export default function Header() {
     { key: 'nav_market_insights', path: '/market-insights' },
     { key: 'nav_contact', path: '/contact' },
   ]
+
+  // Determine dashboard URL based on user role
+  const getDashboardUrl = () => {
+    if (session?.user?.role === 'admin') {
+      return '/dashboard/admin'
+    }
+    return '/dashboard'
+  }
 
   return (
     <header
@@ -49,7 +59,7 @@ export default function Header() {
             >
               SwitchYard
             </div>
-            <div className="text-xs text-[#BD6908] font-medium">FX ADVISORY</div>
+            <div className="text-xs text-[#2D6A4F] font-medium">FX ADVISORY</div>
           </Link>
 
           {/* Desktop Nav */}
@@ -83,9 +93,32 @@ export default function Header() {
 
           {/* Desktop Auth */}
           <div className="hidden md:flex gap-3 items-center">
+            {session ? (
+              <Link
+                href={getDashboardUrl()}
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                  isScrolled
+                    ? "border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white"
+                    : "border-white/30 text-white hover:bg-white/10"
+                }`}
+              >
+                {t('nav_dashboard') || 'Dashboard'}
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                  isScrolled
+                    ? "border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white"
+                    : "border-white/30 text-white hover:bg-white/10"
+                }`}
+              >
+                {t('cta_login')}
+              </Link>
+            )}
             <Link
               href="/contact"
-              className="px-6 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium hover:bg-opacity-90"
+              className="px-6 py-2 rounded-full bg-[#2D6A4F] text-white text-sm font-medium hover:bg-[#1B4332]"
             >
               {t('cta_book_call')}
             </Link>
@@ -132,9 +165,34 @@ export default function Header() {
 
             {/* Mobile Auth */}
             <div className="px-4 flex flex-col gap-2 mt-2">
+              {session ? (
+                <Link
+                  href={getDashboardUrl()}
+                  className={`w-full px-4 py-2 rounded-full text-sm font-medium text-center border transition-colors ${
+                    isScrolled
+                      ? "border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white"
+                      : "border-white text-white hover:bg-white/10"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav_dashboard') || 'Dashboard'}
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className={`w-full px-4 py-2 rounded-full text-sm font-medium text-center border transition-colors ${
+                    isScrolled
+                      ? "border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white"
+                      : "border-white text-white hover:bg-white/10"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('cta_login')}
+                </Link>
+              )}
               <Link
                 href="/contact"
-                className="w-full px-4 py-2 rounded-full bg-[#BD6908] text-white text-sm font-medium text-center hover:bg-opacity-90"
+                className="w-full px-4 py-2 rounded-full bg-[#2D6A4F] text-white text-sm font-medium text-center hover:bg-[#1B4332]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('cta_book_call')}

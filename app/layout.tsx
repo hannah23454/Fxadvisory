@@ -2,7 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-import { I18nProvider } from "@/components/i18n/i18n"
+import { Providers } from "@/components/providers"
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "SwitchYard FX - Corporate FX Solutions for CFOs",
@@ -16,9 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`} suppressHydrationWarning>
-        <I18nProvider>
+        <Providers>
           {children}
-        </I18nProvider>
+        </Providers>
+        <Toaster />
         <Analytics />
       </body>
     </html>

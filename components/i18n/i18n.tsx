@@ -534,6 +534,32 @@ const dictionaries: Dictionaries = {
 
     // Auth Callback
     auth_processing_login: "Processing login...",
+
+    // Dashboard Home Page
+    dash_welcome_back: "Welcome back",
+    dash_personalized_dashboard: "Your personalized FX advisory dashboard",
+    dash_send_message: "Send Message",
+    dash_contact_advisor: "Contact advisor",
+    dash_book_call: "Book Call",
+    dash_15min_consult: "15-min consult",
+    dash_documents: "Documents",
+    dash_policies_guides: "Policies & guides",
+    dash_upload_trades: "Upload Trades",
+    dash_compare_deals: "Compare deals",
+    dash_live_aud_rates: "Live AUD Exchange Rates",
+    dash_last_updated: "Last updated",
+    dash_latest_market_insights: "Latest Market Insights",
+    dash_view_all_insights: "View All Insights",
+    dash_no_insights: "No market insights available yet",
+    dash_hedging_docs_resources: "Hedging Documents & Resources",
+    dash_fx_policy_template: "FX Hedging Policy Template",
+    dash_comprehensive_guide: "Comprehensive guide for CFOs",
+    dash_download_pdf: "Download PDF",
+    dash_market_risk_report: "Market Risk Report",
+    dash_latest_volatility: "Latest volatility analysis",
+    dash_feed_empty: "Your feed is empty",
+    dash_customize_dashboard: "Customize your dashboard by enabling modules in Settings",
+    dash_go_to_settings: "Go to Settings",
   },
   zh: {
     // Navigation
@@ -1060,6 +1086,32 @@ const dictionaries: Dictionaries = {
 
     // Auth Callback
     auth_processing_login: "正在处理登录...",
+
+    // Dashboard Home Page
+    dash_welcome_back: "欢迎回来",
+    dash_personalized_dashboard: "您的个性化外汇咨询仪表板",
+    dash_send_message: "发送消息",
+    dash_contact_advisor: "联系顾问",
+    dash_book_call: "预约电话",
+    dash_15min_consult: "15分钟咨询",
+    dash_documents: "文档",
+    dash_policies_guides: "政策和指南",
+    dash_upload_trades: "上传交易",
+    dash_compare_deals: "比较交易",
+    dash_live_aud_rates: "实时澳元汇率",
+    dash_last_updated: "最后更新",
+    dash_latest_market_insights: "最新市场洞察",
+    dash_view_all_insights: "查看所有洞察",
+    dash_no_insights: "暂无市场洞察",
+    dash_hedging_docs_resources: "套期保值文档和资源",
+    dash_fx_policy_template: "外汇套期保值政策模板",
+    dash_comprehensive_guide: "首席财务官综合指南",
+    dash_download_pdf: "下载PDF",
+    dash_market_risk_report: "市场风险报告",
+    dash_latest_volatility: "最新波动性分析",
+    dash_feed_empty: "您的信息流为空",
+    dash_customize_dashboard: "在设置中启用模块以自定义您的仪表板",
+    dash_go_to_settings: "前往设置",
   },
 }
 

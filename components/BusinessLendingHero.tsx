@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useI18n } from "@/components/i18n/i18n"
+import Link from 'next/link'
 
 const BusinessLendingHero: React.FC = () => {
   const { t } = useI18n()
@@ -41,7 +42,7 @@ const BusinessLendingHero: React.FC = () => {
               {/* Heading */}
               <h1 
                 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight"
-                style={{ color: '#BD6908' }}
+                style={{ color: '#2D6A4F' }}
               >
                 {t('lending_title')}
               </h1>
@@ -56,14 +57,14 @@ const BusinessLendingHero: React.FC = () => {
 
               {/* CTA Button */}
               <div className="pt-2 sm:pt-4">
-                <button
-                  className="px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2"
-                  style={{ backgroundColor: '#BD6908' }}
-                  onClick={() => console.log('Explore more clicked')}
+                <Link
+                  href="/contact"
+                  className="inline-block px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  style={{ backgroundColor: '#2D6A4F' }}
                   aria-label={t('lending_cta')}
                 >
                   {t('lending_cta')}
-                </button>
+                </Link>
               </div>
             </div>
           </div>

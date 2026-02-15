@@ -58,7 +58,7 @@ export default function News() {
 								</div>
 								<h3 className="text-2xl font-bold text-[#12261f] mb-3">{item.title}</h3>
 								<p className="text-[#4a5a55] mb-4 leading-relaxed">{item.excerpt}</p>
-								<Button variant="link" className="text-[#bd6908] p-0 h-auto font-bold">
+								<Button variant="link" className="text-[#2D6A4F] p-0 h-auto font-bold">
 									Read More →
 								</Button>
 							</Card>

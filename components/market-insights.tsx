@@ -38,7 +38,7 @@ export default function MarketInsights() {
           </div>
           <Link
             href="/market-commentary"
-            className="hidden sm:block px-6 py-2 text-[#BD6908] font-semibold border border-[#BD6908] rounded-full hover:bg-[#BD6908] hover:text-white transition"
+            className="hidden sm:block px-6 py-2 text-[#2D6A4F] font-semibold border border-[#2D6A4F] rounded-full hover:bg-[#2D6A4F] hover:text-white transition"
           >
             View All
           </Link>
@@ -48,16 +48,16 @@ export default function MarketInsights() {
           {insights.map((insight, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-xl bg-[#F5F7F6] border border-[#DCE5E1] hover:border-[#BD6908] hover:shadow-lg transition group cursor-pointer"
+              className="p-8 rounded-xl bg-[#F5F7F6] border border-[#DCE5E1] hover:border-[#2D6A4F] hover:shadow-lg transition group cursor-pointer"
             >
               <div className="flex items-start justify-between mb-4">
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#12261F] text-[#BD6908]">
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#12261F] text-[#A8C5BA]">
                   {insight.category}
                 </span>
                 {insight.trend === "up" && <ArrowUpRight className="text-green-600" size={20} />}
                 {insight.trend === "down" && <ArrowDownLeft className="text-red-600" size={20} />}
               </div>
-              <h3 className="text-lg font-bold text-[#12261F] mb-3 group-hover:text-[#BD6908] transition">
+              <h3 className="text-lg font-bold text-[#12261F] mb-3 group-hover:text-[#2D6A4F] transition">
                 {insight.title}
               </h3>
               <p className="text-[#4A5A55] text-sm leading-relaxed mb-6">{insight.summary}</p>
@@ -69,7 +69,7 @@ export default function MarketInsights() {
         <div className="mt-12 text-center sm:hidden">
           <Link
             href="/market-commentary"
-            className="px-6 py-2 text-[#BD6908] font-semibold border border-[#BD6908] rounded-full hover:bg-[#BD6908] hover:text-white transition inline-block"
+            className="px-6 py-2 text-[#2D6A4F] font-semibold border border-[#2D6A4F] rounded-full hover:bg-[#2D6A4F] hover:text-white transition inline-block"
           >
             View All
           </Link>

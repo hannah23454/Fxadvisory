@@ -59,7 +59,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <Button className="w-full bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold py-3 mb-3">
+              <Button className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3 mb-3">
                 {t('contact_view_calendar')}
               </Button>
 
@@ -71,7 +71,7 @@ export default function Contact() {
               <h3 className="font-bold text-[#12261f] mb-4">{t('contact_resources')}</h3>
               <Button
                 variant="outline"
-                className="w-full border-[#bd6908] text-[#bd6908] hover:bg-[#f5f7f6] mb-2 bg-transparent"
+                className="w-full border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#f5f7f6] mb-2 bg-transparent"
               >
                 {t('contact_watch_loom')}
               </Button>
@@ -85,11 +85,11 @@ export default function Contact() {
             <div className="space-y-4 mb-8">
               <Card className="bg-white border-[#dce5e1] p-6 hover:shadow-lg transition cursor-pointer">
                 <div className="flex items-start gap-4">
-                  <Phone className="text-[#bd6908] shrink-0 mt-1" size={24} />
+                  <Phone className="text-[#2D6A4F] shrink-0 mt-1" size={24} />
                   <div>
                     <h3 className="font-bold text-[#12261f] mb-1">{t('contact_phone')}</h3>
-                    <a href="tel:+61261234567" className="text-[#bd6908] hover:underline font-medium">
-                      +61 2 6123 4567
+                    <a href="tel:0272263680" className="text-[#2D6A4F] hover:underline font-medium">
+                      02 7226 3680
                     </a>
                     <p className="text-xs text-[#4a5a55] mt-1">{t('contact_phone_hours')}</p>
                   </div>
@@ -98,11 +98,11 @@ export default function Contact() {
 
               <Card className="bg-white border-[#dce5e1] p-6 hover:shadow-lg transition cursor-pointer">
                 <div className="flex items-start gap-4">
-                  <Mail className="text-[#bd6908] shrink-0 mt-1" size={24} />
+                  <Mail className="text-[#2D6A4F] shrink-0 mt-1" size={24} />
                   <div>
                     <h3 className="font-bold text-[#12261f] mb-1">{t('contact_email')}</h3>
-                    <a href="mailto:hello@switchyardfx.com" className="text-[#bd6908] hover:underline font-medium">
-                      hello@switchyardfx.com
+                    <a href="mailto:admin@switchyard.com.au" className="text-[#2D6A4F] hover:underline font-medium">
+                      admin@switchyard.com.au
                     </a>
                     <p className="text-xs text-[#4a5a55] mt-1">{t('contact_email_response')}</p>
                   </div>
@@ -111,10 +111,10 @@ export default function Contact() {
 
               <Card className="bg-white border-[#dce5e1] p-6 hover:shadow-lg transition cursor-pointer">
                 <div className="flex items-start gap-4">
-                  <MessageCircle className="text-[#bd6908] shrink-0 mt-1" size={24} />
+                  <MessageCircle className="text-[#2D6A4F] shrink-0 mt-1" size={24} />
                   <div>
                     <h3 className="font-bold text-[#12261f] mb-1">{t('contact_whatsapp')}</h3>
-                    <a href="https://wa.me/61261234567" className="text-[#bd6908] hover:underline font-medium">
+                    <a href="https://wa.me/61272263680" className="text-[#2D6A4F] hover:underline font-medium">
                       {t('contact_send_message')}
                     </a>
                     <p className="text-xs text-[#4a5a55] mt-1">{t('contact_whatsapp_desc')}</p>
@@ -124,10 +124,10 @@ export default function Contact() {
 
               <Card className="bg-white border-[#dce5e1] p-6 hover:shadow-lg transition cursor-pointer">
                 <div className="flex items-start gap-4">
-                  <MessageCircle className="text-[#bd6908] shrink-0 mt-1" size={24} />
+                  <MessageCircle className="text-[#2D6A4F] shrink-0 mt-1" size={24} />
                   <div>
                     <h3 className="font-bold text-[#12261f] mb-1">{t('contact_wechat')}</h3>
-                    <p className="text-[#bd6908] font-medium">{t('contact_wechat_scan')}</p>
+                    <p className="text-[#2D6A4F] font-medium">{t('contact_wechat_scan')}</p>
                     <p className="text-xs text-[#4a5a55] mt-1">{t('contact_wechat_id')}</p>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export default function Contact() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908] bg-white"
+                className="px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
               />
               <input
                 type="email"
@@ -159,7 +159,7 @@ export default function Contact() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908] bg-white"
+                className="px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
               />
             </div>
             <input
@@ -168,7 +168,7 @@ export default function Contact() {
               placeholder={t('contact_form_company')}
               value={formData.company}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908] bg-white"
+              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
             />
             <input
               type="text"
@@ -177,7 +177,7 @@ export default function Contact() {
               value={formData.subject}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908] bg-white"
+              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
             />
             <textarea
               name="message"
@@ -186,9 +186,9 @@ export default function Contact() {
               value={formData.message}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#bd6908] bg-white"
+              className="w-full px-4 py-3 rounded border border-[#dce5e1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
             />
-            <Button type="submit" className="w-full bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold py-3">
+            <Button type="submit" className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3">
               {t('contact_form_send')}
             </Button>
           </form>

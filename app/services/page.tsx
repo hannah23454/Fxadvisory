@@ -137,7 +137,7 @@ export default function Services() {
                   <div className="grid md:grid-cols-3 gap-0">
                     {/* Left: Icon & Title */}
                     <div className="bg-[#f5f7f6] p-8 flex flex-col justify-center md:border-r border-[#dce5e1]">
-                      <Icon className="text-[#bd6908] mb-4" size={32} />
+                      <Icon className="text-[#2D6A4F] mb-4" size={32} />
                       <h3 className="text-2xl font-bold text-[#12261f] mb-3">{service.title}</h3>
                       <p className="text-[#4a5a55]">{service.summary}</p>
                     </div>
@@ -152,7 +152,7 @@ export default function Services() {
                           <ul className="space-y-2">
                             {service.benefits.map((benefit, i) => (
                               <li key={i} className="text-sm text-[#4a5a55] flex gap-2">
-                                <span className="text-[#bd6908] font-bold">•</span>
+                                <span className="text-[#2D6A4F] font-bold">•</span>
                                 {benefit}
                               </li>
                             ))}
@@ -164,7 +164,7 @@ export default function Services() {
                           <ul className="space-y-2">
                             {service.useCases.map((useCase, i) => (
                               <li key={i} className="text-sm text-[#4a5a55] flex gap-2">
-                                <span className="text-[#bd6908] font-bold">•</span>
+                                <span className="text-[#2D6A4F] font-bold">•</span>
                                 {useCase}
                               </li>
                             ))}
@@ -172,7 +172,9 @@ export default function Services() {
                         </div>
                       </div>
 
-                      <Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold">{service.cta}</Button>
+                      <a href="/contact" className="inline-block w-full">
+                        <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold w-full">{service.cta}</Button>
+                      </a>
                     </div>
                   </div>
                 </Card>
@@ -188,7 +190,7 @@ export default function Services() {
           <h2 className="text-3xl font-bold mb-4">{t('services_not_sure_title')}</h2>
           <p className="text-[#dce5e1] mb-6">{t('services_not_sure_desc')}</p>
           <a href="/contact" className="inline-block">
-            <Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold px-8 py-3">
+            <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold px-8 py-3">
               {t('services_schedule_consultation')}
             </Button>
           </a>

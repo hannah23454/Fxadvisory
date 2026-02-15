@@ -42,7 +42,7 @@ export default function Services() {
   return (
     <section className="py-12 md:py-16 lg:py-20 bg-linear-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-[#BD6908]/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-[#DCE5E1]/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-[#12261F]/5 rounded-full blur-3xl"></div>
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -58,7 +58,7 @@ export default function Services() {
             {/* Floating badge */}
             <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-white rounded-xl md:rounded-2xl shadow-xl p-3 md:p-4 border border-gray-100">
               <div className="flex items-center gap-2 md:gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-linear-to-br from-[#BD6908] to-[#d97b0a] rounded-lg md:rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-linear-to-br from-[#2D6A4F] to-[#52796F] rounded-lg md:rounded-xl flex items-center justify-center">
                   <Sparkles className="text-white" size={20} />
                 </div>
                 <div>
@@ -71,14 +71,14 @@ export default function Services() {
 
           {/* Right - Header Content */}
           <div className="order-1 lg:order-2 space-y-3 md:space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-[#BD6908]/10 to-[#BD6908]/5 border border-[#BD6908]/20 backdrop-blur-sm">
-              <div className="w-2 h-2 bg-[#BD6908] rounded-full animate-pulse"></div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-[#DCE5E1]/10 to-[#DCE5E1]/5 border border-[#DCE5E1]/20 backdrop-blur-sm">
+              <div className="w-2 h-2 bg-[#2D6A4F] rounded-full animate-pulse"></div>
               <span className="text-xs md:text-sm font-bold text-[#12261F] tracking-wide">{t('services_badge')}</span>
             </div>
             
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#12261F] leading-tight">
               {t('services_title_1')}
-              <span className="block text-transparent bg-clip-text bg-linear-to-r from-[#BD6908] to-[#d97b0a]">
+              <span className="block text-transparent bg-clip-text bg-linear-to-r from-[#2D6A4F] to-[#52796F]">
                 {t('services_title_2')}
               </span>
             </h2>

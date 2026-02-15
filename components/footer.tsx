@@ -16,7 +16,7 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <div className="text-2xl font-bold">SwitchYard</div>
-              <div className="text-xs text-[#BD6908] font-medium">FX ADVISORY</div>
+              <div className="text-xs text-[#A8C5BA] font-medium">FX ADVISORY</div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               {t('footer_tagline')}
@@ -28,22 +28,22 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">{t('footer_products')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/services" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_forward')}
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/services" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_options')}
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/services" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_payment')}
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/services" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_treasury')}
                 </Link>
               </li>
@@ -55,22 +55,22 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">{t('footer_company')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/about" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_about')}
                 </Link>
               </li>
               <li>
-                <Link href="/market" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/market" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_market')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/contact" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_contact')}
                 </Link>
               </li>
               <li>
-                <Link href="/" className="text-gray-400 hover:text-[#BD6908] transition text-sm">
+                <Link href="/" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_login')}
                 </Link>
               </li>
@@ -82,15 +82,15 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">{t('footer_get_touch')}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Phone size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">+61 2 XXXX XXXX</span>
+                <Phone size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
+                <span className="text-gray-400 text-sm">02 7226 3680</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">hello@switchyardfx.com</span>
+                <Mail size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
+                <span className="text-gray-400 text-sm">admin@switchyard.com.au</span>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#BD6908] shrink-0 mt-0.5" />
+                <MapPin size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
                 <span className="text-gray-400 text-sm">{t('footer_sydney')}</span>
               </li>
             </ul>
@@ -112,13 +112,13 @@ export default function Footer() {
         {/* Bottom Links */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
           <div className="flex gap-6">
-            <Link href="/" className="hover:text-[#BD6908] transition">
+            <Link href="/" className="hover:text-[#A8C5BA] transition">
               {t('footer_privacy')}
             </Link>
-            <Link href="/" className="hover:text-[#BD6908] transition">
+            <Link href="/" className="hover:text-[#A8C5BA] transition">
               {t('footer_terms')}
             </Link>
-            <Link href="/" className="hover:text-[#BD6908] transition">
+            <Link href="/" className="hover:text-[#A8C5BA] transition">
               {t('footer_compliance')}
             </Link>
           </div>

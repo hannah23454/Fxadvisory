@@ -26,7 +26,7 @@ export default function LetsTalkSection() {
               </p>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#12261F] leading-tight">
                 {t('lets_talk_title')}{" "}
-                <span className="text-[#BD6908]">{t('lets_talk_title_highlight')}</span>
+                <span className="text-[#2D6A4F]">{t('lets_talk_title_highlight')}</span>
               </h2>
             </div>
 
@@ -37,10 +37,10 @@ export default function LetsTalkSection() {
             {/* CTA Button */}
             <div className="pt-1">
               <a 
-                href="https://calendly.com/your-calendly-link" 
+                href="https://cal.com/hannahdevjak" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-block w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#BD6908] hover:bg-[#a05807] text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center"
+                className="inline-block w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center"
               >
                 {t('lets_talk_cta')}
               </a>

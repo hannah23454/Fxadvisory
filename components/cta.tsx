@@ -20,23 +20,28 @@ export default function CTA() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-5 md:mb-6">
           <Link
             href="/contact"
-            className="px-5 md:px-6 py-2.5 md:py-3 rounded-full bg-[#BD6908] hover:bg-opacity-90 text-white font-medium transition inline-block text-sm"
+            className="px-5 md:px-6 py-2.5 md:py-3 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-medium transition inline-block text-sm"
           >
             {t('cta_book')}
           </Link>
-          <button className="px-5 md:px-6 py-2.5 md:py-3 rounded-full border border-white text-white hover:bg-white hover:bg-opacity-10 font-medium transition flex items-center justify-center gap-2 text-sm">
+          <a
+            href="https://wa.me/61272263680"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 md:px-6 py-2.5 md:py-3 rounded-full border border-white text-white hover:bg-white hover:bg-opacity-10 font-medium transition flex items-center justify-center gap-2 text-sm"
+          >
             <MessageCircle size={16} />
             {t('cta_whatsapp')}
-          </button>
+          </a>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center text-xs">
           <div>
-            <p className="text-gray-400">📞 +61 2 XXXX XXXX</p>
+            <p className="text-gray-400">📞 02 7226 3680</p>
           </div>
           <div className="hidden sm:block h-5 w-px bg-gray-600"></div>
           <div>
-            <p className="text-gray-400">📧 hello@switchyardfx.com</p>
+            <p className="text-gray-400">📧 admin@switchyard.com.au</p>
           </div>
         </div>
       </div>

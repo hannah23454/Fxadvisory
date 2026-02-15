@@ -53,7 +53,7 @@ export default function HowWeWork() {
           {/* Connection Lines for Desktop */}
           <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5" 
                style={{ 
-                 background: 'linear-gradient(to right, transparent 10%, #BD6908 20%, #BD6908 80%, transparent 90%)',
+                 background: 'linear-gradient(to right, transparent 10%, #2D6A4F 20%, #2D6A4F 80%, transparent 90%)',
                  zIndex: 0
                }}>
           </div>
@@ -70,7 +70,7 @@ export default function HowWeWork() {
                 {/* Number Badge */}
                 <div 
                   className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full text-white font-bold mb-4 text-lg md:text-xl shadow-lg transition-transform duration-300 group-hover:scale-110"
-                  style={{ backgroundColor: '#BD6908' }}
+                  style={{ backgroundColor: '#2D6A4F' }}
                 >
                   {step.number}
                 </div>
@@ -94,7 +94,7 @@ export default function HowWeWork() {
                 {/* Decorative Corner */}
                 <div 
                   className="absolute -top-1 -right-1 w-14 h-14 md:w-16 md:h-16 rounded-tr-xl md:rounded-tr-2xl rounded-bl-full opacity-5 transition-opacity duration-300 group-hover:opacity-10"
-                  style={{ backgroundColor: '#BD6908' }}
+                  style={{ backgroundColor: '#DCE5E1' }}
                 ></div>
               </div>
 
@@ -107,7 +107,7 @@ export default function HowWeWork() {
                     viewBox="0 0 24 24" 
                     fill="none" 
                     xmlns="http://www.w3.org/2000/svg"
-                    style={{ color: '#BD6908' }}
+                    style={{ color: '#2D6A4F' }}
                   >
                     <path 
                       d="M12 5v14m0 0l-7-7m7 7l7-7" 

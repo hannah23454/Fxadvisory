@@ -133,8 +133,8 @@ export default function FXQualificationForm() {
             }
             className={`px-3 py-1 rounded text-sm font-semibold transition ${
               formData.language === "en"
-                ? "bg-[#BD6908] text-white"
-                : "bg-[#DCE5E1] text-[#12261F] hover:bg-[#BD6908] hover:text-white"
+                ? "bg-[#2D6A4F] text-white"
+                : "bg-[#DCE5E1] text-[#12261F] hover:bg-[#2D6A4F] hover:text-white"
             }`}
           >
             EN
@@ -148,8 +148,8 @@ export default function FXQualificationForm() {
             }
             className={`px-3 py-1 rounded text-sm font-semibold transition ${
               formData.language === "zh"
-                ? "bg-[#BD6908] text-white"
-                : "bg-[#DCE5E1] text-[#12261F] hover:bg-[#BD6908] hover:text-white"
+                ? "bg-[#2D6A4F] text-white"
+                : "bg-[#DCE5E1] text-[#12261F] hover:bg-[#2D6A4F] hover:text-white"
             }`}
           >
             中文
@@ -160,7 +160,7 @@ export default function FXQualificationForm() {
           <Card className="bg-white border-2 border-[#DCE5E1] p-8 md:p-12">
             <div className="mb-8">
               <h2 className="text-4xl font-bold text-[#12261F] mb-2">{t.title}</h2>
-              <p className="text-[#BD6908] font-semibold text-lg mb-4">{t.subtitle}</p>
+              <p className="text-[#2D6A4F] font-semibold text-lg mb-4">{t.subtitle}</p>
               <p className="text-lg text-[#4A5A55]">{t.description}</p>
             </div>
 
@@ -174,7 +174,7 @@ export default function FXQualificationForm() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
                 />
               </div>
 
@@ -187,7 +187,7 @@ export default function FXQualificationForm() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
                 />
               </div>
 
@@ -199,7 +199,7 @@ export default function FXQualificationForm() {
                   required
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+                  className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
                 >
                   <option value="">Select your role</option>
                   {roles.map((r) => (
@@ -225,7 +225,7 @@ export default function FXQualificationForm() {
                         value={option.value}
                         checked={formData.fxVolume === option.value}
                         onChange={handleChange}
-                        className="w-4 h-4 accent-[#BD6908]"
+                        className="w-4 h-4 accent-[#2D6A4F]"
                       />
                       <span className="text-[#4A5A55]">{option.label}</span>
                     </label>
@@ -272,7 +272,7 @@ export default function FXQualificationForm() {
               <Button
                 type="submit"
                 disabled={!formData.name || !formData.email || !formData.role || !formData.fxVolume}
-                className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3 text-lg disabled:opacity-50"
+                className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3 text-lg disabled:opacity-50"
               >
                 {t.submit}
               </Button>
@@ -282,7 +282,7 @@ export default function FXQualificationForm() {
           </Card>
         ) : (
           <Card className="bg-white border-2 border-[#DCE5E1] p-8 md:p-12 text-center">
-            <div className="inline-block w-16 h-16 bg-[#BD6908] bg-opacity-10 text-[#BD6908] rounded-full flex items-center justify-center mb-6">
+            <div className="inline-block w-16 h-16 bg-[#2D6A4F] bg-opacity-10 text-[#2D6A4F] rounded-full flex items-center justify-center mb-6">
               <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"

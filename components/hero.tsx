@@ -2,6 +2,7 @@
 
 import { TrendingUp, Shield, Clock } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
+import Link from "next/link"
 
 export default function Hero() {
   const { t } = useI18n()
@@ -10,8 +11,8 @@ export default function Hero() {
     <section className="bg-[#12261F] text-white py-12 md:py-16 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-[#BD6908] rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#BD6908] rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-[#2D6A4F] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#52796F] rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -19,7 +20,7 @@ export default function Hero() {
           {/* Left Content */}
           <div className="space-y-5">
             <div className="space-y-4">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#BD6908] bg-opacity-15 text-white text-sm font-semibold border border-[#BD6908] border-opacity-30">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#DCE5E1] bg-opacity-15 text-[#12261F] text-sm font-semibold border border-[#DCE5E1] border-opacity-30">
                 <Shield className="w-4 h-4" />
                 {t('hero_badge')}
               </span>
@@ -27,7 +28,7 @@ export default function Hero() {
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                 {t('hero_title_1')}
                 <br />
-                <span className="text-[#BD6908]">{t('hero_title_2')}</span>
+                <span className="text-[#A8C5BA]">{t('hero_title_2')}</span>
               </h1>
               
               <p className="text-lg text-gray-300 leading-relaxed">
@@ -38,28 +39,28 @@ export default function Hero() {
             {/* Trust indicators */}
             <div className="flex flex-wrap gap-5 text-sm">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-[#BD6908]" />
+                <TrendingUp className="w-4 h-4 text-[#A8C5BA]" />
                 <span className="text-gray-300">{t('hero_expert_analysis')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#BD6908]" />
+                <Shield className="w-4 h-4 text-[#A8C5BA]" />
                 <span className="text-gray-300">{t('hero_risk_protection')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#BD6908]" />
+                <Clock className="w-4 h-4 text-[#A8C5BA]" />
                 <span className="text-gray-300">{t('hero_15min_setup')}</span>
               </div>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <button className="group px-6 py-3 rounded-full bg-[#BD6908] hover:bg-[#d67709] text-white font-semibold transition-all duration-300 shadow-lg shadow-[#BD6908]/20 hover:shadow-xl hover:shadow-[#BD6908]/30 hover:scale-105">
+              <Link href="/contact" className="group px-6 py-3 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-semibold transition-all duration-300 shadow-lg shadow-[#2D6A4F]/20 hover:shadow-xl hover:shadow-[#2D6A4F]/30 hover:scale-105 inline-block text-center">
                 {t('hero_book_consult')}
                 <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </button>
-              <button className="px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold transition-all duration-300 backdrop-blur-sm">
+              </Link>
+              <Link href="/presentation" className="px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold transition-all duration-300 backdrop-blur-sm inline-block text-center">
                 {t('hero_download_policy')}
-              </button>
+              </Link>
             </div>
 
             {/* Disclaimer */}
@@ -112,7 +113,7 @@ export default function Hero() {
               </div>
               
               {/* Floating badge */}
-              <div className="absolute -top-3 -right-3 bg-[#BD6908] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg animate-bounce">
+              <div className="absolute -top-3 -right-3 bg-[#2D6A4F] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg animate-bounce">
                 {t('hero_trusted')}
               </div>
             </div>

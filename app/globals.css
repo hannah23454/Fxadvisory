@@ -4,10 +4,14 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* SwitchYard Brand Colors */
+  /* SwitchYard Brand Colors - Updated Professional Palette */
   --switchyard-dark-green: #12261f;
-  --switchyard-orange: #bd6908;
-  --switchyard-neutral: #dce5e1;
+  --switchyard-primary: #2D6A4F; /* Forest Green - Primary Accent */
+  --switchyard-primary-hover: #1B4332; /* Dark Forest - Hover States */
+  --switchyard-secondary: #52796F; /* Medium Sage - Text Highlights */
+  --switchyard-light: #DCE5E1; /* Soft Sage - Borders & Backgrounds */
+  --switchyard-light-tint: #A8C5BA; /* Light Sage - Gradients */
+  --switchyard-very-light: #E8EEEB; /* Very Light Sage - Subtle Backgrounds */
   --switchyard-white: #ffffff;
   --switchyard-gray-light: #f5f7f6;
   --switchyard-gray-dark: #4a5a55;

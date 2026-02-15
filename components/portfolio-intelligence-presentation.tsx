@@ -169,7 +169,7 @@ const slides: Slide[] = [
             <div className="text-center">
               <div className="text-5xl mb-3">📉</div>
               <h4 className="font-bold">Current MTM</h4>
-              <p className="text-3xl font-bold text-[#BD6908] mt-2">-A$245k</p>
+              <p className="text-3xl font-bold text-[#2D6A4F] mt-2">-A$245k</p>
             </div>
             <div className="text-center">
               <div className="text-5xl mb-3">📊</div>
@@ -234,7 +234,7 @@ const slides: Slide[] = [
             { num: "5", title: "Continuous Optimization", desc: "Quarterly strategy review and rebalancing" },
           ].map((step, i) => (
             <div key={i} className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-full bg-[#BD6908] flex items-center justify-center font-bold shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#2D6A4F] flex items-center justify-center font-bold shrink-0">
                 {step.num}
               </div>
               <div>
@@ -261,7 +261,7 @@ const slides: Slide[] = [
               <h4 className="text-xl font-bold mb-4">Counterparty Risk</h4>
               <p className="mb-4">Monitor exposure across all banking relationships</p>
               <div className="w-full bg-white bg-opacity-20 rounded h-3 overflow-hidden">
-                <div className="bg-[#BD6908] h-full w-2/3"></div>
+                <div className="bg-[#2D6A4F] h-full w-2/3"></div>
               </div>
               <p className="text-sm mt-2">65% of A$50m limit used</p>
             </div>
@@ -302,15 +302,15 @@ const slides: Slide[] = [
         </div>
         <div className="grid md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white bg-opacity-10 rounded p-4 border border-white border-opacity-20">
-            <div className="text-3xl font-bold text-[#BD6908]">45+</div>
+            <div className="text-3xl font-bold text-[#2D6A4F]">45+</div>
             <p className="text-sm">CFOs & Treasurers</p>
           </div>
           <div className="bg-white bg-opacity-10 rounded p-4 border border-white border-opacity-20">
-            <div className="text-3xl font-bold text-[#BD6908]">A$2.8B</div>
+            <div className="text-3xl font-bold text-[#2D6A4F]">A$2.8B</div>
             <p className="text-sm">Notional Under Management</p>
           </div>
           <div className="bg-white bg-opacity-10 rounded p-4 border border-white border-opacity-20">
-            <div className="text-3xl font-bold text-[#BD6908]">98%</div>
+            <div className="text-3xl font-bold text-[#2D6A4F]">98%</div>
             <p className="text-sm">Execution Efficiency</p>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function PortfolioIntelligencePresentation() {
             {slide.subtitle && <p className="text-2xl opacity-80">{slide.subtitle}</p>}
           </div>
           <div className="text-right">
-            <div className="inline-block px-3 py-1 rounded bg-[#BD6908] text-white text-sm font-semibold">
+            <div className="inline-block px-3 py-1 rounded bg-[#2D6A4F] text-white text-sm font-semibold">
               SwitchYard FX
             </div>
           </div>
@@ -375,14 +375,14 @@ export default function PortfolioIntelligencePresentation() {
               key={i}
               onClick={() => setCurrentSlide(i)}
               className={`w-2 h-2 rounded-full transition ${
-                i === currentSlide ? "bg-[#BD6908] w-8" : "bg-white bg-opacity-50"
+                i === currentSlide ? "bg-[#2D6A4F] w-8" : "bg-white bg-opacity-50"
               }`}
             />
           ))}
         </div>
 
         <div className="flex gap-3">
-          {slide.cta && <Button className="bg-[#BD6908] hover:bg-[#a35a07] text-white">{slide.cta}</Button>}
+          {slide.cta && <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white">{slide.cta}</Button>}
           <Button onClick={nextSlide} className="bg-white text-[#12261F] hover:bg-opacity-90">
             Next
             <ChevronRight className="w-5 h-5 ml-2" />

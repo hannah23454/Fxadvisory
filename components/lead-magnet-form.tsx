@@ -41,7 +41,7 @@ export default function LeadMagnetForm() {
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
           />
           <input
             type="email"
@@ -50,7 +50,7 @@ export default function LeadMagnetForm() {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
           />
           <input
             type="text"
@@ -59,9 +59,9 @@ export default function LeadMagnetForm() {
             required
             value={formData.company}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#BD6908] bg-white"
+            className="w-full px-4 py-3 rounded border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white"
           />
-          <Button type="submit" className="w-full bg-[#BD6908] hover:bg-[#a35a07] text-white font-bold py-3">
+          <Button type="submit" className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3">
             Download PDF
           </Button>
           <p className="text-xs text-[#4A5A55] text-center">We respect your privacy. Unsubscribe anytime.</p>
@@ -78,7 +78,7 @@ export default function LeadMagnetForm() {
             </svg>
           </div>
           <h4 className="font-bold text-[#12261F] mb-2">Download Started</h4>
-          <p className="text-sm text-[#4A5A55] mb-4">Check your email for the PDF. Look for hello@switchyardfx.com</p>
+          <p className="text-sm text-[#4A5A55] mb-4">Check your email for the PDF. Look for admin@switchyard.com.au</p>
         </div>
       )}
     </Card>

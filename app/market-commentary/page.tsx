@@ -98,7 +98,7 @@ export default function MarketCommentary() {
 			{featuredArticle && (
 				<section className="bg-linear-to-r from-[#12261f] to-[#1a3a2f] text-white py-16 px-6">
 					<div className="max-w-6xl mx-auto">
-						<span className="inline-block px-3 py-1 rounded-full bg-[#bd6908] text-white text-xs font-bold mb-4">
+						<span className="inline-block px-3 py-1 rounded-full bg-[#2D6A4F] text-white text-xs font-bold mb-4">
 							{t('featured')}
 						</span>
 						<h2 className="text-4xl font-bold mb-4 text-balance">{featuredArticle.title}</h2>
@@ -110,7 +110,7 @@ export default function MarketCommentary() {
 							<span className="px-3 py-1 bg-[#12261f] rounded text-xs font-bold">
 								{featuredArticle.currency}
 							</span>
-							<Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold">
+							<Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold">
 								{t('read_more')} →
 							</Button>
 						</div>
@@ -132,8 +132,8 @@ export default function MarketCommentary() {
 										onClick={() => setSelectedCurrency(pair)}
 										className={`px-4 py-2 rounded-full text-sm font-medium transition ${
 											selectedCurrency === pair
-												? "bg-[#bd6908] text-white"
-												: "border border-[#bd6908] text-[#bd6908] hover:bg-[#bd6908] hover:text-white"
+												? "bg-[#2D6A4F] text-white"
+												: "border border-[#2D6A4F] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white"
 										}`}
 									>
 										{pair}
@@ -145,7 +145,7 @@ export default function MarketCommentary() {
 						{/* Newsletter CTA */}
 						<div className="text-center md:text-right">
 							<p className="text-sm text-[#4a5a55] mb-3 font-medium">Get daily insights</p>
-							<Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold w-full md:w-auto">
+							<Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold w-full md:w-auto">
 								Subscribe to Newsletter
 							</Button>
 						</div>
@@ -178,7 +178,7 @@ export default function MarketCommentary() {
 												</span>
 											)}
 										</div>
-										<h3 className="text-lg font-bold text-[#12261f] mb-2 leading-tight group-hover:text-[#bd6908] transition">
+										<h3 className="text-lg font-bold text-[#12261f] mb-2 leading-tight group-hover:text-[#2D6A4F] transition">
 											{article.title}
 										</h3>
 										<p className="text-sm text-[#4a5a55] mb-4 leading-relaxed">{article.excerpt}</p>
@@ -186,7 +186,7 @@ export default function MarketCommentary() {
 											<span className="text-xs text-[#4a5a55]">
 												{new Date(article.date).toISOString().slice(0, 10)}
 											</span>
-											<span className="text-[#bd6908] text-sm font-bold group-hover:gap-2 transition">
+											<span className="text-[#2D6A4F] text-sm font-bold group-hover:gap-2 transition">
 												{t('read_more')} →
 											</span>
 										</div>

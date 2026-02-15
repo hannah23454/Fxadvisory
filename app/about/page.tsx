@@ -50,7 +50,7 @@ export default function About() {
               { step: '04', title: t('step_4_title'), desc: t('about_process_report') },
             ].map((item, i) => (
               <div key={i} className="text-center">
-                <div className="bg-[#bd6908] text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                <div className="bg-[#2D6A4F] text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                   {item.step}
                 </div>
                 <h3 className="font-bold text-lg text-[#12261f] mb-2">{item.title}</h3>
@@ -66,7 +66,7 @@ export default function About() {
         <h2 className="text-3xl font-bold text-[#12261f] mb-6">{t('about_cta_title')}</h2>
         <p className="text-lg text-[#4a5a55] mb-8 max-w-2xl mx-auto">{t('about_cta_desc')}</p>
         <Link href="/contact" className="inline-block">
-          <Button className="bg-[#bd6908] hover:bg-[#a35a07] text-white font-bold px-8 py-4">{t('cta_book')}</Button>
+          <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold px-8 py-4">{t('cta_book')}</Button>
         </Link>
       </section>
 
