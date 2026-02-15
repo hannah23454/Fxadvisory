@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -15,7 +16,7 @@ import { AlertCircle, Loader2, Eye, EyeOff } from "lucide-react"
 
 export const dynamic = 'force-dynamic';
 
-export default function Login() {
+function LoginForm() {
   const { t } = useI18n()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -172,5 +173,13 @@ export default function Login() {
 
       <Footer />
     </main>
+  )
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Loader2 className="w-8 h-8 animate-spin text-[#2D6A4F]" /></div>}>
+      <LoginForm />
+    </Suspense>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Header from "@/components/header"
@@ -13,7 +13,7 @@ import { AlertCircle, CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react"
 
 export const dynamic = 'force-dynamic';
 
-export default function ResetPassword() {
+function ResetPasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
@@ -258,5 +258,13 @@ export default function ResetPassword() {
 
       <Footer />
     </main>
+  )
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Loader2 className="w-8 h-8 animate-spin text-[#2D6A4F]" /></div>}>
+      <ResetPasswordForm />
+    </Suspense>
   )
 }
