@@ -19,6 +19,8 @@ import {
 import Link from "next/link"
 import { useI18n } from "@/components/i18n/i18n"
 
+export const dynamic = 'force-dynamic';
+
 interface CurrencyRate {
   code: string
   name: string

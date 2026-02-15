@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Loader2, Save, CheckCircle2 } from "lucide-react"
 
+export const dynamic = 'force-dynamic';
+
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)

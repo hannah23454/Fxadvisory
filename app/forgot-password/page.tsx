@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AlertCircle, CheckCircle2, Loader2, ArrowLeft } from "lucide-react"
 
+export const dynamic = 'force-dynamic';
+
 export default function ForgotPassword() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")

@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label"
 import { useI18n } from "@/components/i18n/i18n"
 import { AlertCircle, Loader2, Eye, EyeOff } from "lucide-react"
 
+export const dynamic = 'force-dynamic';
+
 export default function Login() {
   const { t } = useI18n()
   const router = useRouter()
