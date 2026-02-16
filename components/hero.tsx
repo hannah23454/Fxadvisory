@@ -3,9 +3,22 @@
 import { TrendingUp, Shield, Clock } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
 import Link from "next/link"
+import { useCurrency } from "@/components/currency-context"
+
+interface CurrencyRates {
+  EUR?: number;
+  GBP?: number;
+  AUD?: number;
+}
 
 export default function Hero() {
   const { t } = useI18n()
+  const { rates, loading: currencyLoading, error: currencyError } = useCurrency() || { rates: {}, loading: false, error: null };
+  const typedRates = rates as CurrencyRates;
+  // Calculate AUD/USD, AUD/EUR, AUD/GBP from USD pairs
+  const audUsd = typedRates && typedRates.AUD ? 1 / typedRates.AUD : null;
+  const audEur = typedRates && typedRates.AUD && typedRates.EUR ? (1 / typedRates.AUD) * typedRates.EUR : null;
+  const audGbp = typedRates && typedRates.AUD && typedRates.GBP ? (1 / typedRates.AUD) * typedRates.GBP : null;
 
   return (
     <section className="bg-[#12261F] text-white py-12 md:py-16 relative overflow-hidden">
@@ -73,30 +86,30 @@ export default function Hero() {
             {/* Live FX Ticker */}
             <div className="pt-5 mt-5 border-t border-gray-700/50">
               <div className="flex items-center justify-between mb-4">
-                <p className="text-sm font-semibold text-gray-300">{t('hero_live_fx')}</p>
+                <p className="text-sm font-semibold text-gray-300">Live FX Rates</p>
                 <span className="flex items-center gap-2 text-xs text-gray-400">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  {t('hero_updated_live')}
+                  Updated live
                 </span>
               </div>
-              
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
-                  <p className="text-xs text-gray-400 mb-1 font-medium">AUD/USD</p>
-                  <p className="text-2xl font-bold text-white">0.6842</p>
-                  <p className="text-xs text-green-400 mt-1">+0.12%</p>
+              {currencyLoading && <div className="text-xs text-gray-400">Loading FX rates...</div>}
+              {currencyError && <div className="text-xs text-red-400">Error loading FX rates</div>}
+              {!currencyLoading && !currencyError && (
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-xs text-gray-400 mb-1 font-medium">AUD/USD</p>
+                    <p className="text-2xl font-bold text-white">{audUsd ? audUsd.toFixed(4) : '--'}</p>
+                  </div>
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-xs text-gray-400 mb-1 font-medium">AUD/EUR</p>
+                    <p className="text-2xl font-bold text-white">{audEur ? audEur.toFixed(4) : '--'}</p>
+                  </div>
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
+                    <p className="text-xs text-gray-400 mb-1 font-medium">AUD/GBP</p>
+                    <p className="text-2xl font-bold text-white">{audGbp ? audGbp.toFixed(4) : '--'}</p>
+                  </div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
-                  <p className="text-xs text-gray-400 mb-1 font-medium">AUD/EUR</p>
-                  <p className="text-2xl font-bold text-white">0.6290</p>
-                  <p className="text-xs text-red-400 mt-1">-0.08%</p>
-                </div>
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors">
-                  <p className="text-xs text-gray-400 mb-1 font-medium">AUD/GBP</p>
-                  <p className="text-2xl font-bold text-white">0.5412</p>
-                  <p className="text-xs text-green-400 mt-1">+0.05%</p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
 

@@ -7,12 +7,21 @@ import { Menu, X } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
 import { useSession } from "next-auth/react"
 
+// Extend session type to include role
+interface SessionUser {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string | null;
+}
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const router = useRouter()
   const { t, locale, setLocale } = useI18n()
   const { data: session, status } = useSession()
+  const user = session?.user as SessionUser | undefined
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
@@ -33,7 +42,7 @@ export default function Header() {
 
   // Determine dashboard URL based on user role
   const getDashboardUrl = () => {
-    if (session?.user?.role === 'admin') {
+    if (user?.role === 'admin') {
       return '/dashboard/admin'
     }
     return '/dashboard'

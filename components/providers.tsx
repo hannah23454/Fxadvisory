@@ -1,7 +1,9 @@
 "use client"
 
+
 import { SessionProvider } from "next-auth/react"
 import { I18nProvider } from "@/components/i18n/i18n"
+import { CurrencyProvider } from "@/components/currency-context"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -9,9 +11,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
       refetchInterval={5 * 60}
       refetchOnWindowFocus={true}
     >
-      <I18nProvider>
-        {children}
-      </I18nProvider>
+      <CurrencyProvider>
+        <I18nProvider>
+          {children}
+        </I18nProvider>
+      </CurrencyProvider>
     </SessionProvider>
   )
 }

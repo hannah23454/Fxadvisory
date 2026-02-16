@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useI18n } from "@/components/i18n/i18n"
+import { useCurrency } from "@/components/currency-context"
 
 export const dynamic = 'force-dynamic';
 
@@ -43,10 +44,33 @@ export default function DashboardHome() {
   const [preferences, setPreferences] = useState<any>(null)
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([])
   const [recentContent, setRecentContent] = useState<any[]>([])
+  
+  // Get live currency rates
+  const { rates: liveRates, loading: ratesLoading } = useCurrency() || { rates: null, loading: true }
 
   useEffect(() => {
     loadDashboardData()
   }, [])
+
+  // Update currency rates when live rates are available
+  useEffect(() => {
+    if (liveRates && (liveRates as any).EUR && (liveRates as any).GBP && (liveRates as any).AUD) {
+      const rates = liveRates as any;
+      const audRate = rates.AUD;
+      const now = new Date().toISOString();
+      
+      setCurrencyRates([
+        { code: 'USD', name: 'US Dollar', rate: parseFloat((1 / audRate).toFixed(4)), change: +0.12, lastUpdated: now },
+        { code: 'EUR', name: 'Euro', rate: parseFloat((rates.EUR / audRate).toFixed(4)), change: -0.05, lastUpdated: now },
+        { code: 'GBP', name: 'British Pound', rate: parseFloat((rates.GBP / audRate).toFixed(4)), change: +0.08, lastUpdated: now },
+        { code: 'JPY', name: 'Japanese Yen', rate: 98.45, change: +0.34, lastUpdated: now },
+        { code: 'NZD', name: 'New Zealand Dollar', rate: 1.0876, change: -0.02, lastUpdated: now },
+        { code: 'CNY', name: 'Chinese Yuan', rate: 4.7234, change: +0.18, lastUpdated: now },
+        { code: 'SGD', name: 'Singapore Dollar', rate: 0.8765, change: +0.11, lastUpdated: now },
+        { code: 'HKD', name: 'Hong Kong Dollar', rate: 5.1023, change: -0.09, lastUpdated: now },
+      ]);
+    }
+  }, [liveRates])
 
   const loadDashboardData = async () => {
     try {
@@ -63,18 +87,6 @@ export default function DashboardHome() {
         const content = await contentRes.json()
         setRecentContent(content)
       }
-
-      // Simulate currency rates (in production, integrate with a real FX API)
-      setCurrencyRates([
-        { code: 'USD', name: 'US Dollar', rate: 0.6523, change: +0.12, lastUpdated: new Date().toISOString() },
-        { code: 'EUR', name: 'Euro', rate: 0.6089, change: -0.05, lastUpdated: new Date().toISOString() },
-        { code: 'GBP', name: 'British Pound', rate: 0.5198, change: +0.08, lastUpdated: new Date().toISOString() },
-        { code: 'JPY', name: 'Japanese Yen', rate: 98.45, change: +0.34, lastUpdated: new Date().toISOString() },
-        { code: 'NZD', name: 'New Zealand Dollar', rate: 1.0876, change: -0.02, lastUpdated: new Date().toISOString() },
-        { code: 'CNY', name: 'Chinese Yuan', rate: 4.7234, change: +0.18, lastUpdated: new Date().toISOString() },
-        { code: 'SGD', name: 'Singapore Dollar', rate: 0.8765, change: +0.11, lastUpdated: new Date().toISOString() },
-        { code: 'HKD', name: 'Hong Kong Dollar', rate: 5.1023, change: -0.09, lastUpdated: new Date().toISOString() },
-      ])
 
       setLoading(false)
     } catch (error) {
