@@ -1,9 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { TrendingUp, Shield, Clock } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
 import Link from "next/link"
 import { useCurrency } from "@/components/currency-context"
+import HedgePolicyModal from "@/components/hedge-policy-modal"
 
 interface CurrencyRates {
   EUR?: number;
@@ -13,6 +15,7 @@ interface CurrencyRates {
 
 export default function Hero() {
   const { t } = useI18n()
+  const [hedgePolicyOpen, setHedgePolicyOpen] = useState(false)
   const { rates, loading: currencyLoading, error: currencyError } = useCurrency() || { rates: {}, loading: false, error: null };
   const typedRates = rates as CurrencyRates;
   // Calculate AUD/USD, AUD/EUR, AUD/GBP from USD pairs
@@ -21,6 +24,7 @@ export default function Hero() {
   const audGbp = typedRates && typedRates.AUD && typedRates.GBP ? (1 / typedRates.AUD) * typedRates.GBP : null;
 
   return (
+    <>
     <section className="bg-[#12261F] text-white py-12 md:py-16 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -71,9 +75,12 @@ export default function Hero() {
                 {t('hero_book_consult')}
                 <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </Link>
-              <Link href="/presentation" className="px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold transition-all duration-300 backdrop-blur-sm inline-block text-center">
+              <button
+                onClick={() => setHedgePolicyOpen(true)}
+                className="px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold transition-all duration-300 backdrop-blur-sm inline-block text-center cursor-pointer"
+              >
                 {t('hero_download_policy')}
-              </Link>
+              </button>
             </div>
 
             {/* Disclaimer */}
@@ -134,5 +141,8 @@ export default function Hero() {
         </div>
       </div>
     </section>
+
+    <HedgePolicyModal open={hedgePolicyOpen} onOpenChange={setHedgePolicyOpen} />
+    </>
   )
 }

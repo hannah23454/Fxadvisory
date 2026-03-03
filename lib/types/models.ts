@@ -104,3 +104,29 @@ export interface Message {
   read: boolean;
   createdAt: Date;
 }
+
+export type FxVolumeRange =
+  | '<1M'
+  | '1M–5M'
+  | '5M–10M'
+  | '10M–20M'
+  | '20M–40M'
+  | '40M–80M'
+  | '80M–150M'
+  | '150M–200M'
+  | '200M+';
+
+export type FxProviderType = 'Non-Bank' | 'Bank' | 'Both Bank & Non-Bank';
+
+export interface HedgePolicyRequest {
+  _id?: ObjectId;
+  email: string;
+  userId?: ObjectId;
+  fxVolume: FxVolumeRange;
+  fxProvider: FxProviderType;
+  status: 'pending' | 'sent' | 'accessed';
+  emailSent: boolean;
+  accessGranted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

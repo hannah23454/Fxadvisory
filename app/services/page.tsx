@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Disclaimer from "@/components/disclaimer"
@@ -7,9 +8,11 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { TrendingUp, Zap, CreditCard, Users, Briefcase } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n"
+import HedgePolicyModal from "@/components/hedge-policy-modal"
 
 export default function Services() {
   const { t } = useI18n()
+  const [hedgePolicyOpen, setHedgePolicyOpen] = useState(false)
 
   const services = [
     {
@@ -189,14 +192,23 @@ export default function Services() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">{t('services_not_sure_title')}</h2>
           <p className="text-[#dce5e1] mb-6">{t('services_not_sure_desc')}</p>
-          <a href="/contact" className="inline-block">
-            <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold px-8 py-3">
-              {t('services_schedule_consultation')}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" className="inline-block">
+              <Button className="bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold px-8 py-3">
+                {t('services_schedule_consultation')}
+              </Button>
+            </a>
+            <Button
+              onClick={() => setHedgePolicyOpen(true)}
+              className="border-2 border-white/30 bg-transparent hover:bg-white/10 text-white font-bold px-8 py-3 cursor-pointer"
+            >
+              Download Hedge Policy
             </Button>
-          </a>
+          </div>
         </div>
       </section>
 
+      <HedgePolicyModal open={hedgePolicyOpen} onOpenChange={setHedgePolicyOpen} />
       <Disclaimer />
       <Footer />
     </main>
