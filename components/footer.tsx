@@ -60,7 +60,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/market" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
+                <Link href="/market-insights" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_market')}
                 </Link>
               </li>
@@ -70,7 +70,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
+                <Link href="/login" className="text-gray-400 hover:text-[#A8C5BA] transition text-sm">
                   {t('footer_login')}
                 </Link>
               </li>
@@ -112,13 +112,13 @@ export default function Footer() {
         {/* Bottom Links */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
           <div className="flex gap-6">
-            <Link href="/" className="hover:text-[#A8C5BA] transition">
+            <Link href="/terms#privacy" className="hover:text-[#A8C5BA] transition">
               {t('footer_privacy')}
             </Link>
-            <Link href="/" className="hover:text-[#A8C5BA] transition">
+            <Link href="/terms#terms" className="hover:text-[#A8C5BA] transition">
               {t('footer_terms')}
             </Link>
-            <Link href="/" className="hover:text-[#A8C5BA] transition">
+            <Link href="/terms#compliance" className="hover:text-[#A8C5BA] transition">
               {t('footer_compliance')}
             </Link>
           </div>

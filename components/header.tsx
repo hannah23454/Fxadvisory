@@ -111,7 +111,7 @@ export default function Header() {
                     : "border-white/30 text-white hover:bg-white/10"
                 }`}
               >
-                {t('nav_dashboard') || 'Dashboard'}
+                {t('dashboard')}
               </Link>
             ) : (
               <Link
@@ -184,7 +184,7 @@ export default function Header() {
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav_dashboard') || 'Dashboard'}
+                  {t('dashboard')}
                 </Link>
               ) : (
                 <Link
