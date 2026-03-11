@@ -17,7 +17,7 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
-    secure: true, // SSL — avoids port 587 timeout
+    secure: true,
     auth: { user, pass },
   });
 
@@ -31,6 +31,7 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   console.log('Email sent:', info.messageId);
   return { success: true, messageId: info.messageId };
 }
+
 
 
 export function buildHedgePolicyEmail({

@@ -159,6 +159,8 @@ export async function POST(req: NextRequest) {
       .insertOne(hedgePolicyRequest as HedgePolicyRequest);
 
     // Send branded email
+    let emailSentOk = false;
+    let emailError = '';
     try {
       const emailHtml = buildHedgePolicyEmail({
         email: normalizedEmail,
@@ -174,6 +176,8 @@ export async function POST(req: NextRequest) {
         html: emailHtml,
       });
 
+      emailSentOk = true;
+
       // Mark email as sent
       await db.collection('hedge_policy_requests').updateOne(
         { _id: requestResult.insertedId },
@@ -185,8 +189,9 @@ export async function POST(req: NextRequest) {
           },
         }
       );
-    } catch (emailError) {
-      console.error('Failed to send hedge policy email:', emailError);
+    } catch (err: any) {
+      emailError = err?.message || String(err);
+      console.error('Failed to send hedge policy email:', err);
       // Don't fail the request if email fails — user can still access via dashboard
     }
 
@@ -212,6 +217,8 @@ export async function POST(req: NextRequest) {
         ? 'Account created and hedge policy access granted. Check your email.'
         : 'Hedge policy access granted. Check your email.',
       isNewUser,
+      emailSent: emailSentOk,
+      ...(emailError ? { emailError } : {}),
     });
   } catch (error) {
     console.error('Hedge policy request error:', error);
