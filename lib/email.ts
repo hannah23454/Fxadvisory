@@ -6,42 +6,32 @@ interface SendEmailOptions {
   html: string;
 }
 
-function createTransporter() {
+export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
   if (!user || !pass) {
-    throw new Error(
-      'SMTP credentials are not configured. Set SMTP_USER and SMTP_PASS in your environment variables.'
-    );
+    throw new Error('SMTP_USER and SMTP_PASS must be set in environment variables.');
   }
 
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_SECURE === 'true',
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // SSL — avoids port 587 timeout
     auth: { user, pass },
   });
-}
 
-export async function sendEmail({ to, subject, html }: SendEmailOptions) {
-  const mailOptions = {
-    from: `"SwitchYard FX" <${process.env.SMTP_FROM || 'hannah@switchyardfx.com.au'}>`,
+  const info = await transporter.sendMail({
+    from: `"SwitchYard FX" <${user}>`,
     to,
     subject,
     html,
-  };
+  });
 
-  try {
-    const transporter = createTransporter();
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.messageId);
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('Email send error:', error);
-    throw error;
-  }
+  console.log('Email sent:', info.messageId);
+  return { success: true, messageId: info.messageId };
 }
+
 
 export function buildHedgePolicyEmail({
   email,

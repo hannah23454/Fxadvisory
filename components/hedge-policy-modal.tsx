@@ -9,7 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Shield, CheckCircle, Loader2, AlertCircle } from "lucide-react"
+import { Shield, CheckCircle, Loader2, AlertCircle, Search } from "lucide-react"
 import type { FxVolumeRange, FxProviderType } from "@/lib/types/models"
 
 const FX_VOLUMES: FxVolumeRange[] = [
@@ -38,6 +38,7 @@ interface HedgePolicyModalProps {
 export default function HedgePolicyModal({ open, onOpenChange }: HedgePolicyModalProps) {
   const [fxVolume, setFxVolume] = useState<FxVolumeRange | "">("")
   const [fxProvider, setFxProvider] = useState<FxProviderType | "">("")
+  const [volumeSearch, setVolumeSearch] = useState("")
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -47,6 +48,7 @@ export default function HedgePolicyModal({ open, onOpenChange }: HedgePolicyModa
     setFxVolume("")
     setFxProvider("")
     setEmail("")
+    setVolumeSearch("")
     setLoading(false)
     setSubmitted(false)
     setError("")
@@ -102,8 +104,6 @@ export default function HedgePolicyModal({ open, onOpenChange }: HedgePolicyModa
     }
   }
 
-  const selectClass =
-    "w-full px-4 py-3 rounded-lg border border-[#DCE5E1] bg-white text-[#12261f] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] focus:border-transparent transition-all appearance-none cursor-pointer text-sm"
   const labelClass = "block text-sm font-semibold text-[#12261f] mb-1.5"
 
   return (
@@ -132,63 +132,77 @@ export default function HedgePolicyModal({ open, onOpenChange }: HedgePolicyModa
         <div className="px-6 pb-6 pt-4">
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* FX Volume */}
+              {/* FX Volume - Tag Selector */}
               <div>
-                <label htmlFor="fxVolume" className={labelClass}>
+                <label className={labelClass}>
                   Annual FX Volume <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <select
-                    id="fxVolume"
-                    value={fxVolume}
-                    onChange={(e) => setFxVolume(e.target.value as FxVolumeRange)}
-                    className={selectClass}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select your annual FX volume
-                    </option>
-                    {FX_VOLUMES.map((vol) => (
-                      <option key={vol} value={vol}>
+                <div className="rounded-lg border border-[#DCE5E1] bg-white overflow-hidden">
+                  <div className="flex items-center gap-2 px-3 py-2 border-b border-[#DCE5E1] bg-[#fafcfb]">
+                    <Search className="w-4 h-4 text-gray-400 shrink-0" />
+                    <input
+                      type="text"
+                      value={volumeSearch}
+                      onChange={(e) => setVolumeSearch(e.target.value)}
+                      placeholder="Search volume range..."
+                      className="flex-1 text-sm text-[#12261f] placeholder-gray-400 outline-none bg-transparent"
+                    />
+                    {volumeSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setVolumeSearch("")}
+                        className="text-gray-400 hover:text-gray-600 text-xs leading-none"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                  <div className="p-3 flex flex-wrap gap-2">
+                    {FX_VOLUMES.filter((v) =>
+                      v.toLowerCase().includes(volumeSearch.toLowerCase())
+                    ).map((vol) => (
+                      <button
+                        key={vol}
+                        type="button"
+                        onClick={() => setFxVolume(fxVolume === vol ? "" : vol)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150 cursor-pointer border ${
+                          fxVolume === vol
+                            ? "bg-[#12261f] text-white border-[#12261f] shadow-sm"
+                            : "bg-[#f0f4f2] text-[#12261f] border-[#dce9e3] hover:bg-[#dce9e3] hover:border-[#2D6A4F]"
+                        }`}
+                      >
                         {vol}
-                      </option>
+                      </button>
                     ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    {FX_VOLUMES.filter((v) =>
+                      v.toLowerCase().includes(volumeSearch.toLowerCase())
+                    ).length === 0 && (
+                      <p className="text-xs text-gray-400 py-1">No results found</p>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* FX Provider */}
+              {/* FX Provider - Tag Selector */}
               <div>
-                <label htmlFor="fxProvider" className={labelClass}>
+                <label className={labelClass}>
                   Current FX Provider <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <select
-                    id="fxProvider"
-                    value={fxProvider}
-                    onChange={(e) => setFxProvider(e.target.value as FxProviderType)}
-                    className={selectClass}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select your current FX provider
-                    </option>
-                    {FX_PROVIDERS.map((prov) => (
-                      <option key={prov} value={prov}>
-                        {prov}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
+                <div className="rounded-lg border border-[#DCE5E1] bg-white p-3 flex flex-wrap gap-2">
+                  {FX_PROVIDERS.map((prov) => (
+                    <button
+                      key={prov}
+                      type="button"
+                      onClick={() => setFxProvider(fxProvider === prov ? "" : prov)}
+                      className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-150 cursor-pointer border ${
+                        fxProvider === prov
+                          ? "bg-[#12261f] text-white border-[#12261f] shadow-sm"
+                          : "bg-[#f0f4f2] text-[#12261f] border-[#dce9e3] hover:bg-[#dce9e3] hover:border-[#2D6A4F]"
+                      }`}
+                    >
+                      {prov}
+                    </button>
+                  ))}
                 </div>
               </div>
 
