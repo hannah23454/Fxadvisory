@@ -107,7 +107,7 @@ function InsightCard({ insight }: { insight: Insight }) {
       <div className="flex items-center justify-between pt-3 border-t border-[#F0F4F2]">
         <time className="text-xs text-[#52796F] font-medium">{insight.date}</time>
         <Link
-          href={`/market-insights`}
+          href={`/market-insights/${insight.id}`}
           className="inline-flex items-center gap-1 text-xs font-semibold text-[#2D6A4F] hover:gap-2 transition-all"
         >
           Read More <ChevronRight size={13} />

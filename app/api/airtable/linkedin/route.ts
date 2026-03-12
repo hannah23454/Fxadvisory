@@ -12,6 +12,7 @@ interface AirtablePost {
   date: string
   status: string
   person: string
+  url: string | null
 }
 
 async function fetchPosts(baseId: string, person: string): Promise<AirtablePost[]> {
@@ -44,6 +45,7 @@ async function fetchPosts(baseId: string, person: string): Promise<AirtablePost[
     imageUrl: r.fields["Image URL"] || null,
     date: r.fields["Date Created"] || r.createdTime,
     status: r.fields["Status"] || "",
+    url: r.fields["LinkedIn URL"] || r.fields["Post URL"] || r.fields["URL"] || r.fields["Link"] || null,
     person,
   }))
 }

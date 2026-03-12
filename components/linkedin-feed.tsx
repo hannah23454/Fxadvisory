@@ -12,6 +12,7 @@ interface LinkedInPost {
   date: string
   status: string
   person: string
+  url: string | null
 }
 
 function formatDate(dateStr: string): string {
@@ -47,7 +48,10 @@ function PostCard({ post }: { post: LinkedInPost }) {
   const needsExpand = post.caption.length > 240
 
   return (
-    <article className="flex flex-col rounded-2xl bg-white border border-[#DCE5E1] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+    <article
+      className={`flex flex-col rounded-2xl bg-white border border-[#DCE5E1] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full ${post.url ? "cursor-pointer" : ""}`}
+      onClick={() => { if (post.url) window.open(post.url, "_blank", "noopener,noreferrer") }}
+    >
       {/* Image */}
       {imageUrl && (
         <div className="relative aspect-[16/9] overflow-hidden">
@@ -96,11 +100,22 @@ function PostCard({ post }: { post: LinkedInPost }) {
         )}
 
         {/* Footer */}
-        <div className="mt-4 pt-4 border-t border-[#E8EEEB]">
+        <div className="mt-4 pt-4 border-t border-[#E8EEEB] flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A66C2]">
             <Linkedin size={12} />
             LinkedIn Post
           </span>
+          {post.url && (
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#0A66C2] hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              View on LinkedIn <ExternalLink size={11} />
+            </a>
+          )}
         </div>
       </div>
     </article>

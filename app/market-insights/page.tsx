@@ -124,7 +124,7 @@ function TrendBadge({ trend }: { trend: string }) {
 }
 
 function FeaturedCard({ insight, isLoggedIn }: { insight: (typeof insights)[0]; isLoggedIn: boolean }) {
-  const href = isLoggedIn ? `/dashboard/market?article=${insight.id}` : "/login?redirect=/market-insights"
+  const href = `/market-insights/${insight.id}`
   return (
     <Link href={href}>
       <article className="group relative grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden bg-white border border-[#DCE5E1] shadow-sm hover:shadow-xl transition-all duration-300">
@@ -167,7 +167,7 @@ function FeaturedCard({ insight, isLoggedIn }: { insight: (typeof insights)[0]; 
 }
 
 function InsightCard({ insight, isLoggedIn }: { insight: (typeof insights)[0]; isLoggedIn: boolean }) {
-  const href = isLoggedIn ? `/dashboard/market?article=${insight.id}` : "/login?redirect=/market-insights"
+  const href = `/market-insights/${insight.id}`
   return (
     <Link href={href}>
       <article className="group flex flex-col rounded-2xl overflow-hidden bg-white border border-[#DCE5E1] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
@@ -204,7 +204,7 @@ function InsightCard({ insight, isLoggedIn }: { insight: (typeof insights)[0]; i
           <div className="flex items-center justify-between pt-4 border-t border-[#E8EEEB]">
             <time className="text-xs text-[#52796F] font-medium">{insight.date}</time>
             <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2D6A4F] group-hover:gap-2 transition-all">
-              {isLoggedIn ? "Read More" : "Login to Read"} <ChevronRight size={14} />
+              {isLoggedIn ? "Read More" : "Read More"} <ChevronRight size={14} />
             </span>
           </div>
         </div>
