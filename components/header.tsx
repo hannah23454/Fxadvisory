@@ -91,12 +91,14 @@ export default function Header() {
             <select
               value={locale}
               onChange={(e) => setLocale(e.target.value as any)}
-              className={`text-sm rounded px-2 py-1 bg-transparent focus:outline-none focus:ring-0 ${
-                isScrolled ? "text-[#12261F]" : "text-white"
+              className={`text-sm rounded px-2 py-1 focus:outline-none focus:ring-0 cursor-pointer ${
+                isScrolled
+                  ? "bg-white text-[#12261F] border border-gray-200"
+                  : "bg-[#12261F] text-white border border-white/20"
               }`}
             >
-              <option value="en">English</option>
-              <option value="zh">中文</option>
+              <option value="en" className="bg-[#12261F] text-white">English</option>
+              <option value="zh" className="bg-[#12261F] text-white">中文</option>
             </select>
           </nav>
 
