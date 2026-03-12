@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { ArrowUpRight, ArrowDownLeft, Minus, Search, ChevronRight, Lock, UserPlus, LogIn } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -10,7 +10,6 @@ import Footer from "@/components/footer"
 import NewsletterSignup from "@/components/newsletter-signup"
 import SwitchyardTake from "@/components/switchyard-take"
 import TopicPersonalization from "@/components/topic-personalization"
-import PartnerTiles from "@/components/partner-tiles"
 import { useI18n } from "@/components/i18n/i18n"
 
 /* ────────────────────────────────── Data ─────────────────────────────────── */
@@ -279,9 +278,30 @@ export default function MarketInsightsPage() {
   const [activeCategory, setActiveCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [showAll, setShowAll] = useState(false)
+  const [allInsights, setAllInsights] = useState(insights)
+  const [loadingInsights, setLoadingInsights] = useState(true)
 
-  const featured = insights.find((i) => i.featured) || insights[0]
-  const restInsights = insights.filter((i) => i !== featured)
+  // Fetch from Airtable; fall back to static data on error
+  useEffect(() => {
+    fetch("/api/airtable/insights")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setAllInsights(data)
+        }
+      })
+      .catch(() => {/* keep fallback */})
+      .finally(() => setLoadingInsights(false))
+  }, [])
+
+  const featured = allInsights.find((i) => i.featured) || allInsights[0]
+  const restInsights = allInsights.filter((i) => i !== featured)
+
+  // Derive categories from live data
+  const categories = useMemo(() => {
+    const cats = new Set(allInsights.map((i) => i.category))
+    return ["All", ...Array.from(cats)]
+  }, [allInsights])
 
   const filteredInsights = useMemo(() => {
     let filtered = restInsights
@@ -361,7 +381,7 @@ export default function MarketInsightsPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => { setActiveCategory(cat); setShowAll(false) }}
@@ -390,6 +410,14 @@ export default function MarketInsightsPage() {
 
       {/* ─── Articles Grid (with login gate for non-authenticated) ─── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        {loadingInsights ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1,2,3,4,5,6].map(n => (
+              <div key={n} className="rounded-2xl bg-[#F0F4F2] border border-[#DCE5E1] h-72 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+        <>
         <p className="text-sm text-[#52796F] mb-6 font-medium">
           Showing {visibleInsights.length} of {filteredInsights.length} articles
         </p>
@@ -428,13 +456,12 @@ export default function MarketInsightsPage() {
             </button>
           </div>
         )}
+        </>
+        )}
       </section>
 
       {/* ─── SwitchYard's Take ─── */}
       <SwitchyardTake />
-
-      {/* ─── Partner Tiles ─── */}
-      <PartnerTiles />
 
       {/* ─── Newsletter CTA ─── */}
       <section className="bg-[#12261f] text-white py-20 px-6">

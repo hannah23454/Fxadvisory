@@ -73,9 +73,9 @@ export default function CorporateFXHero() {
             {/* Main Image */}
             <div className="relative z-10">
               <img 
-                src="https://zilmoney.com/wp-content/uploads/2022/11/Print-Payroll-Checks-Save-your-Time-and-Money-ZM.png" 
+                src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=700&h=500&fit=crop" 
                 alt={t('corp_fx_alt')}
-                className="w-full h-auto max-w-full drop-shadow-2xl"
+                className="w-full h-auto max-w-full drop-shadow-2xl rounded-xl"
               />
             </div>
           </div>

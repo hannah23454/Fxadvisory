@@ -15,9 +15,9 @@ const BusinessLendingHero: React.FC = () => {
           <div className="flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="w-full max-w-sm sm:max-w-md">
               <img 
-                src="https://b386363e680359b5cc19-97ec1140354919029c7985d2568f0e82.ssl.cf1.rackcdn.com/assets/uploads/post/featured_image/62375/7318baade298246fa6f64effa7208d2c.png"
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&h=500&fit=crop"
                 alt={t('lending_alt')}
-                className="w-full h-auto"
+                className="w-full h-auto rounded-xl shadow-lg"
                 loading="lazy"
               />
             </div>

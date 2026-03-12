@@ -28,7 +28,7 @@ export default function TermsPage() {
           </h2>
           <div className="prose prose-gray max-w-none space-y-4 text-gray-600">
             <p>
-              SwitchYard FX Advisory ABN &amp; AFSL 000 000 000 (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is committed to
+              SwitchYard FX Advisory ABN 49 691 362 553, AFSL 520548 (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is committed to
               protecting the privacy of your personal information in accordance with the <em>Privacy Act 1988</em> (Cth)
               and the Australian Privacy Principles (APPs).
             </p>

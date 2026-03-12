@@ -1,32 +1,58 @@
 "use client"
 
-import { ArrowUpRight, ArrowDownLeft } from "lucide-react"
+import { ArrowUpRight, ArrowDownLeft, Minus } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+
+interface Insight {
+  id: string
+  title: string
+  summary: string
+  category: string
+  date: string
+  trend: "up" | "down" | "neutral"
+}
+
+const fallback: Insight[] = [
+  {
+    id: "1",
+    title: "AUD Weakness Extends Against USD",
+    summary: "Latest commentary on Australian dollar movements and trading opportunities.",
+    category: "AUD/USD",
+    date: "Nov 22, 2024",
+    trend: "down",
+  },
+  {
+    id: "2",
+    title: "EUR/AUD Recovery Signals Opportunity",
+    summary: "Technical analysis and strategic positioning recommendations for cross-pairs.",
+    category: "EUR/AUD",
+    date: "Nov 21, 2024",
+    trend: "up",
+  },
+  {
+    id: "3",
+    title: "Market Volatility & Hedging Strategy",
+    summary: "How to navigate Q4 volatility with proactive hedging and risk positioning.",
+    category: "Strategy",
+    date: "Nov 20, 2024",
+    trend: "neutral",
+  },
+]
 
 export default function MarketInsights() {
-  const insights = [
-    {
-      title: "AUD Weakness Extends Against USD",
-      summary: "Latest commentary on Australian dollar movements and trading opportunities.",
-      category: "AUD/USD",
-      date: "Nov 22, 2024",
-      trend: "down",
-    },
-    {
-      title: "EUR/AUD Recovery Signals Opportunity",
-      summary: "Technical analysis and strategic positioning recommendations for cross-pairs.",
-      category: "EUR/AUD",
-      date: "Nov 21, 2024",
-      trend: "up",
-    },
-    {
-      title: "Market Volatility & Hedging Strategy",
-      summary: "How to navigate Q4 volatility with proactive hedging and risk positioning.",
-      category: "Strategy",
-      date: "Nov 20, 2024",
-      trend: "neutral",
-    },
-  ]
+  const [insights, setInsights] = useState<Insight[]>(fallback)
+
+  useEffect(() => {
+    fetch("/api/airtable/insights?limit=3")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setInsights(data.slice(0, 3))
+        }
+      })
+      .catch(() => {/* use fallback */})
+  }, [])
 
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -37,7 +63,7 @@ export default function MarketInsights() {
             <p className="text-lg text-[#4A5A55]">Latest insights and analysis from our FX experts</p>
           </div>
           <Link
-            href="/market-commentary"
+            href="/market-insights"
             className="hidden sm:block px-6 py-2 text-[#2D6A4F] font-semibold border border-[#2D6A4F] rounded-full hover:bg-[#2D6A4F] hover:text-white transition"
           >
             View All
@@ -45,9 +71,9 @@ export default function MarketInsights() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {insights.map((insight, idx) => (
+          {insights.map((insight) => (
             <div
-              key={idx}
+              key={insight.id}
               className="p-8 rounded-xl bg-[#F5F7F6] border border-[#DCE5E1] hover:border-[#2D6A4F] hover:shadow-lg transition group cursor-pointer"
             >
               <div className="flex items-start justify-between mb-4">
@@ -56,6 +82,7 @@ export default function MarketInsights() {
                 </span>
                 {insight.trend === "up" && <ArrowUpRight className="text-green-600" size={20} />}
                 {insight.trend === "down" && <ArrowDownLeft className="text-red-600" size={20} />}
+                {insight.trend === "neutral" && <Minus className="text-gray-400" size={20} />}
               </div>
               <h3 className="text-lg font-bold text-[#12261F] mb-3 group-hover:text-[#2D6A4F] transition">
                 {insight.title}
@@ -68,7 +95,7 @@ export default function MarketInsights() {
 
         <div className="mt-12 text-center sm:hidden">
           <Link
-            href="/market-commentary"
+            href="/market-insights"
             className="px-6 py-2 text-[#2D6A4F] font-semibold border border-[#2D6A4F] rounded-full hover:bg-[#2D6A4F] hover:text-white transition inline-block"
           >
             View All
@@ -78,3 +105,4 @@ export default function MarketInsights() {
     </section>
   )
 }
+
