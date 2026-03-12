@@ -11,9 +11,22 @@ export default function NewsletterSignup() {
   const [frequency, setFrequency] = useState("daily")
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("[v0] Newsletter signup:", { email, role, frequency })
+    try {
+      await fetch("/api/airtable/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          notes: [role && `Role: ${role}`, `Frequency: ${frequency}`].filter(Boolean).join(" | "),
+          source: "Newsletter Signup",
+          requestType: "Market Insights",
+        }),
+      })
+    } catch {
+      // Non-blocking
+    }
     setSubmitted(true)
     setTimeout(() => {
       setEmail("")

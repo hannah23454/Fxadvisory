@@ -19,9 +19,23 @@ export default function LeadMagnetForm() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("[v0] Lead magnet form submitted:", formData)
+    try {
+      await fetch("/api/airtable/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          source: "Hedge Piece Signup",
+          requestType: "Hedge Piece",
+        }),
+      })
+    } catch {
+      // Non-blocking — form succeeds regardless
+    }
     setFormData((prev) => ({ ...prev, submitted: true }))
   }
 

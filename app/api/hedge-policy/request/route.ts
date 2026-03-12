@@ -211,6 +211,32 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Send to Airtable as a lead/prospect
+    try {
+      const airtableKey = process.env.AIRTABLE_API_KEY
+      const airtableBase = process.env.AIRTABLE_LEADS_BASE_ID || process.env.AIRTABLE_NEWSLETTER_BASE_ID || "appTV0Sg1MkDFsrvP"
+      if (airtableKey) {
+        await fetch(`https://api.airtable.com/v0/${airtableBase}/Leads`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${airtableKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fields: {
+              Email: normalizedEmail,
+              Notes: `FX Volume: ${fxVolume} | Provider: ${fxProvider}`,
+              Source: "Hedge Piece Signup",
+              "Request Type": "Hedge Piece",
+              Status: "New",
+            },
+          }),
+        })
+      }
+    } catch (airtableErr) {
+      console.error("Airtable lead sync error (hedge policy):", airtableErr)
+    }
+
     return NextResponse.json({
       success: true,
       message: isNewUser
