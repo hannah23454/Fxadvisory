@@ -3,28 +3,30 @@
 import { useSession, signOut } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { 
-  LayoutDashboard, 
-  TrendingUp, 
-  FileText, 
-  Upload, 
+import {
+  LayoutDashboard,
+  TrendingUp,
+  FileText,
+  Upload,
   MessageSquare,
-  Calendar, 
-  Settings, 
+  Calendar,
+  Settings,
   LogOut,
-  Globe
+  Globe,
+  UserCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/components/i18n/i18n"
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Market Insights', href: '/dashboard/market', icon: TrendingUp },
-  { name: 'Documents', href: '/dashboard/documents', icon: FileText },
-  { name: 'Trade Upload', href: '/dashboard/trades', icon: Upload },
-  { name: 'Meetings', href: '/dashboard/meetings', icon: Calendar },
-  { name: 'Messages', href: '/dashboard/messages', icon: MessageSquare },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Dashboard',       href: '/dashboard',           icon: LayoutDashboard },
+  { name: 'Market Insights', href: '/dashboard/market',    icon: TrendingUp },
+  { name: 'Profile',         href: '/dashboard/profile',   icon: UserCircle },
+  { name: 'Documents',       href: '/dashboard/documents', icon: FileText },
+  { name: 'Trade Upload',    href: '/dashboard/trades',    icon: Upload },
+  { name: 'Meetings',        href: '/dashboard/meetings',  icon: Calendar },
+  { name: 'Messages',        href: '/dashboard/messages',  icon: MessageSquare },
+  { name: 'Settings',        href: '/dashboard/settings',  icon: Settings },
 ]
 
 export default function DashboardLayout({

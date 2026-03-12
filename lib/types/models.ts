@@ -6,12 +6,34 @@ export interface User {
   password: string;
   name: string;
   role: 'user' | 'admin';
-  company?: string;
-  position?: string;
+  // Personal
   phone?: string;
+  position?: string;
+  experienceLevel?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
+  areasOfInterest?: string[];
+  // Business
+  company?: string;
+  industry?: string;
+  businessContact?: string;
+  businessPreferences?: string;
   active: boolean;
   createdAt: Date;
   lastLogin?: Date;
+  updatedAt?: Date;
+}
+
+export type RiskBand = 'Very Conservative' | 'Conservative' | 'Balanced' | 'Growth' | 'Aggressive';
+
+export interface RiskProfile {
+  _id?: ObjectId;
+  userId: ObjectId;
+  capacityAnswers: number[];   // 4 answers, 1–5
+  willingnessAnswers: number[]; // 4 answers, 1–5
+  capacityScore: number;
+  willingnessScore: number;
+  band: RiskBand;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface UserPreferences {
