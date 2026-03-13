@@ -9,8 +9,8 @@ const TABLE = "Leads"
 
 export async function POST(req: NextRequest) {
   if (!AIRTABLE_API_KEY) {
-    console.error("AIRTABLE_API_KEY not set")
-    return NextResponse.json({ error: "Airtable not configured" }, { status: 500 })
+    console.warn("AIRTABLE_API_KEY not set — lead not recorded")
+    return NextResponse.json({ success: true, warning: "Airtable not configured" })
   }
 
   try {
