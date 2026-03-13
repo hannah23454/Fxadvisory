@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-import { Loader2, Save, CheckCircle2 } from "lucide-react"
+import { Loader2, Save, CheckCircle2, Mail, Send } from "lucide-react"
 
 export const dynamic = 'force-dynamic';
 
@@ -15,6 +15,9 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [preferences, setPreferences] = useState<any>(null)
+  const [emailTo, setEmailTo] = useState("")
+  const [emailName, setEmailName] = useState("")
+  const [sendingEmail, setSendingEmail] = useState(false)
 
   useEffect(() => {
     loadPreferences()
@@ -84,6 +87,37 @@ export default function SettingsPage() {
       ...preferences,
       currencies
     })
+  }
+
+  const sendInsightsEmail = async () => {
+    if (!emailTo || !emailName) {
+      toast.error("Please enter both email and name")
+      return
+    }
+
+    setSendingEmail(true)
+    try {
+      const res = await fetch("/api/insights/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: emailTo, name: emailName }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        toast.success(`Email sent to ${emailTo}`)
+        setEmailTo("")
+        setEmailName("")
+      } else {
+        toast.error(data.error || "Failed to send email")
+      }
+    } catch (error) {
+      console.error("Error sending email:", error)
+      toast.error("Network error - please try again")
+    } finally {
+      setSendingEmail(false)
+    }
   }
 
   if (loading) {
@@ -282,6 +316,73 @@ export default function SettingsPage() {
               <option value="monthly">Monthly</option>
             </select>
           </div>
+        </div>
+      </Card>
+
+      {/* Send Insights Email */}
+      <Card className="p-6 border-[#DCE5E1]">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-[#E8EEEB] flex items-center justify-center text-[#2D6A4F]">
+            <Mail size={20} />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-[#12261f]">Send Weekly Insights Email</h2>
+            <p className="text-sm text-[#4a5a55]">Send FX market insights digest to any email address</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="emailTo" className="text-sm font-medium text-[#12261f]">
+              Recipient Email Address *
+            </Label>
+            <Input
+              id="emailTo"
+              type="email"
+              placeholder="user@company.com"
+              value={emailTo}
+              onChange={(e) => setEmailTo(e.target.value)}
+              className="mt-2 border-[#DCE5E1]"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="emailName" className="text-sm font-medium text-[#12261f]">
+              Recipient Name *
+            </Label>
+            <Input
+              id="emailName"
+              type="text"
+              placeholder="e.g. John Smith"
+              value={emailName}
+              onChange={(e) => setEmailName(e.target.value)}
+              className="mt-2 border-[#DCE5E1]"
+            />
+          </div>
+
+          <div className="p-4 rounded-lg bg-[#F5F7F6] border border-[#DCE5E1]">
+            <p className="text-sm text-[#4a5a55] leading-relaxed">
+              The recipient will receive a branded email with the top 5 market insights from Airtable. The email includes a button to view the full insights page at <code className="text-xs bg-white px-2 py-1 rounded text-[#2D6A4F]">/market-insights/digest</code>
+            </p>
+          </div>
+
+          <Button
+            onClick={sendInsightsEmail}
+            disabled={sendingEmail || !emailTo || !emailName}
+            className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white"
+          >
+            {sendingEmail ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4 mr-2" />
+                Send Email
+              </>
+            )}
+          </Button>
         </div>
       </Card>
 
