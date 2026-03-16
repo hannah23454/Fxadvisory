@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-    const { name, email, company, source, requestType, notes } = body
+    const { name, email, company, source, requestType, notes, rate, volume } = body
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 })
@@ -35,7 +35,13 @@ export async function POST(req: NextRequest) {
     if (name) fields["Name"] = name
     if (company) fields["Company"] = company
     if (requestType) fields["Request Type"] = requestType
-    if (notes) fields["Notes"] = notes
+
+    // Combine rate/volume into Notes alongside any custom notes
+    const noteParts: string[] = []
+    if (rate !== undefined) noteParts.push(`Rate Exposure: ${rate}%`)
+    if (volume !== undefined) noteParts.push(`Monthly Volume: ${volume}%`)
+    if (notes) noteParts.push(notes)
+    if (noteParts.length > 0) fields["Notes"] = noteParts.join(" | ")
 
     const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`, {
       method: "POST",
