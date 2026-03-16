@@ -6,6 +6,7 @@ import { useI18n } from "@/components/i18n/i18n"
 import Link from "next/link"
 import { useCurrency } from "@/components/currency-context"
 import HedgePolicyModal from "@/components/hedge-policy-modal"
+import HedgeReportChart from "@/components/hedge-report-chart"
 
 interface CurrencyRates {
   EUR?: number;
@@ -120,72 +121,10 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Illustration — FX Dashboard */}
-          <div className="hidden md:flex items-center justify-center relative -mt-23">
-            <div className="relative w-full max-w-md">
-              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 shadow-2xl text-white space-y-3">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#A8C5BA] uppercase tracking-wider">FX Dashboard</span>
-                  <span className="flex items-center gap-1.5 text-xs text-green-400 font-medium">
-                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-                    Live
-                  </span>
-                </div>
-
-                {/* Chart */}
-                <div className="bg-[#1B4332]/60 rounded-xl p-4">
-                  <div className="text-[10px] text-gray-400 mb-0.5">AUD/USD Performance</div>
-                  <div className="text-2xl font-bold mb-0.5">0.6423</div>
-                  <div className="text-xs text-green-400 mb-3">▲ +1.24% This Week</div>
-                  <svg viewBox="0 0 280 56" className="w-full" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="heroGreenGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#4ade80" stopOpacity="0.4"/>
-                        <stop offset="100%" stopColor="#4ade80" stopOpacity="0"/>
-                      </linearGradient>
-                    </defs>
-                    <path d="M0,48 L25,44 L55,38 L80,34 L105,28 L130,31 L155,24 L180,20 L210,16 L240,12 L265,9 L280,6"
-                      stroke="#4ade80" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M0,48 L25,44 L55,38 L80,34 L105,28 L130,31 L155,24 L180,20 L210,16 L240,12 L265,9 L280,6 L280,56 L0,56Z"
-                      fill="url(#heroGreenGrad)"/>
-                  </svg>
-                </div>
-
-                {/* Currency pairs */}
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { pair: "EUR/AUD", rate: "1.6901", change: "+0.42%", up: true },
-                    { pair: "GBP/AUD", rate: "1.9723", change: "-0.18%", up: false },
-                    { pair: "USD/AUD", rate: "1.5567", change: "+0.31%", up: true },
-                  ].map(item => (
-                    <div key={item.pair} className="bg-white/5 rounded-lg p-2.5 border border-white/10">
-                      <div className="text-[10px] text-gray-400 mb-0.5">{item.pair}</div>
-                      <div className="text-sm font-bold">{item.rate}</div>
-                      <div className={`text-[10px] font-semibold ${item.up ? 'text-green-400' : 'text-red-400'}`}>
-                        {item.change}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Hedge status */}
-                <div className="flex items-center gap-3 bg-[#2D6A4F]/30 rounded-lg p-3 border border-[#2D6A4F]/40">
-                  <div className="w-8 h-8 rounded-full bg-[#2D6A4F] flex items-center justify-center shrink-0">
-                    <Shield className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-semibold text-white">Hedge Coverage Active</div>
-                    <div className="text-[10px] text-[#A8C5BA]">Portfolio protection running</div>
-                  </div>
-                  <div className="text-xs font-bold text-green-400 shrink-0">100%</div>
-                </div>
-              </div>
-
-              {/* Floating badge */}
-              <div className="absolute -top-3 -right-3 bg-[#2D6A4F] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg animate-bounce">
-                {t('hero_trusted')}
-              </div>
+          {/* Right — Hedge Report Chart */}
+          <div className="hidden md:flex items-center justify-center relative">
+            <div className="w-full max-w-md">
+              <HedgeReportChart />
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Upload, FileText, Loader2, CheckCircle2, AlertCircle, Download } from "lucide-react"
+import HedgeReportChart from "@/components/hedge-report-chart"
 
 export default function TradesPage() {
   const [loading, setLoading] = useState(true)
@@ -83,6 +84,11 @@ export default function TradesPage() {
         <p className="text-[#4a5a55]">
           Upload your hedge trades or competitor deals for analysis
         </p>
+      </div>
+
+      {/* Hedge Report Chart */}
+      <div className="max-w-xl">
+        <HedgeReportChart />
       </div>
 
       {/* Upload Cards */}
