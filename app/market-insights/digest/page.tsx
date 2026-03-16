@@ -7,6 +7,7 @@ import Footer from "@/components/footer"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
+import FxChart from "@/components/fx-chart"
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -224,52 +225,18 @@ export default function InsightsDigestPage() {
         </div>
       </section>
 
-      {/* ── CURRENCY PAIR CARDS ──────────────────────────────────────────── */}
+      {/* ── CURRENCY CHART ───────────────────────────────────────────────── */}
       <section className="bg-[#F5F0EB] border-b border-[#DCE5E1]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid sm:grid-cols-2 gap-5">
-            {/* AUD/USD */}
-            <div className="bg-white rounded-2xl border border-[#DCE5E1] p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em]">AUD / USD</span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#E8EEEB] text-[10px] font-bold text-[#2D6A4F]">
-                  ▲ Near-term Bullish
-                </span>
-              </div>
-              <p className="text-2xl font-black text-[#12261F] mb-3">0.6512</p>
-              <p className="text-[#4A5A55] text-sm leading-relaxed mb-4">
-                Softer US inflation pulling USD lower. Direction depends on upcoming US data and Fed rate-cut expectations. Watch FOMC minutes closely.
-              </p>
-              <div className="h-1.5 rounded-full bg-[#E8EEEB] overflow-hidden mb-1">
-                <div className="h-full w-[65%] bg-gradient-to-r from-[#2D6A4F] to-[#74B49B] rounded-full" />
-              </div>
-              <div className="flex justify-between text-[10px] text-[#52796F]">
-                <span>Support 0.6420</span>
-                <span>Resistance 0.6600</span>
-              </div>
-            </div>
-
-            {/* AUD/EUR */}
-            <div className="bg-white rounded-2xl border border-[#DCE5E1] p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em]">AUD / EUR</span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#E8EEEB] text-[10px] font-bold text-[#2D6A4F]">
-                  ↗ Biased Higher
-                </span>
-              </div>
-              <p className="text-2xl font-black text-[#12261F] mb-3">0.3891</p>
-              <p className="text-[#4A5A55] text-sm leading-relaxed mb-4">
-                Eurozone growth concerns weigh on EUR. Diverging economic momentum keeps the pair biased higher in the short term. ECB dovish signals persist.
-              </p>
-              <div className="h-1.5 rounded-full bg-[#E8EEEB] overflow-hidden mb-1">
-                <div className="h-full w-[55%] bg-gradient-to-r from-[#2D6A4F] to-[#74B49B] rounded-full" />
-              </div>
-              <div className="flex justify-between text-[10px] text-[#52796F]">
-                <span>Support 0.3820</span>
-                <span>Resistance 0.3960</span>
-              </div>
+          <div className="flex items-start gap-5 mb-8">
+            <CompassIcon />
+            <div>
+              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Live Chart</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-1">Currency Pair Analysis</h2>
+              <p className="text-[#4A5A55] text-sm">Select a pair and time period to view historical rate movements.</p>
             </div>
           </div>
+          <FxChart />
         </div>
       </section>
 
