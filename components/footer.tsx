@@ -102,11 +102,11 @@ export default function Footer() {
 
         {/* AFSL Compliance Footer */}
         <div className="bg-[#1a3a2f] rounded-lg p-6 mb-6">
-          <p className="text-xs text-gray-300 leading-relaxed text-center">
-            <strong>{t('footer_afsl')}</strong> | {t('footer_afsl_detail')}
-            <br />
-            <span className="text-gray-400">{t('footer_switchyard')}</span>
-          </p>
+          <div className="text-xs text-gray-300 leading-relaxed space-y-3">
+            <p>{t('footer_afsl')}</p>
+            <p>{t('footer_afsl_detail')}</p>
+            <p className="text-gray-400">{t('footer_switchyard')}</p>
+          </div>
         </div>
 
         {/* Bottom Links */}
