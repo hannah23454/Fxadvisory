@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
 import FxChart from "@/components/fx-chart"
+import DigestCurrencyAnalysis from "@/components/digest-currency-analysis"
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -149,13 +150,13 @@ export default function InsightsDigestPage() {
       {/* ── TICKER STRIP ─────────────────────────────────────────────────── */}
       <div className="bg-[#113526] overflow-hidden">
         <div
-          className="flex gap-0 py-2.5 whitespace-nowrap"
+          className="flex gap-0 py-3.5 whitespace-nowrap"
           style={{ animation: "ticker 28s linear infinite" }}
         >
           {[...Array(3)].map((_, i) => (
             <React.Fragment key={i}>
               {TICKER_ITEMS.map((item, j) => (
-                <span key={`${i}-${j}`} className="text-[11px] font-mono text-[#a9c5bb] tracking-widest px-6">
+                <span key={`${i}-${j}`} className="text-sm font-semibold font-mono text-[#a9c5bb] tracking-widest px-8">
                   {item}
                   <span className="text-[#2D6A4F] ml-6">|</span>
                 </span>
@@ -166,7 +167,7 @@ export default function InsightsDigestPage() {
       </div>
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-[#0D1F19] via-[#113526] to-[#0F2E22] text-white py-16 sm:py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0D1F19] via-[#113526] to-[#0F2E22] text-white py-10 sm:py-14 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -174,23 +175,23 @@ export default function InsightsDigestPage() {
             backgroundSize: "36px 36px",
           }}
         />
-        <div className="absolute -top-24 -left-16 w-96 h-96 bg-[#2D6A4F] rounded-full blur-[120px] opacity-20 pointer-events-none" />
-        <div className="absolute -bottom-20 right-0 w-80 h-80 bg-[#1B4332] rounded-full blur-[100px] opacity-30 pointer-events-none" />
+        <div className="absolute -top-16 -left-16 w-80 h-80 bg-[#2D6A4F] rounded-full blur-[120px] opacity-20 pointer-events-none" />
+        <div className="absolute -bottom-16 right-0 w-72 h-72 bg-[#1B4332] rounded-full blur-[100px] opacity-30 pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2D6A4F]/60 bg-[#2D6A4F]/20 mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2D6A4F]/60 bg-[#2D6A4F]/20 mb-4">
             <div className="w-1.5 h-1.5 rounded-full bg-[#74B49B] animate-pulse" />
             <span className="text-[11px] font-bold text-[#A8C5BA] uppercase tracking-[0.18em]">
               Weekly Dispatch — {new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-5 leading-[1.08] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-3 leading-[1.08] tracking-tight">
             Your Market<br />
             <span className="text-[#a9c5bb]">Commentary .</span>
           </h1>
 
-          <p className="text-[#8AAFA5] text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
+          <p className="text-[#8AAFA5] text-base sm:text-lg max-w-2xl leading-relaxed mb-6">
             Shifting interest-rate expectations, softer US data, risk sentiment and commodity prices are shaping FX markets this week. Your personalised SwitchYard briefing is below.
           </p>
 
@@ -205,8 +206,8 @@ export default function InsightsDigestPage() {
 
       {/* ── MARKET COMMENTARY ────────────────────────────────────────────── */}
       <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="flex items-start gap-5 p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
             <CompassIcon />
             <div>
               <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Market Commentary</p>
@@ -226,9 +227,9 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── CURRENCY CHART ───────────────────────────────────────────────── */}
-      <section className="bg-[#F5F0EB] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex items-start gap-5 mb-8">
+      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="flex items-start gap-5 mb-8 p-6 rounded-2xl bg-white border border-[#DCE5E1]">
             <CompassIcon />
             <div>
               <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Live Chart</p>
@@ -236,14 +237,31 @@ export default function InsightsDigestPage() {
               <p className="text-[#4A5A55] text-sm">Select a pair and time period to view historical rate movements.</p>
             </div>
           </div>
-          <FxChart />
+          <div className="rounded-2xl border border-[#DCE5E1] bg-white p-6 shadow-sm">
+            <FxChart />
+          </div>
         </div>
       </section>
 
-      {/* ── STRATEGY BLOCK ───────────────────────────────────────────────── */}
+      {/* ── CURRENCY PAIR ANALYSIS (4-BOX) ───────────────────────────────── */}
+      <section className="bg-[#FAFBFA] border-b border-[#DCE5E1]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="flex items-start gap-5 mb-8 p-6 rounded-2xl bg-white border border-[#DCE5E1]">
+            <CompassIcon />
+            <div>
+              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Deep Dive Analysis</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-1">Currency Pair Metrics</h2>
+              <p className="text-[#4A5A55] text-sm">Select any currency pair to view detailed analysis, support/resistance levels, and market insights.</p>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-[#DCE5E1] bg-white p-6 shadow-sm">
+            <DigestCurrencyAnalysis />
+          </div>
+        </div>
+      </section>
       <section className="bg-[#113526] text-white border-b border-[#1B4332]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="flex items-start gap-5 p-6 rounded-2xl bg-[#1B4332]/50 border border-[#2D6A4F]/30">
             <CompassIcon light />
             <div>
               <p className="text-[10px] font-bold text-[#a9c5bb] uppercase tracking-[0.14em] mb-2">Strategy</p>
@@ -266,111 +284,115 @@ export default function InsightsDigestPage() {
 
       {/* ── WEEKLY KEY DATA SPOTLIGHT ────────────────────────────────────── */}
       <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
-            <CompassIcon />
-            <div className="flex-1">
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-                Weekly Key Data Spotlight
-              </p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-4">
-                Australian Employment Data{" "}
-                <span className="text-[#2D6A4F]">(AUD Catalyst)</span>
-              </h2>
-              <p className="text-[#4A5A55] leading-relaxed mb-6">
-                Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
-                <strong className="text-[#12261F]">before</strong> the release avoids forced decisions in volatile post-data moves.
-              </p>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="p-6 rounded-2xl bg-[#F5F7F6] border border-[#DCE5E1]">
+            <div className="flex items-start gap-5">
+              <CompassIcon />
+              <div className="flex-1">
+                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+                  Weekly Key Data Spotlight
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-4">
+                  Australian Employment Data{" "}
+                  <span className="text-[#2D6A4F]">(AUD Catalyst)</span>
+                </h2>
+                <p className="text-[#4A5A55] leading-relaxed mb-6">
+                  Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
+                  <strong className="text-[#12261F]">before</strong> the release avoids forced decisions in volatile post-data moves.
+                </p>
 
-              <div className="space-y-3 mb-6">
-                {[
-                  {
-                    label: "Limit / target orders",
-                    desc: "Capture favourable spikes overnight automatically",
-                  },
-                  {
-                    label: "Layered forwards",
-                    desc: "Lock a portion of budget rates ahead of the event",
-                  },
-                  {
-                    label: "Options (e.g., collars)",
-                    desc: "Protect downside while keeping upside participation",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-start gap-3 p-4 rounded-xl bg-[#F5F7F6] border border-[#DCE5E1]"
-                  >
-                    <span className="text-[#2D6A4F] text-xs font-bold mt-0.5">◆</span>
-                    <div>
-                      <p className="text-sm font-bold text-[#12261F]">{item.label}</p>
-                      <p className="text-xs text-[#52796F] mt-0.5">{item.desc}</p>
+                <div className="space-y-3 mb-6">
+                  {[
+                    {
+                      label: "Limit / target orders",
+                      desc: "Capture favourable spikes overnight automatically",
+                    },
+                    {
+                      label: "Layered forwards",
+                      desc: "Lock a portion of budget rates ahead of the event",
+                    },
+                    {
+                      label: "Options (e.g., collars)",
+                      desc: "Protect downside while keeping upside participation",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex items-start gap-3 p-4 rounded-xl bg-white border border-[#DCE5E1]"
+                    >
+                      <span className="text-[#2D6A4F] text-xs font-bold mt-0.5">◆</span>
+                      <div>
+                        <p className="text-sm font-bold text-[#12261F]">{item.label}</p>
+                        <p className="text-xs text-[#52796F] mt-0.5">{item.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <p className="text-xs text-[#52796F] mb-5">
+                  General market information only. Not a recommendation or offer.
+                </p>
+
+                <a
+                  href="#custom-quote"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold transition-colors"
+                >
+                  Ideas to manage this data release →
+                </a>
               </div>
-
-              <p className="text-xs text-[#52796F] mb-5">
-                General market information only. Not a recommendation or offer.
-              </p>
-
-              <a
-                href="#custom-quote"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold transition-colors"
-              >
-                Ideas to manage this data release →
-              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── THOUGHT LEADERSHIP ───────────────────────────────────────────── */}
-      <section className="bg-[#F5F0EB] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
-            <CompassIcon />
-            <div>
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-                Thought Leadership
-              </p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-6">
-                Thought provoking talking points
-              </h2>
+      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="p-6 rounded-2xl bg-white border border-[#DCE5E1]">
+            <div className="flex items-start gap-5">
+              <CompassIcon />
+              <div>
+                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+                  Thought Leadership
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-6">
+                  Thought provoking talking points
+                </h2>
 
-              <div className="space-y-4 mb-8">
-                {[
-                  "What % of your EBITDA is exposed to FX volatility over the next 12 months?",
-                  "Fully hedged? Partially hedged? Intentionally unhedged?",
-                  "Are you using data and technology to drive measurable FX outcomes for your business?",
-                  "How does your current hedging program compare against peers in your industry?",
-                ].map((point, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
-                    <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
-                  </div>
-                ))}
+                <div className="space-y-4 mb-8">
+                  {[
+                    "What % of your EBITDA is exposed to FX volatility over the next 12 months?",
+                    "Fully hedged? Partially hedged? Intentionally unhedged?",
+                    "Are you using data and technology to drive measurable FX outcomes for your business?",
+                    "How does your current hedging program compare against peers in your industry?",
+                  ].map((point, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
+                      <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="/market-insights"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
+                >
+                  LEARN MORE
+                </a>
               </div>
-
-              <a
-                href="/market-insights"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
-              >
-                LEARN MORE
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── ACTIVE POLL ──────────────────────────────────────────────────── */}
+      {/* ── POLLS SECTION ────────────────────────────────────────────────── */}
       <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
-            <CompassIcon />
-            <div className="flex-1">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* ── ACTIVE POLL ────────────────────────────────────────────── */}
+            <div className="p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
               <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Active Poll</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">Margin Pressure Poll</h2>
+              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-2">Margin Pressure Poll</h3>
               <p className="text-[#4A5A55] text-sm mb-6">What is currently eroding your margins the most?</p>
 
               {hasVoted && poll ? (
@@ -409,10 +431,10 @@ export default function InsightsDigestPage() {
                   ]).map((opt) => (
                     <label
                       key={opt.id}
-                      className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                         selectedOption === opt.id
                           ? "border-[#2D6A4F] bg-[#E8EEEB]"
-                          : "border-[#DCE5E1] bg-[#F5F7F6] hover:border-[#a9c5bb]"
+                          : "border-[#DCE5E1] bg-white hover:border-[#a9c5bb]"
                       }`}
                     >
                       <input
@@ -433,24 +455,17 @@ export default function InsightsDigestPage() {
                 <button
                   onClick={handlePollSubmit}
                   disabled={!selectedOption || pollSubmitting}
-                  className="px-7 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors"
+                  className="w-full px-7 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors"
                 >
                   {pollSubmitting ? "Submitting…" : "SUBMIT"}
                 </button>
               )}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── LAST WEEK'S POLL RESULTS ─────────────────────────────────────── */}
-      <section className="bg-[#F5F0EB] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-5">
-            <CompassIcon />
-            <div className="flex-1">
+            {/* ── LAST WEEK'S POLL ────────────────────────────────────────── */}
+            <div className="p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
               <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Last Week</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">Last Week's Poll Result</h2>
+              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-2">Last Week's Poll Result</h3>
               <p className="text-[#4A5A55] text-sm mb-6">What is your biggest FX concern right now?</p>
 
               <div className="space-y-4 mb-6">
@@ -475,7 +490,7 @@ export default function InsightsDigestPage() {
                 ))}
               </div>
 
-              <button className="px-7 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold tracking-wide transition-colors">
+              <button className="w-full px-7 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold tracking-wide transition-colors">
                 LAST WEEK RESULTS
               </button>
             </div>
@@ -485,9 +500,9 @@ export default function InsightsDigestPage() {
 
       {/* ── CUSTOM QUOTE FORM ────────────────────────────────────────────── */}
       <section className="bg-white border-b border-[#DCE5E1]" id="custom-quote">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           {/* Section header */}
-          <div className="flex items-start gap-5 mb-10">
+          <div className="flex items-start gap-5 mb-10 p-6 rounded-2xl bg-[#F5F7F6] border border-[#DCE5E1]">
             <CompassIcon />
             <div>
               <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Custom Quote</p>
@@ -645,8 +660,8 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── FAQ SECTION ──────────────────────────────────────────────────── */}
-      <section className="bg-[#F5F0EB] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="bg-white border-b border-[#DCE5E1]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">
               Got questions? We've got answers.
@@ -673,7 +688,7 @@ export default function InsightsDigestPage() {
             ].map((item) => (
               <div
                 key={item.q}
-                className="bg-white rounded-2xl border border-[#DCE5E1] p-5"
+                className="bg-[#F5F7F6] rounded-2xl border border-[#DCE5E1] p-5 shadow-xs"
               >
                 <p className="text-sm font-bold text-[#12261F] mb-2">→ {item.q}</p>
                 <p className="text-xs text-[#4A5A55] leading-relaxed">{item.a}</p>
