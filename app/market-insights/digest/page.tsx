@@ -7,16 +7,15 @@ import Footer from "@/components/footer"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
-import FxChart from "@/components/fx-chart"
-import DigestCurrencyAnalysis from "@/components/digest-currency-analysis"
+import FxChart, { type Pair } from "@/components/fx-chart"
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-function CompassIcon({ light = false }: { light?: boolean }) {
+function CompassIcon({ light = false, size = 36 }: { light?: boolean; size?: number }) {
   const stroke = light ? "#a9c5bb" : "#2D6A4F"
   const fill = light ? "#a9c5bb" : "#2D6A4F"
   return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
       <circle cx="18" cy="18" r="15" stroke={stroke} strokeWidth="2" />
       <circle cx="18" cy="18" r="4.5" fill={fill} />
       <path d="M18 9V13.5M18 22.5V27M9 18H13.5M22.5 18H27" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
@@ -36,6 +35,32 @@ const TICKER_ITEMS = [
   "GBP/USD ▲ 1.2688",
   "USD/CAD ▼ 1.3512",
 ]
+
+const GENERAL_MARKET_NEWS =
+  "Rate-cut repricing and softer US inflation have shifted USD sentiment this week, while commodity resilience is supporting AUD crosses. Liquidity around upcoming US jobs and central bank commentary remains the key volatility trigger."
+
+const PAIR_FORECASTS: Record<Pair, { direction: string; outlook: string }> = {
+  "AUD/USD": {
+    direction: "Bias remains moderately constructive while US data underperforms, but event-risk can quickly reverse the move.",
+    outlook: "Watch payrolls and Fed speakers. A hold above 0.6500 supports near-term upside continuation; a stronger USD data surprise would likely retrace recent gains.",
+  },
+  "AUD/EUR": {
+    direction: "Near-term direction remains higher as Eurozone growth uncertainty contrasts with steadier Australian demand indicators.",
+    outlook: "ECB tone and regional PMIs are key. Further dovish signals in Europe would support AUD/EUR strength over the coming sessions.",
+  },
+  "AUD/GBP": {
+    direction: "Directional conviction is mixed, with UK inflation expectations and BoE path uncertainty driving two-way price action.",
+    outlook: "Expect range-bound behavior unless UK inflation materially surprises. A softer inflation print would likely favor AUD outperformance.",
+  },
+  "AUD/JPY": {
+    direction: "Risk sentiment and Japan rate expectations continue to dominate this cross, keeping intraday swings elevated.",
+    outlook: "Any signal of tighter BoJ policy or risk-off sentiment can pressure AUD/JPY quickly, while carry support remains in place in calmer conditions.",
+  },
+  "AUD/NZD": {
+    direction: "Near-term direction is neutral-to-firm with relative growth data and commodity trends setting the tone.",
+    outlook: "Expect incremental moves unless one central bank shifts guidance unexpectedly. Commodity softness would be the main downside risk for AUD/NZD.",
+  },
+}
 
 function getRateLabel(v: number) {
   if (v < 20) return "Minimal"
@@ -67,6 +92,7 @@ export default function InsightsDigestPage() {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
+  const [selectedDigestPair, setSelectedDigestPair] = useState<Pair>("AUD/USD")
 
   // ── Poll state ──────────────────────────────────────────────────────────
   type PollOption = { id: string; label: string; votes: number }
@@ -177,6 +203,9 @@ export default function InsightsDigestPage() {
         />
         <div className="absolute -top-16 -left-16 w-80 h-80 bg-[#2D6A4F] rounded-full blur-[120px] opacity-20 pointer-events-none" />
         <div className="absolute -bottom-16 right-0 w-72 h-72 bg-[#1B4332] rounded-full blur-[100px] opacity-30 pointer-events-none" />
+        <div className="absolute right-6 top-5 hidden sm:block opacity-85">
+          <CompassIcon light size={44} />
+        </div>
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2D6A4F]/60 bg-[#2D6A4F]/20 mb-4">
@@ -204,58 +233,38 @@ export default function InsightsDigestPage() {
         </div>
       </section>
 
-      {/* ── MARKET COMMENTARY ────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="flex items-start gap-5 p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
-            <CompassIcon />
-            <div>
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Market Commentary</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-4">Near-term Direction</h2>
-              <p className="text-[#4A5A55] leading-relaxed mb-4">
-                The AUD tracked higher this week as softer-than-expected US CPI pulled the USD lower, with markets repricing Fed rate-cut expectations. AUD/USD reclaimed the 0.65 handle, but the move is conditional — upcoming US jobs data and FOMC commentary will determine whether USD weakness extends or reverses sharply.
-              </p>
-              <p className="text-[#4A5A55] leading-relaxed mb-6">
-                Against the EUR, diverging economic momentum keeps the pair biased higher in the short term. Eurozone growth concerns and ECB dovish signals dominate the narrative. Economic data releases and central bank expectations remain the primary drivers in the week ahead.
-              </p>
-              <a href="/market-insights" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#2D6A4F] hover:text-[#113526] transition-colors">
-                Read more →
-              </a>
+      {/* ── CONNECTED MARKET SECTION ─────────────────────────────────────── */}
+      <section className="bg-[#0D1F19] border-b border-[#1B4332] relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, #B7D2C7 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="rounded-3xl border border-[#2D6A4F]/45 overflow-hidden bg-[#10251E]">
+            <div className="p-6 sm:p-8 bg-[#113526] border-b border-[#2D6A4F]/40">
+              <div className="flex items-start gap-4">
+                <CompassIcon light />
+                <div>
+                  <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">General Market News</p>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Market Commentary and Currency Pair Analysis</h2>
+                  <p className="text-[#C7DED5] leading-relaxed">{GENERAL_MARKET_NEWS}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── CURRENCY CHART ───────────────────────────────────────────────── */}
-      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="flex items-start gap-5 mb-8 p-6 rounded-2xl bg-white border border-[#DCE5E1]">
-            <CompassIcon />
-            <div>
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Live Chart</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-1">Currency Pair Analysis</h2>
-              <p className="text-[#4A5A55] text-sm">Select a pair and time period to view historical rate movements.</p>
+            <div className="p-6 sm:p-8 bg-[#10251E] border-b border-[#2D6A4F]/35">
+              <FxChart onPairChange={setSelectedDigestPair} />
             </div>
-          </div>
-          <div className="rounded-2xl border border-[#DCE5E1] bg-white p-6 shadow-sm">
-            <FxChart />
-          </div>
-        </div>
-      </section>
 
-      {/* ── CURRENCY PAIR ANALYSIS (4-BOX) ───────────────────────────────── */}
-      <section className="bg-[#FAFBFA] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="flex items-start gap-5 mb-8 p-6 rounded-2xl bg-white border border-[#DCE5E1]">
-            <CompassIcon />
-            <div>
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Deep Dive Analysis</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-1">Currency Pair Metrics</h2>
-              <p className="text-[#4A5A55] text-sm">Select any currency pair to view detailed analysis, support/resistance levels, and market insights.</p>
+            <div className="p-6 sm:p-8 bg-[#113526]">
+              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
+              <h3 className="text-xl sm:text-2xl font-black text-white mb-2">{selectedDigestPair} Outlook</h3>
+              <p className="text-[#D7E8E1] leading-relaxed mb-3">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
+              <p className="text-[#BBD4CA] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
             </div>
-          </div>
-          <div className="rounded-2xl border border-[#DCE5E1] bg-white p-6 shadow-sm">
-            <DigestCurrencyAnalysis />
           </div>
         </div>
       </section>
@@ -346,7 +355,7 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── THOUGHT LEADERSHIP ───────────────────────────────────────────── */}
-      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
+      <section className="bg-white border-b border-[#DCE5E1]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="p-6 rounded-2xl bg-white border border-[#DCE5E1]">
             <div className="flex items-start gap-5">
@@ -386,7 +395,7 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── POLLS SECTION ────────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]">
+      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="grid md:grid-cols-2 gap-8">
             {/* ── ACTIVE POLL ────────────────────────────────────────────── */}

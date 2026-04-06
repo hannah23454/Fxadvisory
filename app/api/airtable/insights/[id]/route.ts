@@ -3,6 +3,17 @@ import { NextRequest, NextResponse } from "next/server"
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 const BASE_ID = process.env.AIRTABLE_NEWSLETTER_BASE_ID || "appTV0Sg1MkDFsrvP"
 
+// Airtable field labels expected in the Commentary table.
+const FIELD_LABELS = {
+  publishedDate: "Date Added",
+  title: "Title",
+  body: "Commentary Text",
+  summary: "Summary",
+  relatedPairs: "Related FX Pairs",
+  contentSources: "Content Sources",
+  suggestedAudience: "Suggested Audience Segments",
+} as const
+
 const CATEGORY_IMAGES: Record<string, string> = {
   "AUD/USD": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=600&fit=crop",
   "EUR/USD": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=1200&h=600&fit=crop",
@@ -53,11 +64,11 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
     const r = await res.json()
     const f = r.fields
-    const pairs: string[] = f["Related FX Pairs"] || []
+    const pairs: string[] = f[FIELD_LABELS.relatedPairs] || []
     const category = pairs[0] || "Strategy"
-    const title: string = f["Title"] || ""
-    const body: string = f["Commentary Text"] || ""
-    const summary: string = f["Summary"]?.value || body.slice(0, 160) + (body.length > 160 ? "..." : "")
+    const title: string = f[FIELD_LABELS.title] || ""
+    const body: string = f[FIELD_LABELS.body] || ""
+    const summary: string = f[FIELD_LABELS.summary]?.value || body.slice(0, 160) + (body.length > 160 ? "..." : "")
 
     return NextResponse.json({
       id: r.id,
@@ -65,11 +76,11 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       summary,
       body,
       category,
-      date: formatDate(f["Date Added"]),
+      date: formatDate(f[FIELD_LABELS.publishedDate]),
       trend: getTrend(title, body),
       image: CATEGORY_IMAGES[category] || CATEGORY_IMAGES["default"],
-      sources: f["Content Sources"] || "",
-      audience: f["Suggested Audience Segments"]?.value || "",
+      sources: f[FIELD_LABELS.contentSources] || "",
+      audience: f[FIELD_LABELS.suggestedAudience]?.value || "",
       pairs,
     })
   } catch (err) {

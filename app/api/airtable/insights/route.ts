@@ -3,6 +3,20 @@ import { NextResponse } from "next/server"
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 const BASE_ID = process.env.AIRTABLE_NEWSLETTER_BASE_ID || "appTV0Sg1MkDFsrvP"
 
+// Airtable field labels expected in the Commentary table.
+// Keep these names aligned with Airtable column headers so the content team
+// can populate data correctly without touching application code.
+const FIELD_LABELS = {
+  isActive: "Active",
+  publishedDate: "Date Added",
+  title: "Title",
+  body: "Commentary Text",
+  summary: "Summary",
+  relatedPairs: "Related FX Pairs",
+  contentSources: "Content Sources",
+  suggestedAudience: "Suggested Audience Segments",
+} as const
+
 // Financial-themed Unsplash images mapped to FX categories
 const CATEGORY_IMAGES: Record<string, string> = {
   "AUD/USD": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop",
@@ -44,8 +58,8 @@ export async function GET(request: Request) {
 
   try {
     const url = new URL(`https://api.airtable.com/v0/${BASE_ID}/Commentary`)
-    url.searchParams.set("filterByFormula", "{Active}=1")
-    url.searchParams.set("sort[0][field]", "Date Added")
+    url.searchParams.set("filterByFormula", `{${FIELD_LABELS.isActive}}=1`)
+    url.searchParams.set("sort[0][field]", FIELD_LABELS.publishedDate)
     url.searchParams.set("sort[0][direction]", "desc")
     url.searchParams.set("maxRecords", String(limit))
 
@@ -64,12 +78,12 @@ export async function GET(request: Request) {
 
     const records = data.records.map((r: any, idx: number) => {
       const fields = r.fields
-      const pairs: string[] = fields["Related FX Pairs"] || []
+      const pairs: string[] = fields[FIELD_LABELS.relatedPairs] || []
       const category = pairs[0] || "Strategy"
-      const title: string = fields["Title"] || ""
-      const body: string = fields["Commentary Text"] || ""
+      const title: string = fields[FIELD_LABELS.title] || ""
+      const body: string = fields[FIELD_LABELS.body] || ""
       const summary: string =
-        fields["Summary"]?.value || body.slice(0, 160) + (body.length > 160 ? "..." : "")
+        fields[FIELD_LABELS.summary]?.value || body.slice(0, 160) + (body.length > 160 ? "..." : "")
 
       return {
         id: r.id,
@@ -77,12 +91,12 @@ export async function GET(request: Request) {
         summary,
         body,
         category,
-        date: formatDate(fields["Date Added"]),
+        date: formatDate(fields[FIELD_LABELS.publishedDate]),
         trend: getTrend(title, body),
         image: CATEGORY_IMAGES[category] || CATEGORY_IMAGES["default"],
         featured: idx === 0,
-        sources: fields["Content Sources"] || "",
-        audience: fields["Suggested Audience Segments"]?.value || "",
+        sources: fields[FIELD_LABELS.contentSources] || "",
+        audience: fields[FIELD_LABELS.suggestedAudience]?.value || "",
       }
     })
 
