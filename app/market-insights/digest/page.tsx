@@ -93,6 +93,8 @@ export default function InsightsDigestPage() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
   const [selectedDigestPair, setSelectedDigestPair] = useState<Pair>("AUD/USD")
+  const [isHeroExpanded, setIsHeroExpanded] = useState(false)
+  const [isOutlookModalOpen, setIsOutlookModalOpen] = useState(false)
 
   // ── Poll state ──────────────────────────────────────────────────────────
   type PollOption = { id: string; label: string; votes: number }
@@ -215,36 +217,46 @@ export default function InsightsDigestPage() {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-3 leading-[1.08] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 leading-[1.05] tracking-tight">
             Your Market<br />
             <span className="text-[#a9c5bb]">Commentary .</span>
           </h1>
 
-          <p className="text-[#8AAFA5] text-base sm:text-lg max-w-2xl leading-relaxed mb-6">
-            Shifting interest-rate expectations, softer US data, risk sentiment and commodity prices are shaping FX markets this week. Your personalised SwitchYard briefing is below.
-          </p>
+          <div className="mt-2 max-w-[580px] text-left">
+            <div
+              className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                isHeroExpanded ? "max-h-[20rem]" : "max-h-[5.25rem]"
+              }`}
+            >
+              <p className="text-[#8AAFA5] text-base sm:text-[1.0625rem] leading-7">
+                Shifting interest-rate expectations, softer US inflation prints, and mixed global risk sentiment are shaping FX markets this week. Australian dollar crosses are reacting to commodity resilience, while liquidity remains sensitive around central bank commentary and US labor data. The key setup for treasury teams is balancing protection against downside volatility with flexibility to capture favorable moves as policy expectations evolve. In this digest, we break down where momentum is building, where pricing looks stretched, and which currency pairs deserve closer attention over the next few sessions.
+              </p>
+            </div>
 
-          <a
-            href="#custom-quote"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold transition-colors"
-          >
-            Get a Custom Quote ↓
-          </a>
+            <button
+              type="button"
+              onClick={() => setIsHeroExpanded((prev) => !prev)}
+              aria-expanded={isHeroExpanded}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#2D6A4F]/70 bg-[#2D6A4F]/15 px-4 py-2 text-xs sm:text-sm font-bold text-[#C7DED5] hover:bg-[#2D6A4F]/25 transition-colors"
+            >
+              {isHeroExpanded ? "Read Less" : "Read More"}
+            </button>
+          </div>
         </div>
       </section>
 
       {/* ── CONNECTED MARKET SECTION ─────────────────────────────────────── */}
-      <section className="bg-[#0D1F19] border-b border-[#1B4332] relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, #B7D2C7 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
+      <section
+        className="bg-[#0C3A31] border-b border-[#1B4332] relative overflow-hidden"
+        style={{
+          backgroundImage: "url('/pattern-05.svg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "220px 220px",
+        }}
+      >
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="rounded-3xl border border-[#2D6A4F]/45 overflow-hidden bg-[#10251E]">
-            <div className="p-6 sm:p-8 bg-[#113526] border-b border-[#2D6A4F]/40">
+          <div className="rounded-3xl border border-[#2D6A4F]/45 bg-[#10251E] p-6 sm:p-8">
+            <div className="mb-8">
               <div className="flex items-start gap-4">
                 <CompassIcon light />
                 <div>
@@ -255,15 +267,27 @@ export default function InsightsDigestPage() {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#10251E] border-b border-[#2D6A4F]/35">
+            <div className="mb-8">
               <FxChart onPairChange={setSelectedDigestPair} />
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#113526]">
+            <div className="rounded-2xl border border-[#2D6A4F]/45 bg-[#113526] p-5 sm:p-6">
               <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
-              <h3 className="text-xl sm:text-2xl font-black text-white mb-2">{selectedDigestPair} Outlook</h3>
-              <p className="text-[#D7E8E1] leading-relaxed mb-3">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
-              <p className="text-[#BBD4CA] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
+              <button
+                type="button"
+                onClick={() => setIsOutlookModalOpen(true)}
+                className="group inline-flex items-center gap-2 text-left"
+              >
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  {selectedDigestPair} Outlook
+                </h3>
+                <span className="text-[#A8C5BA] text-xs sm:text-sm font-bold group-hover:text-white transition-colors">
+                  (Click to view)
+                </span>
+              </button>
+              <p className="text-[#D7E8E1] leading-relaxed mt-3">
+                Click to open the full outlook in a popup.
+              </p>
             </div>
           </div>
         </div>
@@ -715,6 +739,34 @@ export default function InsightsDigestPage() {
           </div>
         </div>
       </section>
+
+      {isOutlookModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+          onClick={() => setIsOutlookModalOpen(false)}
+        >
+          <div
+            className="w-full max-w-2xl rounded-2xl border border-[#2D6A4F]/50 bg-[#10251E] p-6 sm:p-8 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4 mb-5">
+              <div>
+                <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-white">{selectedDigestPair} Outlook</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsOutlookModalOpen(false)}
+                className="rounded-full border border-[#2D6A4F]/60 px-3 py-1.5 text-xs font-bold text-[#C7DED5] hover:bg-[#2D6A4F]/25 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+            <p className="text-[#D7E8E1] leading-relaxed mb-4">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
+            <p className="text-[#BBD4CA] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </main>
