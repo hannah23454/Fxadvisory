@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "SwitchYard FX - Corporate FX Solutions for CFOs",
   description: "Manage FX risk with confidence. Tailored solutions for mid-market CFOs and treasury professionals.",
   generator: "v0.app",
+  icons: {
+    icon: "/logo.png",
+  },
 }
 
 export default function RootLayout({

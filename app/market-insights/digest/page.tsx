@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import React from "react"
+import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Slider } from "@/components/ui/slider"
@@ -42,24 +42,32 @@ const GENERAL_MARKET_NEWS =
 const PAIR_FORECASTS: Record<Pair, { direction: string; outlook: string }> = {
   "AUD/USD": {
     direction: "Bias remains moderately constructive while US data underperforms, but event-risk can quickly reverse the move.",
-    outlook: "Watch payrolls and Fed speakers. A hold above 0.6500 supports near-term upside continuation; a stronger USD data surprise would likely retrace recent gains.",
+    outlook: "Watch payrolls and Fed speakers closely for directional cues. A hold above 0.6500 supports near-term upside continuation; a stronger USD data surprise would likely retrace recent gains. Market positioning remains extended, with options traders pricing in elevated volatility ahead of key economic releases. The RBA's messaging on rate paths will also feature prominently in the coming sessions. Technical resistance sits at 0.6550, with support established around 0.6480. Geopolitical developments and energy prices remain background risks that could amplify moves during low-liquidity sessions. For hedging programs, standing orders remain a prudent discipline ahead of employment data. A break above 0.6550 could attract fresh bullish interest from institutional flows. Conversely, a close below 0.6480 would suggest a test of 0.6450 support. Monitor real-time commentary from central bankers for unexpected policy signals.",
   },
   "AUD/EUR": {
     direction: "Near-term direction remains higher as Eurozone growth uncertainty contrasts with steadier Australian demand indicators.",
-    outlook: "ECB tone and regional PMIs are key. Further dovish signals in Europe would support AUD/EUR strength over the coming sessions.",
+    outlook: "ECB tone and regional PMIs are key catalysts for this pair's next directional move. Further dovish signals in Europe would support AUD/EUR strength over the coming sessions and weeks. Eurozone economic resilience has disappointed, creating headwinds for the euro across major crosses. Australian data surprises to the upside have bolstered the commodity-linked Australian dollar narrative. Technical analysis shows resistance around 0.6850 with support established at 0.6720 levels. Carry traders remain interested in this pair given the interest rate differential. Watch for ECB speakers this week—any dovish messaging could push EUR lower. The next major data point will be Eurozone PMI releases which could reset market expectations. Risk remains that stronger-than-expected Eurozone data could reverse recent weakness. A break above 0.6850 would likely attract additional bullish positioning from asset managers.",
   },
   "AUD/GBP": {
     direction: "Directional conviction is mixed, with UK inflation expectations and BoE path uncertainty driving two-way price action.",
-    outlook: "Expect range-bound behavior unless UK inflation materially surprises. A softer inflation print would likely favor AUD outperformance.",
+    outlook: "Expect range-bound behavior unless UK inflation materially surprises on the next reading. A softer inflation print would likely favor AUD outperformance versus sterling. UK wage growth data remains elevated, supporting the case for sustained BoE restrictions. However, softer services PMI suggests cooling in the broader UK economy. Australian wage price index remains supportive of the RBA's hawkish stance relative to BoE expectations. Technical support is positioned around 0.4120 with resistance at 0.4210 clearly established. Geopolitical risks surrounding UK policy could introduce additional volatility to this cross. The next major catalyst will be UK inflation data, which could reset market expectations significantly. Traders should monitor UK retail sales and consumer confidence indicators closely for clues. A break of 0.4210 resistance could see AUD/GBP rally toward 0.4280 in a risk-on environment.",
   },
   "AUD/JPY": {
     direction: "Risk sentiment and Japan rate expectations continue to dominate this cross, keeping intraday swings elevated.",
-    outlook: "Any signal of tighter BoJ policy or risk-off sentiment can pressure AUD/JPY quickly, while carry support remains in place in calmer conditions.",
+    outlook: "Any signal of tighter BoJ policy or risk-off sentiment can pressure AUD/JPY quickly, while carry support remains in place in calmer conditions. Japanese rate expectations have shifted higher following recent central bank commentary suggesting gradual normalization. The Australian dollar's yield advantage remains highly attractive for carry traders during risk-on environments. Market positioning suggests traders remain cautiously positioned ahead of BoJ policy meetings. Volatility around Asian market open times remains consistently elevated for this cross. Support for AUD/JPY is found around 98.50 with resistance forming near 99.80 levels. A break above 99.80 could attract fresh carry trade interest from institutional players. Conversely, a close below 98.50 would suggest weakness in risk sentiment and carry unwinding. Monitor global equity markets closely—weakness typically pressures this cross sharply. The next BoJ meeting announcement will be a critical catalyst for directional confirmation.",
   },
   "AUD/NZD": {
     direction: "Near-term direction is neutral-to-firm with relative growth data and commodity trends setting the tone.",
-    outlook: "Expect incremental moves unless one central bank shifts guidance unexpectedly. Commodity softness would be the main downside risk for AUD/NZD.",
+    outlook: "Expect incremental moves unless one central bank shifts guidance unexpectedly in either direction. Commodity softness would be the main downside risk for AUD/NZD given New Zealand's dairy export exposure. The Reserve Bank of Australia maintains a hawkish stance while RBNZ signals caution on future tightening. Australian economic data has been slightly stronger than New Zealand's recent performance indicators. Support is established around 1.0750 with resistance at 1.0850 clearly defined technically. A break of 1.0850 could see further AUD strength if RBA maintains its hawkish tone relative to RBNZ. Commodity prices, particularly dairy and agricultural products, influence the NZD component directly. Monitor relative central bank expectations closely—they drive longer-term positioning in this cross. The next economic data points from both countries will be important catalysts for direction. A technical break above 1.0850 could see AUD/NZD rally toward 1.0950 support.",
   },
+}
+
+const CURRENCY_FEED: Record<Pair, string> = {
+  "AUD/USD": "The Australian dollar has shown resilience against ongoing US rate cut expectations. Recent softer US inflation data has supported AUD/USD, with the pair holding above the 0.6500 level. Market participants are closely monitoring upcoming payroll figures and Federal Reserve communications for directional cues. Australian employment data remains robust, providing support to the currency. Event risk around US economic releases could trigger sharp moves in either direction. Options positioning suggests elevated volatility is expected in the coming sessions. The Reserve Bank of Australia's hawkish bias continues to underpin AUD strength. Technical support lies at 0.6480 with resistance forming around 0.6550. A break above 0.6550 could attract fresh bullish positioning.",
+  "AUD/EUR": "The AUD/EUR cross has benefited from Eurozone growth concerns contrasting with Australian economic resilience. European Central Bank dovish messaging has supported the Australian dollar against the euro. Recent PMI data from the Eurozone has disappointed, reinforcing expectations for further rate cuts. Australian retail sales and consumer confidence have remained relatively steady. The cross is trading within a well-defined range with technical levels guiding intraday moves. Geopolitical risks in Europe could introduce additional volatility to this pairing. Watch for ECB speakers and regional economic data for directional confirmation. Resistance remains around 0.6850 with support at 0.6720. A break of these levels could signal a trend acceleration.",
+  "AUD/GBP": "Sterling's weakness against the Australian dollar has been driven by mixed UK economic signals and uncertainty around Bank of England policy direction. UK inflation expectations remain elevated, but wage growth is moderating. The Australian dollar's commodity-linked nature provides strength against a softer sterling. Technical indicators suggest range-bound trading with no clear directional bias. UK inflation releases will be crucial for determining the next directional move. Australian wage price index data is also closely watched for RBA rate expectations. Support for AUD/GBP is positioned around 0.4120 with resistance at 0.4210. A softer UK inflation print could push the pair higher. Market positioning suggests traders are cautiously positioned in this cross.",
+  "AUD/JPY": "The AUD/JPY cross remains influenced by carry trade dynamics and risk sentiment shifts. Japanese rate expectations have shifted higher following recent central bank commentary. Risk-off sentiment typically pressures this cross as traders unwind carry trades. The Australian dollar's yield advantage remains attractive for carry traders in risk-on environments. Upcoming BoJ policy signals will be critical for directional guidance. Australian interest rate expectations support the carry appeal of this pair. Volatility around Asian market open times remains elevated for this cross. Support is found around 98.50 with resistance near 99.80. A break above 99.80 could attract further bullish interest from carry traders.",
+  "AUD/NZD": "The AUD/NZD cross reflects relative economic performance and central bank policy divergence between Australia and New Zealand. Australian economic data has been slightly stronger than New Zealand's recent performance. The Reserve Bank of Australia maintains a hawkish stance while RBNZ signals caution. Commodity prices, particularly dairy exports, influence the New Zealand dollar directly. AUD/NZD trades with moderate volatility and clear technical levels. Support is established around 1.0750 with resistance at 1.0850. A break of 1.0850 could see further AUD strength if RBA maintains its hawkish tone. Monitor commodity price movements for directional clues on this pair.",
 }
 
 function getRateLabel(v: number) {
@@ -93,8 +101,8 @@ export default function InsightsDigestPage() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
   const [selectedDigestPair, setSelectedDigestPair] = useState<Pair>("AUD/USD")
-  const [isHeroExpanded, setIsHeroExpanded] = useState(false)
   const [isOutlookModalOpen, setIsOutlookModalOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // ── Poll state ──────────────────────────────────────────────────────────
   type PollOption = { id: string; label: string; votes: number }
@@ -172,223 +180,328 @@ export default function InsightsDigestPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F0EB] flex flex-col">
-      <Header />
+    <main
+      className="min-h-screen flex flex-col relative"
+      style={{
+        backgroundColor: "#0A1F18",
+        backgroundImage: "url('/pattern-05.svg')",
+        backgroundRepeat: "repeat",
+        backgroundSize: "280px 280px",
+      }}
+    >
+      {/* Pattern overlay for enhanced texture effect */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at 50% 50%, rgba(10, 31, 24, 0.4) 0%, rgba(10, 31, 24, 0.6) 100%)",
+          zIndex: 1,
+        }}
+      />
 
-      {/* ── TICKER STRIP ─────────────────────────────────────────────────── */}
-      <div className="bg-[#113526] overflow-hidden">
-        <div
-          className="flex gap-0 py-3.5 whitespace-nowrap"
-          style={{ animation: "ticker 28s linear infinite" }}
-        >
-          {[...Array(3)].map((_, i) => (
-            <React.Fragment key={i}>
-              {TICKER_ITEMS.map((item, j) => (
-                <span key={`${i}-${j}`} className="text-sm font-semibold font-mono text-[#a9c5bb] tracking-widest px-8">
-                  {item}
-                  <span className="text-[#2D6A4F] ml-6">|</span>
-                </span>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+      <Header style={{ position: "relative", zIndex: 10 }} />      
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-[#0D1F19] via-[#113526] to-[#0F2E22] text-white py-10 sm:py-14 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-            backgroundSize: "36px 36px",
-          }}
-        />
-        <div className="absolute -top-16 -left-16 w-80 h-80 bg-[#2D6A4F] rounded-full blur-[120px] opacity-20 pointer-events-none" />
-        <div className="absolute -bottom-16 right-0 w-72 h-72 bg-[#1B4332] rounded-full blur-[100px] opacity-30 pointer-events-none" />
-        <div className="absolute right-6 top-5 hidden sm:block opacity-85">
-          <CompassIcon light size={44} />
-        </div>
+      <section className="relative overflow-hidden rounded-xl z-10" style={{ height: "auto", minHeight: "280px", fontFamily: "'DM Sans', sans-serif" }}>
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2D6A4F]/60 bg-[#2D6A4F]/20 mb-4">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#74B49B] animate-pulse" />
-            <span className="text-[11px] font-bold text-[#A8C5BA] uppercase tracking-[0.18em]">
-              Weekly Dispatch — {new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}
+  {/* Dark green base */}
+  <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #071C14 0%, #0d2e1e 40%, #0a2218 100%)" }} />
+
+  {/* SVG chart background */}
+  <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 900 320" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="gfill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#2ecc71" stopOpacity="0.4" />
+        <stop offset="100%" stopColor="#2ecc71" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <polygon points="0,260 60,240 120,255 180,210 240,220 300,180 360,195 420,150 480,165 540,130 600,145 660,110 720,125 780,90 840,105 900,75 900,320 0,320" fill="url(#gfill)" />
+    <polyline points="0,260 60,240 120,255 180,210 240,220 300,180 360,195 420,150 480,165 540,130 600,145 660,110 720,125 780,90 840,105 900,75" fill="none" stroke="#2ecc71" strokeWidth="2.5" />
+  </svg>
+
+  {/* Left-to-right gradient overlay */}
+  <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(7,28,20,0.92) 0%, rgba(7,28,20,0.6) 55%, rgba(7,28,20,0.15) 100%)" }} />
+
+  {/* Main content */}
+  <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 flex flex-col justify-center gap-3 sm:gap-4">
+
+    {/* Logo row */}
+    <div className="flex items-center gap-2 sm:gap-3">
+      <Image src="/logo.png" alt="SwitchYardFX Logo" width={50} height={50} style={{ borderRadius: 6 }} className="sm:w-[70px] sm:h-[70px]" />
+      <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(16px, 4vw, 22px)", color: "#fff", letterSpacing: 0.5 }}>
+        SwitchYard<span style={{ color: "#2ecc71" }}>FX</span>
+      </span>
+    </div>
+
+    <p style={{ fontSize: "clamp(10px, 2vw, 12px)", color: "rgba(255,255,255,0.5)", letterSpacing: "1.5px", textTransform: "uppercase" }}>
+      Professional Forex Trading
+    </p>
+
+    <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(20px, 5vw, 28px)", color: "#fff", lineHeight: 1.3, maxWidth: "100%", marginTop: 0 }}>
+      Trade smarter with{" "}
+      <span style={{ color: "#2ecc71" }}>real-time</span> market intelligence
+    </h1>
+
+    {/* Stats */}
+    <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-1 sm:mt-2">
+      {[["180+", "Currency pairs"], ["0.1 pip", "Avg spread"], ["24/5", "Live support"]].map(([val, lbl], i) => (
+        <div key={i} className="flex items-center gap-2 sm:gap-3">
+          {i > 0 && <div style={{ width: 1, height: 20, background: "rgba(255,255,255,0.15)" }} />}
+          <div className="flex flex-col gap-0.5">
+            <span style={{ fontSize: "clamp(14px, 3vw, 18px)", fontWeight: 500, color: "#fff" }}>{val}</span>
+            <span style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.45)", letterSpacing: "0.5px", textTransform: "uppercase" }}>{lbl}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Live ticker bar - animated */}
+<div
+  className="absolute bottom-0 left-0 right-0 overflow-hidden py-2"
+  style={{ background: "rgba(0,0,0,0.35)", borderTop: "1px solid rgba(46,204,113,0.25)" }}
+>
+  <style>{`
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker-scroll 30s linear infinite;
+    }
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+  `}</style>
+
+  <div className="ticker-track">
+    {/* Render the list TWICE so the scroll loops seamlessly */}
+    {[...Array(2)].map((_, dupIdx) => (
+      <div key={dupIdx} className="flex items-center">
+        {[
+          ["EUR/USD", "1.0842", "+0.12%", true],
+          ["GBP/USD", "1.2718", "−0.08%", false],
+          ["USD/JPY", "154.32", "+0.21%", true],
+          ["AUD/USD", "0.6531", "−0.05%", false],
+          ["XAU/USD", "2,318.40", "+0.33%", true],
+          ["USD/CHF", "0.9012", "+0.09%", true],
+          ["NZD/USD", "0.5981", "−0.11%", false],
+          ["USD/CAD", "1.3652", "+0.06%", true],
+        ].map(([pair, price, chg, up], i) => (
+          <div
+            key={`${dupIdx}-${i}`}
+            className="flex items-center gap-2 whitespace-nowrap px-6"
+            style={{
+              fontSize: 12,
+              fontWeight: 500,
+              borderRight: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <span style={{ color: "#fff" }}>{pair}</span>
+            <span style={{ color: up ? "#2ecc71" : "#e74c3c" }}>
+              {price}
+            </span>
+            <span style={{ color: up ? "#2ecc71" : "#e74c3c" }}>
+              {up ? "▲" : "▼"} {chg}
             </span>
           </div>
+        ))}
+      </div>
+    ))}
+  </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 leading-[1.05] tracking-tight">
-            Your Market<br />
-            <span className="text-[#a9c5bb]">Commentary .</span>
-          </h1>
+  </div>
+</section>
 
-          <div className="mt-2 max-w-[580px] text-left">
+
+      {/* ── 2nd CONNECTED MARKET SECTION ─────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+    <div className="rounded-3xl border border-[#2D6A4F]/50 bg-[#0a1f17] p-6 sm:p-8 shadow-2xl shadow-black/40">
+      <div className="mb-8">
+        <div className="flex items-start gap-4">
+          <CompassIcon light />
+          <div className="flex-1">
+            <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">General Market News</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Market Commentary</h2>
             <div
-              className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
-                isHeroExpanded ? "max-h-[20rem]" : "max-h-[5.25rem]"
-              }`}
+              className="overflow-hidden transition-all duration-500 ease-in-out"
+              style={{ maxHeight: isExpanded ? "600px" : "72px" }}
             >
-              <p className="text-[#8AAFA5] text-base sm:text-[1.0625rem] leading-7">
-                Shifting interest-rate expectations, softer US inflation prints, and mixed global risk sentiment are shaping FX markets this week. Australian dollar crosses are reacting to commodity resilience, while liquidity remains sensitive around central bank commentary and US labor data. The key setup for treasury teams is balancing protection against downside volatility with flexibility to capture favorable moves as policy expectations evolve. In this digest, we break down where momentum is building, where pricing looks stretched, and which currency pairs deserve closer attention over the next few sessions.
+              <p className="text-[#C7DED5] leading-relaxed">
+                This week markets were largely driven by shifting interest-rate expectations, with softer US data easing some of the recent USD strength. At the same time, improving risk sentiment and steady commodity prices provided support for the Australian dollar.
+              </p>
+              <p className="text-[#C7DED5] leading-relaxed mt-3">
+                Looking ahead, upcoming economic data releases and ongoing central bank expectations are likely to remain key drivers of currency movements across the pairs most relevant to businesses. The RBA's tone at its next meeting will be closely watched, particularly given recent labour market resilience. In Europe, ECB commentary around the pace of rate cuts continues to influence EUR pairs. Meanwhile, geopolitical developments and energy price swings remain background risks that can amplify volatility — especially during lower-liquidity overnight sessions. For businesses with regular FX exposure, maintaining standing orders and reviewing hedge ratios ahead of key data releases remains a prudent discipline.
               </p>
             </div>
-
             <button
               type="button"
-              onClick={() => setIsHeroExpanded((prev) => !prev)}
-              aria-expanded={isHeroExpanded}
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#2D6A4F]/70 bg-[#2D6A4F]/15 px-4 py-2 text-xs sm:text-sm font-bold text-[#C7DED5] hover:bg-[#2D6A4F]/25 transition-colors"
+              onClick={() => setIsExpanded((prev) => !prev)}
+              className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-[#74B49B] hover:text-white transition-colors"
             >
-              {isHeroExpanded ? "Read Less" : "Read More"}
+              {isExpanded ? "Read less ▲" : "Read more ▼"}
             </button>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── CONNECTED MARKET SECTION ─────────────────────────────────────── */}
-      <section
-        className="bg-[#0C3A31] border-b border-[#1B4332] relative overflow-hidden"
-        style={{
-          backgroundImage: "url('/pattern-05.svg')",
-          backgroundRepeat: "repeat",
-          backgroundSize: "220px 220px",
-        }}
-      >
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="rounded-3xl border border-[#2D6A4F]/45 bg-[#10251E] p-6 sm:p-8">
-            <div className="mb-8">
-              <div className="flex items-start gap-4">
-                <CompassIcon light />
-                <div>
-                  <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">General Market News</p>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Market Commentary and Currency Pair Analysis</h2>
-                  <p className="text-[#C7DED5] leading-relaxed">{GENERAL_MARKET_NEWS}</p>
+      <div className="mb-8">
+        <FxChart onPairChange={setSelectedDigestPair} />
+      </div>
+
+      <div className="rounded-2xl border border-[#2D6A4F]/45 p-5 sm:p-6">
+        <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
+        <button
+          type="button"
+          onClick={() => setIsOutlookModalOpen(true)}
+          className="group inline-flex items-center gap-2 text-left"
+        >
+          <h3 className="text-xl sm:text-2xl font-black text-white">
+            {selectedDigestPair} Outlook
+          </h3>
+          <span className="text-[#A8C5BA] text-xs sm:text-sm font-bold group-hover:text-white transition-colors">
+            (Click to view)
+          </span>
+        </button>
+        <p className="text-[#D7E8E1] leading-relaxed mt-3">
+          Click to open the full outlook in a popup.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ── WEEKLY KEY DATA SPOTLIGHT ────────────────────────────────────── */}
+<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+    <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/50 shadow-2xl shadow-black/40">
+      <div className="flex items-start gap-5">
+        <CompassIcon light />
+        <div className="flex-1">
+          <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">
+            Weekly Key Data Spotlight
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-4">
+            Australian Employment Data{" "}
+            <span className="text-[#74B49B]">(AUD Catalyst)</span>
+          </h2>
+          <p className="text-[#C7DED5] leading-relaxed mb-6">
+            Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
+            <strong className="text-white">before</strong> the release avoids forced decisions in volatile post-data moves.
+          </p>
+
+          {/* ── Rate and Volume Sliders ──────────────────────────────────── */}
+          {/* Two Column Layout: Sliders (Left) + Strategy Items (Right) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+            {/* LEFT COLUMN - SLIDERS */}
+            <div className="space-y-4 flex flex-col justify-center">
+              {/* Rate slider - Compact */}
+              <div className="bg-[#10251E]/90 rounded-lg border border-[#2D6A4F]/35 p-5">
+                <div className="flex items-end justify-between mb-4">
+                  <div>
+                    <label className="block text-xs font-bold text-white mb-0.5">
+                      Rate Exposure
+                    </label>
+                    <p className="text-[10px] text-[#A8C5BA]">Business FX sensitivity</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-black text-[#74B49B] leading-none">{formData.rate}%</div>
+                    <p className="text-[9px] text-[#A8C5BA] mt-0.5">{getRateLabel(formData.rate)}</p>
+                  </div>
+                </div>
+                <Slider
+                  value={[formData.rate]}
+                  onValueChange={(v) => handleSlider("rate", v)}
+                  min={0}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-[9px] text-[#6A9A8F] mt-2">
+                  <span>Minimal</span>
+                  <span>Critical</span>
+                </div>
+              </div>
+
+              {/* Volume slider - Compact */}
+              <div className="bg-[#10251E]/90 rounded-lg border border-[#2D6A4F]/35 p-5">
+                <div className="flex items-end justify-between mb-4">
+                  <div>
+                    <label className="block text-xs font-bold text-white mb-0.5">
+                      Transaction Volume
+                    </label>
+                    <p className="text-[10px] text-[#A8C5BA]">Monthly FX volume</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-black text-[#74B49B] leading-tight">{getVolumeLabel(formData.volume)}</div>
+                    <p className="text-[9px] text-[#A8C5BA] mt-0.5">{formData.volume}% of scale</p>
+                  </div>
+                </div>
+                <Slider
+                  value={[formData.volume]}
+                  onValueChange={(v) => handleSlider("volume", v)}
+                  min={0}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-[9px] text-[#6A9A8F] mt-2">
+                  <span>&lt; $100K</span>
+                  <span>&gt; $10M</span>
                 </div>
               </div>
             </div>
 
-            <div className="mb-8">
-              <FxChart onPairChange={setSelectedDigestPair} />
-            </div>
-
-            <div className="rounded-2xl border border-[#2D6A4F]/45 bg-[#113526] p-5 sm:p-6">
-              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
-              <button
-                type="button"
-                onClick={() => setIsOutlookModalOpen(true)}
-                className="group inline-flex items-center gap-2 text-left"
+            {/* RIGHT COLUMN - STRATEGY ITEMS */}
+            <div className="space-y-4 flex flex-col justify-center">
+            {[
+              { label: "Limit / target orders", desc: "Capture favourable spikes overnight automatically" },
+              { label: "Layered forwards", desc: "Lock a portion of budget rates ahead of the event" },
+              { label: "Options (e.g., collars)", desc: "Protect downside while keeping upside participation" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex items-start gap-3 p-4 rounded-xl bg-[#0f2a1f] border border-[#2D6A4F]/40"
               >
-                <h3 className="text-xl sm:text-2xl font-black text-white">
-                  {selectedDigestPair} Outlook
-                </h3>
-                <span className="text-[#A8C5BA] text-xs sm:text-sm font-bold group-hover:text-white transition-colors">
-                  (Click to view)
-                </span>
-              </button>
-              <p className="text-[#D7E8E1] leading-relaxed mt-3">
-                Click to open the full outlook in a popup.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="bg-[#113526] text-white border-b border-[#1B4332]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="flex items-start gap-5 p-6 rounded-2xl bg-[#1B4332]/50 border border-[#2D6A4F]/30">
-            <CompassIcon light />
-            <div>
-              <p className="text-[10px] font-bold text-[#a9c5bb] uppercase tracking-[0.14em] mb-2">Strategy</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mb-4">
-                Could this work for your business?
-              </h2>
-              <p className="text-[#8AAFA5] leading-relaxed mb-3">
-                SwitchYard clients overlay strategies alongside existing forwards — helping balance a company's competitive market position while the broader hedging program maintains compliance and budget-rate certainty.
-              </p>
-              <p className="text-[#8AAFA5] leading-relaxed mb-6">
-                This approach is particularly effective for importers and exporters with consistent monthly flows above $500K. The strategy adapts to your existing forward book and treasury policy.
-              </p>
-              <p className="text-sm font-bold text-[#a9c5bb]">
-                Check out if this could suit your current objectives ↓
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WEEKLY KEY DATA SPOTLIGHT ────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="p-6 rounded-2xl bg-[#F5F7F6] border border-[#DCE5E1]">
-            <div className="flex items-start gap-5">
-              <CompassIcon />
-              <div className="flex-1">
-                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-                  Weekly Key Data Spotlight
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-4">
-                  Australian Employment Data{" "}
-                  <span className="text-[#2D6A4F]">(AUD Catalyst)</span>
-                </h2>
-                <p className="text-[#4A5A55] leading-relaxed mb-6">
-                  Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
-                  <strong className="text-[#12261F]">before</strong> the release avoids forced decisions in volatile post-data moves.
-                </p>
-
-                <div className="space-y-3 mb-6">
-                  {[
-                    {
-                      label: "Limit / target orders",
-                      desc: "Capture favourable spikes overnight automatically",
-                    },
-                    {
-                      label: "Layered forwards",
-                      desc: "Lock a portion of budget rates ahead of the event",
-                    },
-                    {
-                      label: "Options (e.g., collars)",
-                      desc: "Protect downside while keeping upside participation",
-                    },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex items-start gap-3 p-4 rounded-xl bg-white border border-[#DCE5E1]"
-                    >
-                      <span className="text-[#2D6A4F] text-xs font-bold mt-0.5">◆</span>
-                      <div>
-                        <p className="text-sm font-bold text-[#12261F]">{item.label}</p>
-                        <p className="text-xs text-[#52796F] mt-0.5">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+                <span className="text-[#74B49B] text-xs font-bold mt-0.5">◆</span>
+                <div>
+                  <p className="text-sm font-bold text-white">{item.label}</p>
+                  <p className="text-xs text-[#A8C5BA] mt-0.5">{item.desc}</p>
                 </div>
-
-                <p className="text-xs text-[#52796F] mb-5">
-                  General market information only. Not a recommendation or offer.
-                </p>
-
-                <a
-                  href="#custom-quote"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold transition-colors"
-                >
-                  Ideas to manage this data release →
-                </a>
               </div>
+            ))}
             </div>
           </div>
+
+          <p className="text-xs text-[#6A9A8F] mb-5">
+            General market information only. Not a recommendation or offer.
+          </p>
+
+          <a
+            href="#custom-quote"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#74B49B] hover:bg-[#5C9A82] text-[#0a1f17] text-sm font-bold transition-colors"
+          >
+            Ideas to manage this data release →
+          </a>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ── THOUGHT LEADERSHIP ───────────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="p-6 rounded-2xl bg-white border border-[#DCE5E1]">
+      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
             <div className="flex items-start gap-5">
-              <CompassIcon />
+              <CompassIcon light />
               <div>
-                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+                <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">
                   Thought Leadership
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-6">
+                <h2 className="text-2xl sm:text-3xl font-black text-white mb-6">
                   Thought provoking talking points
                 </h2>
 
@@ -400,15 +513,15 @@ export default function InsightsDigestPage() {
                     "How does your current hedging program compare against peers in your industry?",
                   ].map((point, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
-                      <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
+                      <span className="text-[#74B49B] font-bold mt-0.5 shrink-0">♦</span>
+                      <p className="text-[#C7DED5] text-sm leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
 
                 <a
                   href="/market-insights"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/60"
                 >
                   LEARN MORE
                 </a>
@@ -419,14 +532,14 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── POLLS SECTION ────────────────────────────────────────────────── */}
-      <section className="bg-[#F5F7F6] border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
           <div className="grid md:grid-cols-2 gap-8">
             {/* ── ACTIVE POLL ────────────────────────────────────────────── */}
-            <div className="p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Active Poll</p>
-              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-2">Margin Pressure Poll</h3>
-              <p className="text-[#4A5A55] text-sm mb-6">What is currently eroding your margins the most?</p>
+            <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/35">
+              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Active Poll</p>
+              <h3 className="text-lg sm:text-xl font-black text-white mb-2">Margin Pressure Poll</h3>
+              <p className="text-[#C7DED5] text-sm mb-6">What is currently eroding your margins the most?</p>
 
               {hasVoted && poll ? (
                 /* voted — show results inline */
@@ -437,12 +550,12 @@ export default function InsightsDigestPage() {
                     return (
                       <div key={opt.id}>
                         <div className="flex justify-between text-sm mb-1">
-                          <span className={`font-medium ${isChosen ? "text-[#12261F] font-bold" : "text-[#4A5A55]"}`}>
+                          <span className={`font-medium ${isChosen ? "text-white font-bold" : "text-[#C7DED5]"}`}>
                             {opt.label}{isChosen && " ✓"}
                           </span>
-                          <span className="font-bold text-[#2D6A4F]">{pct}%</span>
+                          <span className="font-bold text-[#74B49B]">{pct}%</span>
                         </div>
-                        <div className="h-2 rounded-full bg-[#E8EEEB] overflow-hidden">
+                        <div className="h-2 rounded-full bg-[#1B4332] overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-[#2D6A4F] to-[#74B49B] transition-all duration-700"
                             style={{ width: `${pct}%` }}
@@ -451,7 +564,7 @@ export default function InsightsDigestPage() {
                       </div>
                     )
                   })}
-                  <p className="text-xs text-[#52796F] pt-2">{poll.total} votes cast — thanks for voting!</p>
+                  <p className="text-xs text-[#6A9A8F] pt-2">{poll.total} votes cast — thanks for voting!</p>
                 </div>
               ) : (
                 /* not voted — show radio options */
@@ -466,8 +579,8 @@ export default function InsightsDigestPage() {
                       key={opt.id}
                       className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                         selectedOption === opt.id
-                          ? "border-[#2D6A4F] bg-[#E8EEEB]"
-                          : "border-[#DCE5E1] bg-white hover:border-[#a9c5bb]"
+                          ? "border-[#2D6A4F] bg-[#1B4332]/60"
+                          : "border-[#2D6A4F]/30 bg-[#1B4332]/30 hover:border-[#2D6A4F]/60"
                       }`}
                     >
                       <input
@@ -476,9 +589,9 @@ export default function InsightsDigestPage() {
                         value={opt.id}
                         checked={selectedOption === opt.id}
                         onChange={() => setSelectedOption(opt.id)}
-                        className="accent-[#2D6A4F] w-4 h-4 shrink-0"
+                        className="accent-[#74B49B] w-4 h-4 shrink-0"
                       />
-                      <span className="text-sm text-[#12261F]">{opt.label}</span>
+                      <span className="text-sm text-[#D7E8E1]">{opt.label}</span>
                     </label>
                   ))}
                 </div>
@@ -488,7 +601,7 @@ export default function InsightsDigestPage() {
                 <button
                   onClick={handlePollSubmit}
                   disabled={!selectedOption || pollSubmitting}
-                  className="w-full px-7 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors"
+                  className="w-full px-7 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/60"
                 >
                   {pollSubmitting ? "Submitting…" : "SUBMIT"}
                 </button>
@@ -496,10 +609,10 @@ export default function InsightsDigestPage() {
             </div>
 
             {/* ── LAST WEEK'S POLL ────────────────────────────────────────── */}
-            <div className="p-6 rounded-2xl bg-[#FAFBFA] border border-[#DCE5E1]">
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Last Week</p>
-              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-2">Last Week's Poll Result</h3>
-              <p className="text-[#4A5A55] text-sm mb-6">What is your biggest FX concern right now?</p>
+            <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/35">
+              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Last Week</p>
+              <h3 className="text-lg sm:text-xl font-black text-white mb-2">Last Week's Poll Result</h3>
+              <p className="text-[#C7DED5] text-sm mb-6">What is your biggest FX concern right now?</p>
 
               <div className="space-y-4 mb-6">
                 {[
@@ -510,10 +623,10 @@ export default function InsightsDigestPage() {
                 ].map((item) => (
                   <div key={item.label}>
                     <div className="flex justify-between text-sm mb-1.5">
-                      <span className="text-[#4A5A55]">{item.label}</span>
-                      <span className="font-black text-[#12261F]">{item.pct}%</span>
+                      <span className="text-[#C7DED5]">{item.label}</span>
+                      <span className="font-black text-white">{item.pct}%</span>
                     </div>
-                    <div className="h-2.5 rounded-full bg-[#DCE5E1] overflow-hidden">
+                    <div className="h-2.5 rounded-full bg-[#1B4332] overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-[#113526] to-[#2D6A4F]"
                         style={{ width: `${item.pct}%` }}
@@ -523,7 +636,7 @@ export default function InsightsDigestPage() {
                 ))}
               </div>
 
-              <button className="w-full px-7 py-2.5 rounded-full bg-[#a9c5bb] hover:bg-[#8AAFA5] text-[#12261F] text-sm font-bold tracking-wide transition-colors">
+              <button className="w-full px-7 py-2.5 rounded-full bg-[#1B4332] hover:bg-[#2D6A4F]/40 text-[#a9c5bb] text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/40">
                 LAST WEEK RESULTS
               </button>
             </div>
@@ -532,31 +645,28 @@ export default function InsightsDigestPage() {
       </section>
 
       {/* ── CUSTOM QUOTE FORM ────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]" id="custom-quote">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          {/* Section header */}
-          <div className="flex items-start gap-5 mb-10 p-6 rounded-2xl bg-[#F5F7F6] border border-[#DCE5E1]">
-            <CompassIcon />
-            <div>
-              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Custom Quote</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">
+      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10" id="custom-quote">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
+            {/* Section header */}
+            <div className="mb-8">
+              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Custom Quote</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
                 Get Your Customised FX Solution
               </h2>
-              <p className="text-[#4A5A55] text-sm leading-relaxed max-w-xl">
+              <p className="text-[#C7DED5] text-sm leading-relaxed">
                 Tell us your requirements and we'll craft the perfect hedging strategy for your business.
-                Adjust the sliders and fill in your details — we'll review and get back to you shortly.
               </p>
             </div>
-          </div>
 
           {submitted ? (
             /* ── success state ── */
             <div className="text-center py-16 max-w-md mx-auto">
-              <div className="w-16 h-16 bg-[#E8EEEB] rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 size={32} className="text-[#2D6A4F]" />
+              <div className="w-16 h-16 bg-[#1B4332]/60 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 size={32} className="text-[#74B49B]" />
               </div>
-              <h3 className="text-2xl font-black text-[#12261F] mb-3">Request Received</h3>
-              <p className="text-[#4A5A55] leading-relaxed mb-8">
+              <h3 className="text-2xl font-black text-white mb-3">Request Received</h3>
+              <p className="text-[#C7DED5] leading-relaxed mb-8">
                 Thank you! We'll review your requirements and get back to you shortly with a customised offer.
               </p>
               <button
@@ -571,69 +681,10 @@ export default function InsightsDigestPage() {
             </div>
           ) : (
             /* ── form ── */
-            <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-              {/* Rate slider */}
-              <div className="bg-[#F5F7F6] rounded-2xl border border-[#DCE5E1] p-6">
-                <div className="flex items-end justify-between mb-5">
-                  <div>
-                    <label className="block text-sm font-bold text-[#12261F] mb-1">
-                      Exchange Rate Exposure
-                    </label>
-                    <p className="text-xs text-[#52796F]">How sensitive is your business to FX movements?</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-black text-[#2D6A4F] leading-none">{formData.rate}%</div>
-                    <p className="text-xs text-[#52796F] mt-1">{getRateLabel(formData.rate)}</p>
-                  </div>
-                </div>
-                <Slider
-                  value={[formData.rate]}
-                  onValueChange={(v) => handleSlider("rate", v)}
-                  min={0}
-                  max={100}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-[#52796F] mt-2">
-                  <span>Minimal</span>
-                  <span>Critical</span>
-                </div>
-              </div>
-
-              {/* Volume slider */}
-              <div className="bg-[#F5F7F6] rounded-2xl border border-[#DCE5E1] p-6">
-                <div className="flex items-end justify-between mb-5">
-                  <div>
-                    <label className="block text-sm font-bold text-[#12261F] mb-1">
-                      Monthly Transaction Volume
-                    </label>
-                    <p className="text-xs text-[#52796F]">What's your typical monthly FX volume?</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-lg font-black text-[#2D6A4F] leading-tight">{getVolumeLabel(formData.volume)}</div>
-                    <p className="text-xs text-[#52796F] mt-1">{formData.volume}% of scale</p>
-                  </div>
-                </div>
-                <Slider
-                  value={[formData.volume]}
-                  onValueChange={(v) => handleSlider("volume", v)}
-                  min={0}
-                  max={100}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-[#52796F] mt-2">
-                  <span>&lt; $100K</span>
-                  <span>&gt; $10M</span>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="border-t border-[#DCE5E1]" />
-
+            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
               {/* Contact fields */}
               <div className="space-y-4">
-                <h3 className="text-sm font-bold text-[#12261F]">Your Details</h3>
+                <h3 className="text-sm font-bold text-white">Your Details</h3>
                 <input
                   type="text"
                   name="name"
@@ -641,7 +692,7 @@ export default function InsightsDigestPage() {
                   value={formData.name}
                   onChange={handleInput}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white text-[#12261F] placeholder-[#52796F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
                 />
                 <input
                   type="text"
@@ -649,7 +700,7 @@ export default function InsightsDigestPage() {
                   placeholder="Company Name"
                   value={formData.company}
                   onChange={handleInput}
-                  className="w-full px-4 py-3 rounded-xl border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white text-[#12261F] placeholder-[#52796F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
                 />
                 <input
                   type="email"
@@ -658,7 +709,7 @@ export default function InsightsDigestPage() {
                   value={formData.email}
                   onChange={handleInput}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white text-[#12261F] placeholder-[#52796F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
                 />
                 <textarea
                   name="notes"
@@ -666,76 +717,79 @@ export default function InsightsDigestPage() {
                   value={formData.notes}
                   onChange={handleInput}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-[#DCE5E1] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white text-[#12261F] placeholder-[#52796F] text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm resize-none"
                 />
               </div>
 
               {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-sm text-red-600">{error}</p>
+                <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-xl">
+                  <p className="text-sm text-red-300">{error}</p>
                 </div>
               )}
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-4 rounded-xl text-base transition-all"
+                className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3 px-6 rounded-xl text-base transition-all border border-[#2D6A4F]/60"
               >
                 {loading ? "Submitting…" : "Get My Custom Quote →"}
               </Button>
 
-              <p className="text-xs text-[#52796F] text-center">
+              <p className="text-xs text-[#6A9A8F] text-center">
                 We respect your privacy. No spam, ever. General market information only — not a recommendation or offer.
               </p>
             </form>
           )}
+          </div>
         </div>
       </section>
 
       {/* ── FAQ SECTION ──────────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-[#DCE5E1]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">
-              Got questions? We've got answers.
-            </h2>
-            <p className="text-[#4A5A55] text-sm">
-              No calls. No pressure. Just smart insights tailored to you.
-            </p>
-          </div>
+      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
+                Got questions? We've got answers.
+              </h2>
+              <p className="text-[#C7DED5] text-sm">
+                No calls. No pressure. Just smart insights tailored to you.
+              </p>
+            </div>
 
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
-            {[
-              {
-                q: "What's included in basic coverage?",
-                a: "Weekly FX commentary, currency pair analysis, and data event alerts tailored to your exposure.",
-              },
-              {
-                q: "Will switching cancel my current insights?",
-                a: "Not at all. Your current access stays active while we onboard you to a customised solution.",
-              },
-              {
-                q: "How can I secure multiple rate objectives?",
-                a: "We layer forwards, options and target orders to address multiple budget rates simultaneously.",
-              },
-            ].map((item) => (
-              <div
-                key={item.q}
-                className="bg-[#F5F7F6] rounded-2xl border border-[#DCE5E1] p-5 shadow-xs"
+            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+              {[
+                {
+                  q: "What's included in basic coverage?",
+                  a: "Weekly FX commentary, currency pair analysis, and data event alerts tailored to your exposure.",
+                },
+                {
+                  q: "Will switching cancel my current insights?",
+                  a: "Not at all. Your current access stays active while we onboard you to a customised solution.",
+                },
+                {
+                  q: "How can I secure multiple rate objectives?",
+                  a: "We layer forwards, options and target orders to address multiple budget rates simultaneously.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.q}
+                  className="bg-[#0a1f17] rounded-2xl border border-[#2D6A4F]/35 p-5"
+                >
+                  <p className="text-sm font-bold text-white mb-2">→ {item.q}</p>
+                  <p className="text-xs text-[#A8C5BA] leading-relaxed">{item.a}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <a
+                href="#custom-quote"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/60"
               >
-                <p className="text-sm font-bold text-[#12261F] mb-2">→ {item.q}</p>
-                <p className="text-xs text-[#4A5A55] leading-relaxed">{item.a}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <a
-              href="#custom-quote"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#12261F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
-            >
-              Get in touch
-            </a>
+                Get in touch
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -767,8 +821,9 @@ export default function InsightsDigestPage() {
           </div>
         </div>
       )}
-
+<div className="relative z-10">
       <Footer />
+</div>
     </main>
   )
 }
