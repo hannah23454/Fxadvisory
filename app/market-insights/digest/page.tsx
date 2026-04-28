@@ -198,7 +198,9 @@ export default function InsightsDigestPage() {
         }}
       />
 
-      <Header style={{ position: "relative", zIndex: 10 }} />      
+      <div style={{ position: "relative", zIndex: 10 }}>
+        <Header />
+      </div>      
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden rounded-xl z-10" style={{ height: "auto", minHeight: "280px", fontFamily: "'DM Sans', sans-serif" }}>

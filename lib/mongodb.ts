@@ -1,7 +1,12 @@
 import { MongoClient, Db } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const options = {};
+const options = {
+  maxPoolSize: 10,
+  minPoolSize: 2,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient> | null = null;
@@ -22,12 +27,18 @@ function getClientPromise(): Promise<MongoClient> {
   if (process.env.NODE_ENV === 'development') {
     if (!global._mongoClientPromise) {
       client = new MongoClient(uri, options);
-      global._mongoClientPromise = client.connect();
+      global._mongoClientPromise = client.connect().catch(err => {
+        global._mongoClientPromise = null;
+        throw err;
+      });
     }
     clientPromise = global._mongoClientPromise;
   } else {
     client = new MongoClient(uri, options);
-    clientPromise = client.connect();
+    clientPromise = client.connect().catch(err => {
+      clientPromise = null;
+      throw err;
+    });
   }
 
   return clientPromise;

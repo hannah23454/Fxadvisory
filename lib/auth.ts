@@ -70,9 +70,13 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (session.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).role = token.role;
+      try {
+        if (session.user) {
+          (session.user as any).id = token.id;
+          (session.user as any).role = token.role;
+        }
+      } catch (error) {
+        console.error('Session callback error:', error);
       }
       return session;
     },
