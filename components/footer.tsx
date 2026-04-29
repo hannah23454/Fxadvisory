@@ -123,6 +123,17 @@ export default function Footer() {
             </Link>
           </div>
           <p>{t('footer_copyright')}</p>
+          <p>
+            Designed &amp; developed by{" "}
+            <a
+              href="https://usmanxdev.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#A8C5BA] hover:text-white transition"
+            >
+              UxmanKhan
+            </a>
+          </p>
         </div>
       </div>
     </footer>
