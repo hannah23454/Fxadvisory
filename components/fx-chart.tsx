@@ -15,7 +15,7 @@ import {
   ReferenceArea,
   Line,
 } from "recharts"
-import { UploadCloud, X, CheckCircle2 } from "lucide-react"
+import { UploadCloud, X, CheckCircle2, AlertCircle } from "lucide-react"
 
 const PAIRS = ["AUD/USD", "AUD/EUR", "AUD/GBP", "AUD/JPY", "AUD/NZD"] as const
 export type Pair = (typeof PAIRS)[number]
@@ -43,9 +43,11 @@ function ChartTooltip({ active, payload, label }: {
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-[#12261F] border border-[#2D6A4F]/60 rounded-xl px-4 py-2.5 shadow-2xl">
-      <p className="text-[10px] text-[#a9c5bb] uppercase tracking-wide mb-0.5">{label}</p>
-      <p className="text-white font-black text-lg leading-none">{payload[0].value.toFixed(4)}</p>
+    <div className="bg-white border border-[#DCE5E1] rounded-xl px-4 py-2.5 shadow-[0_8px_24px_rgba(18,38,31,0.12)]">
+      <p className="text-[10px] text-[#52796F] uppercase tracking-wide mb-0.5 font-semibold">{label}</p>
+      <p className="text-[#12261F] font-black text-lg leading-none tabular-nums">
+        {payload[0].value.toFixed(4)}
+      </p>
     </div>
   )
 }
@@ -68,6 +70,7 @@ function StatCard({
   subValue?: string
   positive?: boolean
   loading: boolean
+
 }) {
   return (
     <div className="h-full min-h-[66px] rounded-xl border border-[#DCE5E1] bg-[#F7F8F7] px-2.5 py-2 shadow-[0_6px_14px_rgba(18,38,31,0.08)] sm:px-3 sm:py-2.5">
@@ -222,21 +225,6 @@ export default function FxChart({ onPairChange }: FxChartProps) {
   const yMin = low - padding
   const yMax = high + padding
 
-  const overlayColor = (line: "high" | "low" | "average" | "personal") => {
-    switch (line) {
-      case "high":
-        return focusedOverlay === "high" ? "#22c55e" : "#86efac"
-      case "low":
-        return focusedOverlay === "low" ? "#ef4444" : "#fca5a5"
-      case "average":
-        return focusedOverlay === "average" ? "#eab308" : "#facc15"
-      case "personal":
-        return focusedOverlay === "personal" ? "#e0e7ff" : "#c7d2fe"
-      default:
-        return "#52796F"
-    }
-  }
-
   const handlePortfolioFile = async (file?: File) => {
     if (!file) return
     try {
@@ -270,25 +258,74 @@ export default function FxChart({ onPairChange }: FxChartProps) {
     setPortfolioMessage("Portfolio disconnected. Drop confirmations to reconnect.")
   }
 
-  return (
-    <div>
-      <div className="mb-6 rounded-2xl border border-[#2D6A4F]/35 bg-[#12261F]/60 p-4 sm:p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#A8C5BA]">Your Currency Feed</p>
-          <p className="text-[11px] text-[#A8C5BA]">
-            {status === "authenticated"
-              ? "Synced with your dashboard currency selections."
-              : "Showing all pairs. Login to personalize your feed."}
+  const toggleCurrencyInFeed = async (p: Pair) => {
+    if (status !== "authenticated") {
+      setShowLoginPrompt(true)
+      return
+    }
+    const quoteCurrency = p.split("/")[1]
+    const currentQuotes = preferredPairs.map((pp) => pp.split("/")[1])
+    const isInFeed = currentQuotes.includes(quoteCurrency)
+    const newQuotes = isInFeed
+      ? currentQuotes.filter((c) => c !== quoteCurrency)
+      : [...currentQuotes, quoteCurrency]
+    const newPairs = ALL_PAIRS.filter((ap) => newQuotes.includes(ap.split("/")[1]))
+    setPreferredPairs(newPairs)
+    try {
+      await fetch("/api/user/preferences", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currencies: ["AUD", ...newQuotes] }),
+      })
+    } catch {
+      setPreferredPairs(preferredPairs)
+    }
+  }
+
+ return (
+  <div>
+    {/* ═══════════════════════════════════════════════════════════════════ */}
+    {/* 1. CURRENCY FEED HEADER — pair name + selector + chips             */}
+    {/* ═══════════════════════════════════════════════════════════════════ */}
+    <div className="mb-4 rounded-2xl border border-[#2D6A4F]/30 p-5 sm:p-6" style={{ background: "#DCE5E1" }}>
+      {/* Top row: label + pair name + live indicator */}
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#52796F] mb-1.5">
+            Your Currency Feed
           </p>
+          <h2
+            className="text-[#12261F] font-black leading-[0.95] tracking-tight"
+            style={{ fontSize: "clamp(28px, 5vw, 42px)", letterSpacing: "-0.015em" }}
+          >
+            {pair}
+          </h2>
         </div>
 
-        <div className="flex flex-wrap gap-2.5 mb-4">
+        <div className="flex items-center gap-1.5 mt-1 shrink-0">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#2D6A4F] opacity-60 animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2D6A4F]" />
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-[#52796F]">
+            Live
+          </span>
+        </div>
+      </div>
+
+      {/* Switch pair selector */}
+      <div className="mb-5">
+        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#52796F] mb-2">
+          Switch pair
+        </p>
+        <div className="flex flex-wrap gap-2">
           {PAIRS.map((p) => {
             const preferred = status === "authenticated" && preferredPairs.includes(p)
-            const active = status === "authenticated" && pair === p
+            const active = pair === p
             return (
               <button
                 key={`pair-toggle-${p}`}
+                type="button"
                 onClick={() => {
                   if (status !== "authenticated") {
                     setShowLoginPrompt(true)
@@ -297,299 +334,439 @@ export default function FxChart({ onPairChange }: FxChartProps) {
                   setPair(p)
                   setShowLoginPrompt(false)
                 }}
-                className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-black tracking-wide transition-all ${
+                className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-wide transition-all ${
                   active
-                    ? "bg-[#A8C5BA] text-[#113526] border-[#A8C5BA] shadow-[0_0_0_2px_rgba(168,197,186,0.18)]"
+                    ? "bg-[#2D6A4F] text-white shadow-sm"
                     : preferred
-                    ? "bg-[#2D6A4F] text-white border-[#74B49B] shadow-[0_0_0_2px_rgba(116,180,155,0.25)]"
-                    : "bg-[#1B4332]/30 text-[#A8C5BA] border-[#2D6A4F]/40 hover:bg-[#1B4332]/50"
+                    ? "bg-[#2D6A4F]/12 text-[#2D6A4F] border border-[#2D6A4F]/40 hover:bg-[#2D6A4F]/20"
+                    : "bg-white/70 text-[#52796F] border border-[#DCE5E1] hover:border-[#74B49B] hover:text-[#2D6A4F]"
                 }`}
                 aria-pressed={active}
               >
-                <span>{p.replace("AUD/", "")}</span>
+                {p.replace("AUD/", "")}
               </button>
             )
           })}
         </div>
-
-        {showLoginPrompt && status !== "authenticated" && (
-          <div className="mb-4 rounded-lg border border-[#2D6A4F]/45 bg-[#0D1F19]/70 p-3 text-xs text-[#C7DED5]">
-            <span className="font-semibold text-white">Login required:</span> sign in to personalize this feed from your dashboard selections.
-            <Link href="/login?callbackUrl=/market-insights/digest" className="ml-2 font-bold text-[#A8C5BA] underline hover:text-white">
-              Go to login
-            </Link>
-          </div>
-        )}
-
       </div>
 
-      <div className="bg-[#0D1F19]/65 rounded-2xl border border-[#2D6A4F]/40 p-3 sm:p-4">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-4">
-          <p className="text-xs sm:text-sm font-bold text-white tracking-wide">{pair} - Historical Rate</p>
-          <div className="flex gap-1.5">
-            {PERIODS.map(({ label, months: m }) => (
-              <button
-                key={label}
-                onClick={() => setMonths(m)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  months === m
-                    ? "bg-[#2D6A4F] text-white shadow-sm"
-                    : "bg-[#12261F] text-[#A8C5BA] border border-[#2D6A4F]/40 hover:border-[#74B49B]"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+      {/* Add to feed — divider + chips */}
+      <div className="pt-4 border-t border-[#2D6A4F]/20">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <p className="text-[11px] font-bold text-[#12261F]">
+            Add currencies to your Market commentary
+          </p>
+          {status !== "authenticated" && (
+            <Link
+              href="/login?callbackUrl=/market-insights/digest"
+              className="text-[10px] font-bold text-[#2D6A4F] hover:text-[#12261F] underline-offset-2 hover:underline"
+            >
+              Login to personalise
+            </Link>
+          )}
         </div>
+        <div className="flex flex-wrap gap-1.5">
+          {PAIRS.map((p) => {
+            const inFeed = status === "authenticated" && preferredPairs.includes(p)
+            return (
+              <button
+                key={`feed-chip-${p}`}
+                type="button"
+                onClick={() => toggleCurrencyInFeed(p)}
+                className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold transition-all border ${
+                  inFeed
+                    ? "bg-[#2D6A4F] text-white border-[#2D6A4F]"
+                    : "bg-white/70 text-[#52796F] border-[#DCE5E1] hover:border-[#74B49B] hover:text-[#2D6A4F]"
+                }`}
+                title={inFeed ? `Remove ${p} from feed` : `Add ${p} to feed`}
+              >
+                {inFeed && <span className="text-[10px]">✓</span>}
+                {p.replace("AUD/", "")}
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-4">
-          {/* ════════════════════════════════════════════════════════════ */}
-          {/* LEFT COLUMN - STACKED: AGGREGATE RATE → UPLOAD → KEY RATES   */}
-          {/* ════════════════════════════════════════════════════════════ */}
-          <div className="space-y-3 flex flex-col">
-            {/* AGGREGATE RATE BOX */}
-            <div className="rounded-xl border border-[#DCE5E1] bg-white p-5 shadow-[0_6px_14px_rgba(18,38,31,0.08)]">
-              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.11em] text-[#52796F]">Your Current Aggregate Rate</p>
-              <p className="text-4xl font-black text-[#12261F] leading-tight mb-2">
-                {portfolioConnected && personalHedgeRate ? personalHedgeRate.toFixed(dp) : "—"}
+      {showLoginPrompt && status !== "authenticated" && (
+        <div className="mt-4 rounded-lg border border-[#2D6A4F]/30 bg-white/60 p-3 text-xs text-[#4A5A55]">
+          <span className="font-semibold text-[#12261F]">Login required:</span> sign in to personalise your currency feed.
+          <Link href="/login?callbackUrl=/market-insights/digest" className="ml-2 font-bold text-[#2D6A4F] underline hover:text-[#12261F]">
+            Go to login
+          </Link>
+        </div>
+      )}
+    </div>
+
+    {/* ═══════════════════════════════════════════════════════════════════ */}
+    {/* 2. CHART AREA — light theme, harmonized with cream parent          */}
+    {/* ═══════════════════════════════════════════════════════════════════ */}
+    <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-[#2D6A4F]/25 p-4 sm:p-5 shadow-[0_4px_12px_rgba(18,38,31,0.06)]">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-4">
+        <p className="text-xs sm:text-sm font-bold text-[#12261F] tracking-wide">
+          {pair} <span className="text-[#52796F]">— Historical Rate</span>
+        </p>
+        <div className="flex gap-1.5">
+          {PERIODS.map(({ label, months: m }) => (
+            <button
+              key={label}
+              onClick={() => setMonths(m)}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                months === m
+                  ? "bg-[#2D6A4F] text-white shadow-sm"
+                  : "bg-white text-[#52796F] border border-[#DCE5E1] hover:border-[#74B49B] hover:text-[#2D6A4F]"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-4">
+        {/* LEFT COLUMN */}
+        <div className="space-y-3 flex flex-col">
+          {/* AGGREGATE RATE BOX */}
+          <div
+            className={`rounded-xl border p-5 transition-all ${
+              portfolioConnected
+                ? "border-[#74B49B]/60 bg-white shadow-[0_4px_12px_rgba(18,38,31,0.08)]"
+                : "border-[#DCE5E1] bg-white shadow-[0_4px_12px_rgba(18,38,31,0.06)]"
+            }`}
+          >
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <p className="text-[10px] font-bold uppercase tracking-[0.11em] text-[#52796F]">
+                Your Current Aggregate Rate
               </p>
               {!portfolioConnected && (
-                <p className="text-[11px] text-[#A8C5BA]">Connect your portfolio to see your blended rate</p>
+                <span
+                  className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-rose-500 text-white shrink-0"
+                  title="Connect your portfolio to see your blended rate"
+                >
+                  <AlertCircle className="h-3.5 w-3.5" strokeWidth={2.5} />
+                </span>
               )}
             </div>
 
-            {/* UPLOAD SECTION - COMPACT, INLINE - MOVED BETWEEN AGGREGATE & KEY RATES */}
-            {!portfolioConnected && (
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault()
-                  setIsDragging(true)
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault()
-                  setIsDragging(false)
-                  handlePortfolioFile(e.dataTransfer.files?.[0])
-                }}
-                className={`rounded-lg border p-3 transition-all flex items-center gap-2 ${
-                  isDragging ? "bg-[#1B4332] border-[#74B49B]" : "bg-[#12261F] border-[#2D6A4F]/40"
-                }`}
-              >
-                <label className="inline-flex items-center gap-1.5 rounded-full bg-[#2D6A4F] px-3 py-1.5 text-[11px] font-bold text-white hover:bg-[#1B4332] cursor-pointer shrink-0">
-                  Upload
-                  <input
-                    type="file"
-                    className="sr-only"
-                    accept=".csv,.txt,.json,.pdf"
-                    onChange={(e) => handlePortfolioFile(e.target.files?.[0])}
-                  />
-                </label>
-                <p className="text-[11px] text-[#A8C5BA] leading-tight">Drop trade confirmations to connect</p>
-              </div>
+            {portfolioConnected && personalHedgeRate ? (
+              <>
+                <p className="text-5xl font-black text-[#12261F] leading-none tracking-tight tabular-nums">
+                  {personalHedgeRate.toFixed(dp)}
+                </p>
+                <p className="mt-2 text-[11px] font-semibold text-[#2D6A4F]">
+                  Blended rate from your portfolio
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-5xl font-black text-[#C7CDC9] leading-none tracking-tight tabular-nums">
+                  —
+                </p>
+                <p className="mt-2 text-[11px] text-rose-600 font-semibold leading-snug">
+                  Not connected — upload trades to activate
+                </p>
+              </>
             )}
-
-            {/* KEY RATES - 2x2 GRID */}
-            <div className="rounded-xl border border-[#2D6A4F]/35 bg-[#12261F]/80 p-3">
-              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[#A8C5BA]">Key Rates</p>
-              <div className="grid grid-cols-2 gap-2">
-                <StatCard label="Current" value={current.toFixed(dp)} loading={loading} />
-                <StatCard label={`${months}M High`} value={high.toFixed(dp)} loading={loading} />
-                <StatCard label={`${months}M Low`} value={low.toFixed(dp)} loading={loading} />
-                <StatCard
-                  label={`${months}M Change`}
-                  value={loading ? "-" : changePctLabel}
-                  subValue={loading ? undefined : changeAbsLabel}
-                  positive={!loading ? isPositive : undefined}
-                  loading={loading}
-                />
-              </div>
-            </div>
           </div>
 
-          {/* ════════════════════════════════════════════════════════════ */}
-          {/* RIGHT COLUMN - CHART + TOGGLE BUTTONS BELOW                  */}
-          {/* ════════════════════════════════════════════════════════════ */}
-          <div className="space-y-3 flex flex-col">
-            {portfolioConnected && (
-              <div className="rounded-2xl border border-[#2D6A4F]/45 bg-[#12261F] p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 mt-0.5 text-[#74B49B]" />
-                  <div>
-                    <p className="text-sm font-bold text-white">Portfolio connected</p>
-                    <p className="text-xs text-[#A8C5BA]">Aggregate hedge rate: {personalHedgeRate?.toFixed(dp)}</p>
-                  </div>
+          {/* UPLOAD SECTION */}
+          {!portfolioConnected && (
+            <div
+              onDragOver={(e) => {
+                e.preventDefault()
+                setIsDragging(true)
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault()
+                setIsDragging(false)
+                handlePortfolioFile(e.dataTransfer.files?.[0])
+              }}
+              className={`rounded-xl border p-3 transition-all flex items-center gap-2.5 ${
+                isDragging
+                  ? "bg-[#74B49B]/15 border-[#74B49B]"
+                  : "bg-white/70 border-[#DCE5E1] border-dashed"
+              }`}
+            >
+              <label className="inline-flex items-center gap-1.5 rounded-full bg-[#2D6A4F] px-3.5 py-1.5 text-[11px] font-bold text-white hover:bg-[#1B4332] cursor-pointer shrink-0 transition-colors">
+                Upload
+                <input
+                  type="file"
+                  className="sr-only"
+                  accept=".csv,.txt,.json,.pdf"
+                  onChange={(e) => handlePortfolioFile(e.target.files?.[0])}
+                />
+              </label>
+              <p className="text-[11px] text-[#52796F] leading-tight">
+                Drop trade confirmations to connect
+              </p>
+            </div>
+          )}
+
+          {/* KEY RATES */}
+          <div className="rounded-xl border border-[#DCE5E1] bg-white/70 p-3 shadow-[0_2px_8px_rgba(18,38,31,0.04)]">
+            <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#52796F]">
+              Key Rates
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <StatCard label="Current" value={current.toFixed(dp)} loading={loading} />
+              <StatCard label={`${months}M High`} value={high.toFixed(dp)} loading={loading} />
+              <StatCard label={`${months}M Low`} value={low.toFixed(dp)} loading={loading} />
+              <StatCard
+                label={`${months}M Change`}
+                value={loading ? "-" : changePctLabel}
+                subValue={loading ? undefined : changeAbsLabel}
+                positive={!loading ? isPositive : undefined}
+                loading={loading}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-3 flex flex-col">
+          {portfolioConnected && (
+            <div className="rounded-xl border border-[#74B49B]/40 bg-[#74B49B]/10 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="h-4 w-4 mt-0.5 text-[#2D6A4F]" />
+                <div>
+                  <p className="text-sm font-bold text-[#12261F]">Portfolio connected</p>
+                  <p className="text-xs text-[#52796F]">
+                    Aggregate hedge rate: {personalHedgeRate?.toFixed(dp)}
+                  </p>
                 </div>
-                <button
-                  onClick={clearPortfolio}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[#2D6A4F]/60 px-3 py-1.5 text-xs font-bold text-[#A8C5BA] hover:bg-[#1B4332]"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  Disconnect
-                </button>
               </div>
-            )}
-
-            {loading ? (
-              <ChartSkeleton />
-            ) : error ? (
-              <div className="h-[300px] sm:h-[340px] rounded-2xl border border-[#2D6A4F]/40 bg-[#12261F] flex flex-col items-center justify-center gap-3">
-                <p className="text-sm text-[#A8C5BA]">{error}</p>
-                <button
-                  onClick={fetchData}
-                  className="px-4 py-2 rounded-lg bg-[#2D6A4F] text-white text-xs font-bold hover:bg-[#1B4332] transition-colors"
-                >
-                  Retry
-                </button>
-              </div>
-            ) : (
-              <div className="h-[300px] sm:h-[340px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={data.map(d => ({ ...d, high, low, average }))} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
-                    <defs>
-                      <linearGradient id="rateGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#74B49B" stopOpacity={0.28} />
-                        <stop offset="85%" stopColor="#74B49B" stopOpacity={0.04} />
-                      </linearGradient>
-                    </defs>
-
-                    <CartesianGrid strokeDasharray="4 4" stroke="#2D6A4F" strokeOpacity={0.35} vertical={false} />
-
-                    <XAxis
-                      dataKey="date"
-                      tick={{ fontSize: 10, fill: "#A8C5BA", fontFamily: "inherit" }}
-                      axisLine={false}
-                      tickLine={false}
-                      interval="preserveStartEnd"
-                      minTickGap={40}
-                    />
-
-                    <YAxis
-                      domain={[yMin, yMax]}
-                      tick={{ fontSize: 10, fill: "#A8C5BA", fontFamily: "inherit" }}
-                      axisLine={false}
-                      tickLine={false}
-                      tickFormatter={(v: number) => v.toFixed(isJpy ? 2 : 4)}
-                      width={54}
-                    />
-
-                    <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#74B49B", strokeWidth: 1, strokeDasharray: "4 4" }} />
-
-                    {showHigh && <Line type="monotone" dataKey="high" stroke="#22c55e" strokeWidth={3} dot={false} isAnimationActive={false} />}
-                    {showLow && <Line type="monotone" dataKey="low" stroke="#ef4444" strokeWidth={3} dot={false} isAnimationActive={false} />}
-                    {showAverage && <Line type="monotone" dataKey="average" stroke="#eab308" strokeWidth={3} dot={false} isAnimationActive={false} />}
-
-                    {showHigh && (
-                      <>
-                        <ReferenceArea y1={high} y2={yMax} fill="#22c55e" fillOpacity={0.12} />
-                      </>
-                    )}
-
-                    {showLow && (
-                      <>
-                        <ReferenceArea y1={yMin} y2={low} fill="#ef4444" fillOpacity={0.12} />
-                      </>
-                    )}
-
-                    {showAverage && (
-                      <>
-                        <ReferenceArea y1={average - padding * 0.08} y2={average + padding * 0.08} fill="#eab308" fillOpacity={0.12} />
-                      </>
-                    )}
-
-                    {portfolioConnected && personalHedgeRate !== null && showPersonalHedge && (
-                      <ReferenceLine
-                        y={personalHedgeRate}
-                        stroke="#e0e7ff"
-                        strokeWidth={3}
-                        strokeDasharray="6 3"
-                      />
-                    )}
-
-                    <Area
-                      type="monotone"
-                      dataKey="rate"
-                      stroke="#74B49B"
-                      strokeWidth={2}
-                      fill="url(#rateGradient)"
-                      dot={false}
-                      activeDot={{ r: 5, fill: "#74B49B", stroke: "#fff", strokeWidth: 2 }}
-                    />
-                  </ComposedChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            <p className="text-[10px] text-[#A8C5BA]">Source: Twelve Data · Indicative rates only · Not a recommendation or offer</p>
-
-            {/* TOGGLE BUTTONS - SINGLE ROW, COMPACT */}
-            <div className="grid grid-cols-4 gap-1.5">
               <button
-                type="button"
-                onClick={() => {
-                  setShowHigh((v) => !v)
-                  setFocusedOverlay("high")
-                }}
-                className={`flex items-center justify-between rounded-lg border px-2 py-1.5 text-left transition-all cursor-pointer ${
-                  showHigh ? "bg-[#1B4332] border-[#22c55e]" : "bg-[#12261F] border-[#2D6A4F]/40"
-                }`}
-                title="Show/hide high reference line"
+                onClick={clearPortfolio}
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#2D6A4F]/40 px-3 py-1.5 text-xs font-bold text-[#52796F] hover:bg-white/60 transition-colors"
               >
-                <span className="text-[9px] font-semibold text-[#A8C5BA] leading-tight">High</span>
-                <span className={`h-2.5 w-2.5 rounded-full border-2 transition-all ${showHigh ? "bg-[#22c55e] border-[#22c55e]" : "border-[#52796F]"}`} />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowLow((v) => !v)
-                  setFocusedOverlay("low")
-                }}
-                className={`flex items-center justify-between rounded-lg border px-2 py-1.5 text-left transition-all cursor-pointer ${
-                  showLow ? "bg-[#1B4332] border-[#ef4444]" : "bg-[#12261F] border-[#2D6A4F]/40"
-                }`}
-                title="Show/hide low reference line"
-              >
-                <span className="text-[9px] font-semibold text-[#A8C5BA] leading-tight">Low</span>
-                <span className={`h-2.5 w-2.5 rounded-full border-2 transition-all ${showLow ? "bg-[#ef4444] border-[#ef4444]" : "border-[#52796F]"}`} />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowAverage((v) => !v)
-                  setFocusedOverlay("average")
-                }}
-                className={`flex items-center justify-between rounded-lg border px-2 py-1.5 text-left transition-all cursor-pointer ${
-                  showAverage ? "bg-[#1B4332] border-[#eab308]" : "bg-[#12261F] border-[#2D6A4F]/40"
-                }`}
-                title="Show/hide average reference line"
-              >
-                <span className="text-[9px] font-semibold text-[#A8C5BA] leading-tight">Average</span>
-                <span className={`h-2.5 w-2.5 rounded-full border-2 transition-all ${showAverage ? "bg-[#eab308] border-[#eab308]" : "border-[#52796F]"}`} />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (!portfolioConnected) return
-                  setShowPersonalHedge((v) => !v)
-                  setFocusedOverlay("personal")
-                }}
-                className={`flex items-center justify-between rounded-lg border px-2 py-1.5 text-left transition-all ${
-                  showPersonalHedge && portfolioConnected ? "bg-[#1B4332] border-[#e0e7ff] cursor-pointer" : "bg-[#12261F] border-[#2D6A4F]/40"
-                } ${!portfolioConnected ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
-                title={portfolioConnected ? "Show/hide personal hedge rate line" : "Connect portfolio to enable"}
-              >
-                <span className="text-[9px] font-semibold text-[#A8C5BA] leading-tight">Personal</span>
-                <span className={`h-2.5 w-2.5 rounded-full border-2 transition-all ${showPersonalHedge && portfolioConnected ? "bg-[#e0e7ff] border-[#e0e7ff]" : "border-[#52796F]"}`} />
+                <X className="h-3.5 w-3.5" />
+                Disconnect
               </button>
             </div>
+          )}
+
+          {loading ? (
+            <ChartSkeleton />
+          ) : error ? (
+            <div className="h-[300px] sm:h-[340px] rounded-xl border border-[#DCE5E1] bg-white/70 flex flex-col items-center justify-center gap-3">
+              <p className="text-sm text-[#52796F]">{error}</p>
+              <button
+                onClick={fetchData}
+                className="px-4 py-2 rounded-lg bg-[#2D6A4F] text-white text-xs font-bold hover:bg-[#1B4332] transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <div className="h-[300px] sm:h-[340px] rounded-xl bg-white/40 p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart
+                  data={data.map((d) => ({ ...d, high, low, average }))}
+                  margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
+                >
+                  <defs>
+                    <linearGradient id="rateGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2D6A4F" stopOpacity={0.22} />
+                      <stop offset="85%" stopColor="#2D6A4F" stopOpacity={0.02} />
+                    </linearGradient>
+                  </defs>
+
+                  <CartesianGrid
+                    strokeDasharray="4 4"
+                    stroke="#2D6A4F"
+                    strokeOpacity={0.12}
+                    vertical={false}
+                  />
+
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 10, fill: "#52796F", fontFamily: "inherit" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval="preserveStartEnd"
+                    minTickGap={40}
+                  />
+
+                  <YAxis
+                    domain={[yMin, yMax]}
+                    tick={{ fontSize: 10, fill: "#52796F", fontFamily: "inherit" }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v: number) => v.toFixed(isJpy ? 2 : 4)}
+                    width={54}
+                  />
+
+                  <Tooltip
+                    content={<ChartTooltip />}
+                    cursor={{ stroke: "#2D6A4F", strokeWidth: 1, strokeDasharray: "4 4" }}
+                  />
+
+                  {showHigh && (
+                    <Line
+                      type="monotone"
+                      dataKey="high"
+                      stroke="#16a34a"
+                      strokeWidth={1.5}
+                      strokeOpacity={0.6}
+                      strokeDasharray="5 4"
+                      dot={false}
+                      isAnimationActive={false}
+                    />
+                  )}
+                  {showLow && (
+                    <Line
+                      type="monotone"
+                      dataKey="low"
+                      stroke="#dc2626"
+                      strokeWidth={1.5}
+                      strokeOpacity={0.6}
+                      strokeDasharray="5 4"
+                      dot={false}
+                      isAnimationActive={false}
+                    />
+                  )}
+                  {showAverage && (
+                    <Line
+                      type="monotone"
+                      dataKey="average"
+                      stroke="#ca8a04"
+                      strokeWidth={1.5}
+                      strokeOpacity={0.6}
+                      strokeDasharray="5 4"
+                      dot={false}
+                      isAnimationActive={false}
+                    />
+                  )}
+
+                  {showHigh && <ReferenceArea y1={high} y2={yMax} fill="#16a34a" fillOpacity={0.05} />}
+                  {showLow && <ReferenceArea y1={yMin} y2={low} fill="#dc2626" fillOpacity={0.05} />}
+                  {showAverage && (
+                    <ReferenceArea
+                      y1={average - padding * 0.08}
+                      y2={average + padding * 0.08}
+                      fill="#ca8a04"
+                      fillOpacity={0.05}
+                    />
+                  )}
+
+                  {portfolioConnected && personalHedgeRate !== null && showPersonalHedge && (
+                    <ReferenceLine
+                      y={personalHedgeRate}
+                      stroke="#6366f1"
+                      strokeWidth={1.5}
+                      strokeOpacity={0.7}
+                      strokeDasharray="6 3"
+                    />
+                  )}
+
+                  <Area
+                    type="monotone"
+                    dataKey="rate"
+                    stroke="#2D6A4F"
+                    strokeWidth={2}
+                    fill="url(#rateGradient)"
+                    dot={false}
+                    activeDot={{ r: 5, fill: "#2D6A4F", stroke: "#fff", strokeWidth: 2 }}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          <p className="text-[10px] text-[#52796F]">
+            Source: Twelve Data · Indicative rates only · Not a recommendation or offer
+          </p>
+
+          {/* TOGGLE BUTTONS */}
+          <div className="grid grid-cols-4 gap-1.5">
+            <button
+              type="button"
+              onClick={() => {
+                setShowHigh((v) => !v)
+                setFocusedOverlay("high")
+              }}
+              className={`flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-left transition-all cursor-pointer ${
+                showHigh
+                  ? "bg-[#16a34a]/10 border-[#16a34a]/50"
+                  : "bg-white/60 border-[#DCE5E1] hover:border-[#74B49B]"
+              }`}
+              title="Show/hide high reference line"
+            >
+              <span className={`text-[10px] font-semibold leading-tight ${showHigh ? "text-[#16a34a]" : "text-[#52796F]"}`}>
+                High
+              </span>
+              <span className={`h-1.5 w-1.5 rounded-full transition-all ${showHigh ? "bg-[#16a34a]" : "bg-[#C7CDC9]"}`} />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowLow((v) => !v)
+                setFocusedOverlay("low")
+              }}
+              className={`flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-left transition-all cursor-pointer ${
+                showLow
+                  ? "bg-[#dc2626]/10 border-[#dc2626]/50"
+                  : "bg-white/60 border-[#DCE5E1] hover:border-[#74B49B]"
+              }`}
+              title="Show/hide low reference line"
+            >
+              <span className={`text-[10px] font-semibold leading-tight ${showLow ? "text-[#dc2626]" : "text-[#52796F]"}`}>
+                Low
+              </span>
+              <span className={`h-1.5 w-1.5 rounded-full transition-all ${showLow ? "bg-[#dc2626]" : "bg-[#C7CDC9]"}`} />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowAverage((v) => !v)
+                setFocusedOverlay("average")
+              }}
+              className={`flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-left transition-all cursor-pointer ${
+                showAverage
+                  ? "bg-[#ca8a04]/10 border-[#ca8a04]/50"
+                  : "bg-white/60 border-[#DCE5E1] hover:border-[#74B49B]"
+              }`}
+              title="Show/hide average reference line"
+            >
+              <span className={`text-[10px] font-semibold leading-tight ${showAverage ? "text-[#ca8a04]" : "text-[#52796F]"}`}>
+                Average
+              </span>
+              <span className={`h-1.5 w-1.5 rounded-full transition-all ${showAverage ? "bg-[#ca8a04]" : "bg-[#C7CDC9]"}`} />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (!portfolioConnected) return
+                setShowPersonalHedge((v) => !v)
+                setFocusedOverlay("personal")
+              }}
+              className={`flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-left transition-all ${
+                showPersonalHedge && portfolioConnected
+                  ? "bg-[#6366f1]/10 border-[#6366f1]/50 cursor-pointer"
+                  : "bg-white/60 border-[#DCE5E1]"
+              } ${!portfolioConnected ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:border-[#74B49B]"}`}
+              title={portfolioConnected ? "Show/hide personal hedge rate line" : "Connect portfolio to enable"}
+            >
+              <span className={`text-[10px] font-semibold leading-tight ${
+                showPersonalHedge && portfolioConnected ? "text-[#6366f1]" : "text-[#52796F]"
+              }`}>
+                Personal
+              </span>
+              <span className={`h-1.5 w-1.5 rounded-full transition-all ${
+                showPersonalHedge && portfolioConnected ? "bg-[#6366f1]" : "bg-[#C7CDC9]"
+              }`} />
+            </button>
           </div>
         </div>
       </div>
     </div>
-  )
+  </div>
+)
 }
 
-function formatDate(raw: string, months: number): string {
+function
+formatDate(raw: string, months: number): string {
   const d = new Date(raw)
   if (months <= 6) {
     return d.toLocaleDateString("en-AU", { day: "numeric", month: "short" })

@@ -182,18 +182,16 @@ export default function InsightsDigestPage() {
   return (
     <main
       className="min-h-screen flex flex-col relative"
-      style={{
-        backgroundColor: "#0A1F18",
-        backgroundImage: "url('/pattern-05.svg')",
-        backgroundRepeat: "repeat",
-        backgroundSize: "280px 280px",
-      }}
+      style={{ backgroundColor: "#113526" }}
     >
-      {/* Pattern overlay for enhanced texture effect */}
+      {/* Muted pattern overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at 50% 50%, rgba(10, 31, 24, 0.4) 0%, rgba(10, 31, 24, 0.6) 100%)",
+          backgroundImage: "url('/pattern-05.svg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "280px 280px",
+          opacity: 0.45,
           zIndex: 1,
         }}
       />
@@ -317,100 +315,167 @@ export default function InsightsDigestPage() {
 </section>
 
 
-      {/* ── 2nd CONNECTED MARKET SECTION ─────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-    <div className="rounded-3xl border border-[#2D6A4F]/50 bg-[#0a1f17] p-6 sm:p-8 shadow-2xl shadow-black/40">
+     {/* ── 2nd CONNECTED MARKET SECTION ─────────────────────────────────────── */}
+<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
+  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+    <div
+      className="rounded-3xl border border-[#2D6A4F]/30 p-6 sm:p-8 shadow-xl shadow-[#12261F]/10"
+      style={{ background: "#F5F0EC" }}
+    >
+      {/* Market Commentary */}
       <div className="mb-8">
         <div className="flex items-start gap-4">
-          <CompassIcon light />
-          <div className="flex-1">
-            <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">General Market News</p>
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Market Commentary</h2>
+          <CompassIcon />
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+              General Market News
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-3">
+              Market Commentary
+            </h2>
+
+            {/* Preview - always visible (2 lines) */}
+            <p className="text-[#4A5A55] leading-relaxed">
+              This week markets were largely driven by shifting{" "}
+              <strong className="text-[#12261F]">interest-rate expectations</strong>, with{" "}
+              <strong className="text-[#12261F]">softer US data</strong> easing some of the recent USD strength.
+            </p>
+
+            {/* Expandable content */}
             <div
-              className="overflow-hidden transition-all duration-500 ease-in-out"
-              style={{ maxHeight: isExpanded ? "600px" : "72px" }}
+              className={`grid transition-all duration-500 ease-in-out ${
+                isExpanded ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0"
+              }`}
             >
-              <p className="text-[#C7DED5] leading-relaxed">
-                This week markets were largely driven by shifting interest-rate expectations, with softer US data easing some of the recent USD strength. At the same time, improving risk sentiment and steady commodity prices provided support for the Australian dollar.
-              </p>
-              <p className="text-[#C7DED5] leading-relaxed mt-3">
-                Looking ahead, upcoming economic data releases and ongoing central bank expectations are likely to remain key drivers of currency movements across the pairs most relevant to businesses. The RBA's tone at its next meeting will be closely watched, particularly given recent labour market resilience. In Europe, ECB commentary around the pace of rate cuts continues to influence EUR pairs. Meanwhile, geopolitical developments and energy price swings remain background risks that can amplify volatility — especially during lower-liquidity overnight sessions. For businesses with regular FX exposure, maintaining standing orders and reviewing hedge ratios ahead of key data releases remains a prudent discipline.
-              </p>
+              <div className="overflow-hidden">
+                <p className="text-[#4A5A55] leading-relaxed">
+                  At the same time, improving{" "}
+                  <strong className="text-[#12261F]">risk sentiment</strong> and steady{" "}
+                  <strong className="text-[#12261F]">commodity prices</strong> provided support for the Australian dollar.
+                </p>
+                <p className="text-[#4A5A55] leading-relaxed mt-3">
+                  Looking ahead, upcoming{" "}
+                  <strong className="text-[#12261F]">economic data releases</strong> and ongoing{" "}
+                  <strong className="text-[#12261F]">central bank expectations</strong> are likely to remain key drivers of currency movements across the pairs most relevant to businesses. The RBA's tone at its next meeting will be closely watched, particularly given recent labour market resilience.
+                </p>
+                <p className="text-[#4A5A55] leading-relaxed mt-3">
+                  In Europe, ECB commentary around the pace of rate cuts continues to influence EUR pairs. Meanwhile, geopolitical developments and energy price swings remain background risks that can amplify volatility — especially during lower-liquidity overnight sessions. For businesses with regular FX exposure, maintaining standing orders and reviewing hedge ratios ahead of key data releases remains a prudent discipline.
+                </p>
+              </div>
             </div>
+
             <button
               type="button"
               onClick={() => setIsExpanded((prev) => !prev)}
-              className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-[#74B49B] hover:text-white transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
+              aria-expanded={isExpanded}
             >
-              {isExpanded ? "Read less ▲" : "Read more ▼"}
+              {isExpanded ? (
+                <>
+                  Read less
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 7.5L6 3.5L10 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </>
+              ) : (
+                <>
+                  Read more
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </>
+              )}
             </button>
           </div>
         </div>
       </div>
 
+      {/* FX Chart */}
       <div className="mb-8">
         <FxChart onPairChange={setSelectedDigestPair} />
       </div>
 
-      <div className="rounded-2xl border border-[#2D6A4F]/45 p-5 sm:p-6">
-        <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
-        <button
-          type="button"
-          onClick={() => setIsOutlookModalOpen(true)}
-          className="group inline-flex items-center gap-2 text-left"
-        >
-          <h3 className="text-xl sm:text-2xl font-black text-white">
-            {selectedDigestPair} Outlook
-          </h3>
-          <span className="text-[#A8C5BA] text-xs sm:text-sm font-bold group-hover:text-white transition-colors">
-            (Click to view)
-          </span>
-        </button>
-        <p className="text-[#D7E8E1] leading-relaxed mt-3">
-          Click to open the full outlook in a popup.
-        </p>
-      </div>
+      {/* Near-term Direction / Outlook */}
+<div className="rounded-2xl border border-[#2D6A4F]/25 bg-[#A9C5BB] p-5 sm:p-6">
+  <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+    Near-term Direction
+  </p>
+  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+    <h3 className="text-xl sm:text-2xl font-black text-[#12261F]">
+      {selectedDigestPair} Outlook
+    </h3>
+    <button
+      type="button"
+      onClick={() => setIsOutlookModalOpen(true)}
+      className="text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors underline-offset-2 hover:underline"
+    >
+      (Click to View full analysis)
+    </button>
+  </div>
+
+  <p
+    className="text-[#4A5A55] leading-relaxed"
+    style={{
+      display: "-webkit-box",
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+    }}
+  >
+    {PAIR_FORECASTS[selectedDigestPair].direction}{" "}
+    {PAIR_FORECASTS[selectedDigestPair].outlook}
+  </p>
+
+  <button
+    type="button"
+    onClick={() => setIsOutlookModalOpen(true)}
+    className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
+  >
+    Click to View full analysis
+    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 2L8 6L4 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </button>
+</div>
     </div>
   </div>
 </section>
 
 {/* ── WEEKLY KEY DATA SPOTLIGHT ────────────────────────────────────── */}
-<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-    <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/50 shadow-2xl shadow-black/40">
+<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10 ">
+  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+    <div className="p-6 rounded-2xl bg-[#DCE5E1] border border-[#2D6A4F]/30 shadow-2xl shadow-black/40">
       <div className="flex items-start gap-5">
-        <CompassIcon light />
+        <CompassIcon />
         <div className="flex-1">
-          <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">
+          <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
             Weekly Key Data Spotlight
           </p>
-          <h2 className="text-2xl sm:text-3xl font-black text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-4">
             Australian Employment Data{" "}
-            <span className="text-[#74B49B]">(AUD Catalyst)</span>
+            <span className="text-[#2D6A4F]">(AUD Catalyst)</span>
           </h2>
-          <p className="text-[#C7DED5] leading-relaxed mb-6">
+          <p className="text-[#4A5A55] leading-relaxed mb-6">
             Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
-            <strong className="text-white">before</strong> the release avoids forced decisions in volatile post-data moves.
+            <strong className="text-[#12261F]">before</strong> the release avoids forced decisions in volatile post-data moves.
           </p>
 
           {/* ── Rate and Volume Sliders ──────────────────────────────────── */}
-          {/* Two Column Layout: Sliders (Left) + Strategy Items (Right) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
             {/* LEFT COLUMN - SLIDERS */}
             <div className="space-y-4 flex flex-col justify-center">
-              {/* Rate slider - Compact */}
-              <div className="bg-[#10251E]/90 rounded-lg border border-[#2D6A4F]/35 p-5">
+              {/* Rate slider */}
+              <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
                   <div>
-                    <label className="block text-xs font-bold text-white mb-0.5">
+                    <label className="block text-xs font-bold text-[#12261F] mb-0.5">
                       Rate Exposure
                     </label>
-                    <p className="text-[10px] text-[#A8C5BA]">Business FX sensitivity</p>
+                    <p className="text-[10px] text-[#52796F]">Business FX sensitivity</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-xl font-black text-[#74B49B] leading-none">{formData.rate}%</div>
-                    <p className="text-[9px] text-[#A8C5BA] mt-0.5">{getRateLabel(formData.rate)}</p>
+                    <div className="text-xl font-black text-[#2D6A4F] leading-none">{formData.rate}%</div>
+                    <p className="text-[9px] text-[#52796F] mt-0.5">{getRateLabel(formData.rate)}</p>
                   </div>
                 </div>
                 <Slider
@@ -421,24 +486,24 @@ export default function InsightsDigestPage() {
                   step={1}
                   className="w-full"
                 />
-                <div className="flex justify-between text-[9px] text-[#6A9A8F] mt-2">
+                <div className="flex justify-between text-[9px] text-[#52796F] mt-2">
                   <span>Minimal</span>
                   <span>Critical</span>
                 </div>
               </div>
 
-              {/* Volume slider - Compact */}
-              <div className="bg-[#10251E]/90 rounded-lg border border-[#2D6A4F]/35 p-5">
+              {/* Volume slider */}
+              <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
                   <div>
-                    <label className="block text-xs font-bold text-white mb-0.5">
+                    <label className="block text-xs font-bold text-[#12261F] mb-0.5">
                       Transaction Volume
                     </label>
-                    <p className="text-[10px] text-[#A8C5BA]">Monthly FX volume</p>
+                    <p className="text-[10px] text-[#52796F]">Monthly FX volume</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-black text-[#74B49B] leading-tight">{getVolumeLabel(formData.volume)}</div>
-                    <p className="text-[9px] text-[#A8C5BA] mt-0.5">{formData.volume}% of scale</p>
+                    <div className="text-lg font-black text-[#2D6A4F] leading-tight">{getVolumeLabel(formData.volume)}</div>
+                    <p className="text-[9px] text-[#52796F] mt-0.5">{formData.volume}% of scale</p>
                   </div>
                 </div>
                 <Slider
@@ -449,7 +514,7 @@ export default function InsightsDigestPage() {
                   step={1}
                   className="w-full"
                 />
-                <div className="flex justify-between text-[9px] text-[#6A9A8F] mt-2">
+                <div className="flex justify-between text-[9px] text-[#52796F] mt-2">
                   <span>&lt; $100K</span>
                   <span>&gt; $10M</span>
                 </div>
@@ -465,25 +530,25 @@ export default function InsightsDigestPage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="flex items-start gap-3 p-4 rounded-xl bg-[#0f2a1f] border border-[#2D6A4F]/40"
+                className="flex items-start gap-3 p-4 rounded-xl bg-white/60 border border-[#2D6A4F]/25"
               >
-                <span className="text-[#74B49B] text-xs font-bold mt-0.5">◆</span>
+                <span className="text-[#2D6A4F] text-xs font-bold mt-0.5">◆</span>
                 <div>
-                  <p className="text-sm font-bold text-white">{item.label}</p>
-                  <p className="text-xs text-[#A8C5BA] mt-0.5">{item.desc}</p>
+                  <p className="text-sm font-bold text-[#12261F]">{item.label}</p>
+                  <p className="text-xs text-[#52796F] mt-0.5">{item.desc}</p>
                 </div>
               </div>
             ))}
             </div>
           </div>
 
-          <p className="text-xs text-[#6A9A8F] mb-5">
+          <p className="text-xs text-[#52796F] mb-5">
             General market information only. Not a recommendation or offer.
           </p>
 
           <a
             href="#custom-quote"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#74B49B] hover:bg-[#5C9A82] text-[#0a1f17] text-sm font-bold transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#235a41] text-white text-sm font-bold transition-colors"
           >
             Ideas to manage this data release →
           </a>
@@ -495,15 +560,15 @@ export default function InsightsDigestPage() {
 
       {/* ── THOUGHT LEADERSHIP ───────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-          <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+          <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#EBFEDA" }}>
             <div className="flex items-start gap-5">
-              <CompassIcon light />
+              <CompassIcon />
               <div>
-                <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">
+                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
                   Thought Leadership
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-white mb-6">
+                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-6">
                   Thought provoking talking points
                 </h2>
 
@@ -515,15 +580,15 @@ export default function InsightsDigestPage() {
                     "How does your current hedging program compare against peers in your industry?",
                   ].map((point, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <span className="text-[#74B49B] font-bold mt-0.5 shrink-0">♦</span>
-                      <p className="text-[#C7DED5] text-sm leading-relaxed">{point}</p>
+                      <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
+                      <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
 
                 <a
                   href="/market-insights"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/60"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
                 >
                   LEARN MORE
                 </a>
@@ -535,13 +600,13 @@ export default function InsightsDigestPage() {
 
       {/* ── POLLS SECTION ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
           <div className="grid md:grid-cols-2 gap-8">
             {/* ── ACTIVE POLL ────────────────────────────────────────────── */}
-            <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/35">
-              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Active Poll</p>
-              <h3 className="text-lg sm:text-xl font-black text-white mb-2">Margin Pressure Poll</h3>
-              <p className="text-[#C7DED5] text-sm mb-6">What is currently eroding your margins the most?</p>
+            <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#EBFEDA" }}>
+              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Active Poll</p>
+              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-2">Margin Pressure Poll</h3>
+              <p className="text-[#4A5A55] text-sm mb-6">What is currently eroding your margins the most?</p>
 
               {hasVoted && poll ? (
                 /* voted — show results inline */
@@ -552,21 +617,21 @@ export default function InsightsDigestPage() {
                     return (
                       <div key={opt.id}>
                         <div className="flex justify-between text-sm mb-1">
-                          <span className={`font-medium ${isChosen ? "text-white font-bold" : "text-[#C7DED5]"}`}>
+                          <span className={`font-medium ${isChosen ? "text-[#12261F] font-bold" : "text-[#4A5A55]"}`}>
                             {opt.label}{isChosen && " ✓"}
                           </span>
-                          <span className="font-bold text-[#74B49B]">{pct}%</span>
+                          <span className="font-bold text-[#2D6A4F]">{pct}%</span>
                         </div>
-                        <div className="h-2 rounded-full bg-[#1B4332] overflow-hidden">
+                        <div className="h-2 rounded-full bg-white/60 overflow-hidden">
                           <div
-                            className="h-full rounded-full bg-gradient-to-r from-[#2D6A4F] to-[#74B49B] transition-all duration-700"
+                            className="h-full rounded-full bg-[#2D6A4F] transition-all duration-700"
                             style={{ width: `${pct}%` }}
                           />
                         </div>
                       </div>
                     )
                   })}
-                  <p className="text-xs text-[#6A9A8F] pt-2">{poll.total} votes cast — thanks for voting!</p>
+                  <p className="text-xs text-[#52796F] pt-2">{poll.total} votes cast — thanks for voting!</p>
                 </div>
               ) : (
                 /* not voted — show radio options */
@@ -579,10 +644,10 @@ export default function InsightsDigestPage() {
                   ]).map((opt) => (
                     <label
                       key={opt.id}
-                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
                         selectedOption === opt.id
-                          ? "border-[#2D6A4F] bg-[#1B4332]/60"
-                          : "border-[#2D6A4F]/30 bg-[#1B4332]/30 hover:border-[#2D6A4F]/60"
+                          ? "border-[#2D6A4F] bg-[#2D6A4F]/15"
+                          : "border-[#2D6A4F]/30 bg-white/40 hover:border-[#2D6A4F]/60"
                       }`}
                     >
                       <input
@@ -591,9 +656,9 @@ export default function InsightsDigestPage() {
                         value={opt.id}
                         checked={selectedOption === opt.id}
                         onChange={() => setSelectedOption(opt.id)}
-                        className="accent-[#74B49B] w-4 h-4 shrink-0"
+                        className="accent-[#2D6A4F] w-4 h-4 shrink-0"
                       />
-                      <span className="text-sm text-[#D7E8E1]">{opt.label}</span>
+                      <span className="text-sm text-[#12261F]">{opt.label}</span>
                     </label>
                   ))}
                 </div>
@@ -603,7 +668,7 @@ export default function InsightsDigestPage() {
                 <button
                   onClick={handlePollSubmit}
                   disabled={!selectedOption || pollSubmitting}
-                  className="w-full px-7 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/60"
+                  className="w-full px-7 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] disabled:opacity-40 text-white text-sm font-bold tracking-wide transition-colors"
                 >
                   {pollSubmitting ? "Submitting…" : "SUBMIT"}
                 </button>
@@ -611,10 +676,9 @@ export default function InsightsDigestPage() {
             </div>
 
             {/* ── LAST WEEK'S POLL ────────────────────────────────────────── */}
-            <div className="p-6 rounded-2xl bg-[#0a1f17] border border-[#2D6A4F]/35">
-              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Last Week</p>
-              <h3 className="text-lg sm:text-xl font-black text-white mb-2">Last Week's Poll Result</h3>
-              <p className="text-[#C7DED5] text-sm mb-6">What is your biggest FX concern right now?</p>
+            <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#DCFAEA" }}>
+              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Last Week</p>
+              <h3 className="text-lg sm:text-xl font-black text-[#12261F] mb-6">Last Week's Poll Result</h3>
 
               <div className="space-y-4 mb-6">
                 {[
@@ -624,13 +688,12 @@ export default function InsightsDigestPage() {
                   { label: "Hedge accounting impact", pct: 13 },
                 ].map((item) => (
                   <div key={item.label}>
-                    <div className="flex justify-between text-sm mb-1.5">
-                      <span className="text-[#C7DED5]">{item.label}</span>
-                      <span className="font-black text-white">{item.pct}%</span>
-                    </div>
-                    <div className="h-2.5 rounded-full bg-[#1B4332] overflow-hidden">
+                    <p className="text-sm font-medium text-[#12261F] mb-1.5">
+                      {item.label} <span className="font-black text-[#2D6A4F]">({item.pct}%)</span>
+                    </p>
+                    <div className="h-2.5 rounded-full bg-white/60 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[#113526] to-[#2D6A4F]"
+                        className="h-full rounded-full bg-[#2D6A4F]"
                         style={{ width: `${item.pct}%` }}
                       />
                     </div>
@@ -638,7 +701,9 @@ export default function InsightsDigestPage() {
                 ))}
               </div>
 
-              <button className="w-full px-7 py-2.5 rounded-full bg-[#1B4332] hover:bg-[#2D6A4F]/40 text-[#a9c5bb] text-sm font-bold tracking-wide transition-colors border border-[#2D6A4F]/40">
+              <p className="text-sm font-bold text-[#12261F] mb-4">What is your biggest FX concern right now?</p>
+
+              <button className="w-full px-7 py-2.5 rounded-full bg-[#12261F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors">
                 LAST WEEK RESULTS
               </button>
             </div>
@@ -648,15 +713,15 @@ export default function InsightsDigestPage() {
 
       {/* ── CUSTOM QUOTE FORM ────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10" id="custom-quote">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-          <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+          <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#DCE5E1" }}>
             {/* Section header */}
             <div className="mb-8">
-              <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Custom Quote</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
+              <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Custom Quote</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-2">
                 Get Your Customised FX Solution
               </h2>
-              <p className="text-[#C7DED5] text-sm leading-relaxed">
+              <p className="text-[#4A5A55] text-sm leading-relaxed">
                 Tell us your requirements and we'll craft the perfect hedging strategy for your business.
               </p>
             </div>
@@ -664,11 +729,11 @@ export default function InsightsDigestPage() {
           {submitted ? (
             /* ── success state ── */
             <div className="text-center py-16 max-w-md mx-auto">
-              <div className="w-16 h-16 bg-[#1B4332]/60 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 size={32} className="text-[#74B49B]" />
+              <div className="w-16 h-16 bg-[#2D6A4F]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 size={32} className="text-[#2D6A4F]" />
               </div>
-              <h3 className="text-2xl font-black text-white mb-3">Request Received</h3>
-              <p className="text-[#C7DED5] leading-relaxed mb-8">
+              <h3 className="text-2xl font-black text-[#12261F] mb-3">Request Received</h3>
+              <p className="text-[#4A5A55] leading-relaxed mb-8">
                 Thank you! We'll review your requirements and get back to you shortly with a customised offer.
               </p>
               <button
@@ -686,7 +751,7 @@ export default function InsightsDigestPage() {
             <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
               {/* Contact fields */}
               <div className="space-y-4">
-                <h3 className="text-sm font-bold text-white">Your Details</h3>
+                <h3 className="text-sm font-bold text-[#12261F]">Your Details</h3>
                 <input
                   type="text"
                   name="name"
@@ -694,7 +759,7 @@ export default function InsightsDigestPage() {
                   value={formData.name}
                   onChange={handleInput}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/30 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white/70 text-[#12261F] placeholder-[#52796F] text-sm"
                 />
                 <input
                   type="text"
@@ -702,7 +767,7 @@ export default function InsightsDigestPage() {
                   placeholder="Company Name"
                   value={formData.company}
                   onChange={handleInput}
-                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/30 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white/70 text-[#12261F] placeholder-[#52796F] text-sm"
                 />
                 <input
                   type="email"
@@ -711,7 +776,7 @@ export default function InsightsDigestPage() {
                   value={formData.email}
                   onChange={handleInput}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/30 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white/70 text-[#12261F] placeholder-[#52796F] text-sm"
                 />
                 <textarea
                   name="notes"
@@ -719,25 +784,25 @@ export default function InsightsDigestPage() {
                   value={formData.notes}
                   onChange={handleInput}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/40 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-[#0F2E22] text-white placeholder-[#6A9A8F] text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-[#2D6A4F]/30 focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] bg-white/70 text-[#12261F] placeholder-[#52796F] text-sm resize-none"
                 />
               </div>
 
               {error && (
-                <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-xl">
-                  <p className="text-sm text-red-300">{error}</p>
+                <div className="p-4 bg-red-100 border border-red-400/50 rounded-xl">
+                  <p className="text-sm text-red-700">{error}</p>
                 </div>
               )}
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3 px-6 rounded-xl text-base transition-all border border-[#2D6A4F]/60"
+                className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white font-bold py-3 px-6 rounded-xl text-base transition-all"
               >
                 {loading ? "Submitting…" : "Get My Custom Quote →"}
               </Button>
 
-              <p className="text-xs text-[#6A9A8F] text-center">
+              <p className="text-xs text-[#52796F] text-center">
                 We respect your privacy. No spam, ever. General market information only — not a recommendation or offer.
               </p>
             </form>
@@ -748,7 +813,7 @@ export default function InsightsDigestPage() {
 
       {/* ── FAQ SECTION ──────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
           <div className="p-6 rounded-2xl bg-[#10251E] border border-[#2D6A4F]/35">
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
@@ -802,24 +867,25 @@ export default function InsightsDigestPage() {
           onClick={() => setIsOutlookModalOpen(false)}
         >
           <div
-            className="w-full max-w-2xl rounded-2xl border border-[#2D6A4F]/50 bg-[#10251E] p-6 sm:p-8 shadow-2xl"
+            className="w-full max-w-2xl rounded-2xl border border-[#2D6A4F]/30 p-6 sm:p-8 shadow-2xl"
+            style={{ background: "#F5F0EC" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4 mb-5">
               <div>
-                <p className="text-[10px] font-bold text-[#A8C5BA] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">{selectedDigestPair} Outlook</h3>
+                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-[#12261F]">{selectedDigestPair} Outlook</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsOutlookModalOpen(false)}
-                className="rounded-full border border-[#2D6A4F]/60 px-3 py-1.5 text-xs font-bold text-[#C7DED5] hover:bg-[#2D6A4F]/25 transition-colors"
+                className="rounded-full border border-[#2D6A4F]/40 px-3 py-1.5 text-xs font-bold text-[#52796F] hover:bg-[#2D6A4F]/10 transition-colors"
               >
                 Close
               </button>
             </div>
-            <p className="text-[#D7E8E1] leading-relaxed mb-4">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
-            <p className="text-[#BBD4CA] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
+            <p className="text-[#12261F] font-semibold leading-relaxed mb-4">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
+            <p className="text-[#4A5A55] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
           </div>
         </div>
       )}
