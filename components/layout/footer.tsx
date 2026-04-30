@@ -1,8 +1,8 @@
-"use client"
+﻿"use client"
 
 import Link from "next/link"
 import { Mail, Phone, MapPin } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 export default function Footer() {
   const { t } = useI18n()

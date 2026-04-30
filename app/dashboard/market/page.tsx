@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 export const dynamic = "force-dynamic"
 
@@ -9,7 +9,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import TopicPersonalization from "@/components/topic-personalization"
+import TopicPersonalization from "@/components/forms/topic-personalization"
 
 /* ─── Static insight data (mirrors public page) ─── */
 const ALL_INSIGHTS = [

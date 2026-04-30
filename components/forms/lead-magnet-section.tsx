@@ -1,7 +1,7 @@
-"use client"
+﻿"use client"
 
 import LeadMagnetForm from "./lead-magnet-form"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 export default function LeadMagnetSection() {
   const { t } = useI18n()

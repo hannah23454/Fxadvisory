@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
@@ -17,8 +17,8 @@ import {
   DollarSign
 } from "lucide-react"
 import Link from "next/link"
-import { useI18n } from "@/components/i18n/i18n"
-import { useCurrency } from "@/components/currency-context"
+import { useI18n } from "@/components/context/i18n/i18n"
+import { useCurrency } from "@/components/context/currency-context"
 
 export const dynamic = 'force-dynamic';
 

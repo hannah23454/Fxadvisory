@@ -1,9 +1,9 @@
-"use client"
+﻿"use client"
 
 
 import { SessionProvider } from "next-auth/react"
-import { I18nProvider } from "@/components/i18n/i18n"
-import { CurrencyProvider } from "@/components/currency-context"
+import { I18nProvider } from "@/components/context/i18n/i18n"
+import { CurrencyProvider } from "@/components/context/currency-context"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

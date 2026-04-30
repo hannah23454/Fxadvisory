@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 export const dynamic = 'force-dynamic';
 
@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Upload, FileText, Loader2, CheckCircle2, AlertCircle, Download } from "lucide-react"
-import HedgeReportChart from "@/components/hedge-report-chart"
+import HedgeReportChart from "@/components/features/hedge-report-chart"
 
 export default function TradesPage() {
   const [loading, setLoading] = useState(true)

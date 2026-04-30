@@ -1,16 +1,16 @@
-"use client"
+﻿"use client"
 
 import { useState, useMemo, useEffect } from "react"
 import { ArrowUpRight, ArrowDownLeft, Minus, Search, ChevronRight, Lock, UserPlus, LogIn } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import NewsletterSignup from "@/components/newsletter-signup"
-import SwitchyardTake from "@/components/switchyard-take"
-import TopicPersonalization from "@/components/topic-personalization"
-import { useI18n } from "@/components/i18n/i18n"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
+import NewsletterSignup from "@/components/forms/newsletter-signup"
+import SwitchyardTake from "@/components/features/switchyard-take"
+import TopicPersonalization from "@/components/forms/topic-personalization"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 /* ────────────────────────────────── Data ─────────────────────────────────── */
 

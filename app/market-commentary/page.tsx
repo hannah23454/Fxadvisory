@@ -1,14 +1,14 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import Disclaimer from "@/components/disclaimer"
-import NewsletterSignup from "@/components/newsletter-signup"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
+import Disclaimer from "@/components/layout/disclaimer"
+import NewsletterSignup from "@/components/forms/newsletter-signup"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { TrendingUp, TrendingDown } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 // Mock data - will be replaced with Airtable API call
 const mockArticles = [

@@ -1,7 +1,7 @@
-import { NextAuthOptions } from 'next-auth';
+﻿import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { getDatabase } from '@/lib/mongodb';
+import { getDatabase } from '@/lib/db/mongodb';
 import { User } from '@/lib/types/models';
 import { JWT } from 'next-auth/jwt';
 import { Session, User as NextAuthUser } from 'next-auth';

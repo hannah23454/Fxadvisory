@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 import Link from 'next/link'
 
 const BusinessLendingHero: React.FC = () => {

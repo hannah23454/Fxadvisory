@@ -1,6 +1,6 @@
-import AccessRequestForm from "@/components/access-request-form"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+﻿import AccessRequestForm from "@/components/forms/access-request-form"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
 import Link from "next/link"
 import { FileText, LayoutDashboard, TrendingUp } from "lucide-react"
 

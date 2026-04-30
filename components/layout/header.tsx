@@ -1,10 +1,10 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 import { useSession } from "next-auth/react"
 
 // Extend session type to include role

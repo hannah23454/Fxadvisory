@@ -1,9 +1,9 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import Disclaimer from "@/components/disclaimer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
+import Disclaimer from "@/components/layout/disclaimer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"

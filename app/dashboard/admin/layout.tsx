@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useSession, signOut } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
@@ -18,7 +18,7 @@ import {
   Globe
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 const navigation = [
   { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },

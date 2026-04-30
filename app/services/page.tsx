@@ -1,14 +1,14 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import Disclaimer from "@/components/disclaimer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
+import Disclaimer from "@/components/layout/disclaimer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { TrendingUp, Zap, CreditCard, Users, Briefcase } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
-import HedgePolicyModal from "@/components/hedge-policy-modal"
+import { useI18n } from "@/components/context/i18n/i18n"
+import HedgePolicyModal from "@/components/features/hedge-policy-modal"
 
 export default function Services() {
   const { t } = useI18n()

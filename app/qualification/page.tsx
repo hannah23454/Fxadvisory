@@ -1,6 +1,6 @@
-import type { Metadata } from "next"
-import Disclaimer from "@/components/disclaimer"
-import FXQualificationForm from "@/components/fx-qualification-form"
+﻿import type { Metadata } from "next"
+import Disclaimer from "@/components/layout/disclaimer"
+import FXQualificationForm from "@/components/forms/fx-qualification-form"
 
 export const metadata: Metadata = {
   title: "FX Qualification - SwitchYard",

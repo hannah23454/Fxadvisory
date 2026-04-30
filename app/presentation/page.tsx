@@ -1,5 +1,5 @@
-import type { Metadata } from "next"
-import PortfolioIntelligencePresentation from "@/components/portfolio-intelligence-presentation"
+﻿import type { Metadata } from "next"
+import PortfolioIntelligencePresentation from "@/components/features/portfolio-intelligence-presentation"
 
 export const metadata: Metadata = {
   title: "Strategic Portfolio Intelligence - SwitchYard",

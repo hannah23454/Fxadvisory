@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDatabase } from '@/lib/mongodb';
+import { getDatabase } from '@/lib/db/mongodb';
 import { User } from '@/lib/types/models';
 
 export const dynamic = 'force-dynamic';

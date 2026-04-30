@@ -1,12 +1,12 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { TrendingUp, Shield, Clock } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 import Link from "next/link"
-import { useCurrency } from "@/components/currency-context"
-import HedgePolicyModal from "@/components/hedge-policy-modal"
-import HedgeReportChart from "@/components/hedge-report-chart"
+import { useCurrency } from "@/components/context/currency-context"
+import HedgePolicyModal from "@/components/features/hedge-policy-modal"
+import HedgeReportChart from "@/components/features/hedge-report-chart"
 
 interface CurrencyRates {
   EUR?: number;

@@ -1,16 +1,16 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 import { AlertCircle, CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react"
 
 export const dynamic = 'force-dynamic';

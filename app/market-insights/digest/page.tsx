@@ -1,13 +1,13 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
-import FxChart, { type Pair } from "@/components/fx-chart"
+import FxChart, { type Pair } from "@/components/features/fx-chart"
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 

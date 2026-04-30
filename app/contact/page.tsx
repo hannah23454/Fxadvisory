@@ -1,15 +1,15 @@
-"use client"
+﻿"use client"
 
 import type React from "react"
 
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import Disclaimer from "@/components/disclaimer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
+import Disclaimer from "@/components/layout/disclaimer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { Mail, Phone, MessageCircle } from "lucide-react"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 
 export default function Contact() {
   const { t } = useI18n()

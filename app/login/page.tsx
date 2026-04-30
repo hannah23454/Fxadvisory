@@ -1,17 +1,17 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 import Link from "next/link"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Header from "@/components/layout/header"
+import Footer from "@/components/layout/footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useI18n } from "@/components/i18n/i18n"
+import { useI18n } from "@/components/context/i18n/i18n"
 import { AlertCircle, Loader2, Eye, EyeOff } from "lucide-react"
 
 export const dynamic = 'force-dynamic';
