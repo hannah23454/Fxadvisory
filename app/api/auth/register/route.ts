@@ -1,7 +1,7 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { getDatabase } from '@/lib/db/mongodb';
-import { User } from '@/lib/types/models';
+import { User } from '@/shared/types/models';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

@@ -1,9 +1,9 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getDatabase } from '@/lib/db/mongodb';
 import { ObjectId } from 'mongodb';
-import { UserPreferences } from '@/lib/types/models';
+import { UserPreferences } from '@/shared/types/models';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

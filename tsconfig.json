@@ -23,10 +23,13 @@
       }
     ],
     "paths": {
+      "@/frontend/*":   ["./frontend/*"],
+      "@/backend/*":    ["./backend/*"],
+      "@/shared/*":     ["./shared/*"],
       "@/components/*": ["./frontend/components/*"],
-      "@/hooks/*": ["./frontend/hooks/*"],
-      "@/lib/*": ["./backend/lib/*"],
-      "@/*": ["./*"]
+      "@/hooks/*":      ["./frontend/hooks/*"],
+      "@/lib/*":        ["./backend/lib/*"],
+      "@/*":            ["./*"]
     }
   },
   "include": [

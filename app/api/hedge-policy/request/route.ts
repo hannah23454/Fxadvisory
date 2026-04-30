@@ -1,9 +1,9 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { getDatabase } from '@/lib/db/mongodb';
 import { sendEmail, buildHedgePolicyEmail } from '@/lib/email';
-import type { User, HedgePolicyRequest, FxVolumeRange, FxProviderType } from '@/lib/types/models';
+import type { User, HedgePolicyRequest, FxVolumeRange, FxProviderType } from '@/shared/types/models';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

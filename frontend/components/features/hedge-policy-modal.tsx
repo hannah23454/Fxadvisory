@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Shield, CheckCircle, Loader2, AlertCircle, Search } from "lucide-react"
-import type { FxVolumeRange, FxProviderType } from "@/lib/types/models"
+import type { FxVolumeRange, FxProviderType } from "@/shared/types/models"
 
 const FX_VOLUMES: FxVolumeRange[] = [
   "<1M",
