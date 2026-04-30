@@ -1,6 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { getDatabase } from '@/lib/db/mongodb';
+import { getDatabase } from '@/database/mongodb';
 import { ObjectId } from 'mongodb';
 
 export const dynamic = 'force-dynamic';

@@ -29,6 +29,8 @@
       "@/components/*": ["./frontend/components/*"],
       "@/hooks/*":      ["./frontend/hooks/*"],
       "@/lib/*":        ["./backend/lib/*"],
+      "@/database/*":   ["./database/*"],
+      "@/migration/*":  ["./migration/*"],
       "@/*":            ["./*"]
     }
   },

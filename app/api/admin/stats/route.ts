@@ -1,7 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { getDatabase } from '@/lib/db/mongodb';
+import { getDatabase } from '@/database/mongodb';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Loader2, Search, UserCheck, UserX, Mail } from "lucide-react"
-import { getDatabase } from "@/lib/db/mongodb"
+import { getDatabase } from "@/database/mongodb"
 
 export default function UsersManagement() {
   const [loading, setLoading] = useState(true)

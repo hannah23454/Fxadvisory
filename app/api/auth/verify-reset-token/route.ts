@@ -1,5 +1,5 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
-import { getDatabase } from '@/lib/db/mongodb';
+import { getDatabase } from '@/database/mongodb';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

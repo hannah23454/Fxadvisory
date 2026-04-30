@@ -5,26 +5,26 @@ const uri = 'mongodb+srv://hannah_db_user:1G8aBCtE6d33BrUV@switchyardfx.7xnfudt.
 
 async function seedAdmin() {
   const client = new MongoClient(uri);
-  
+
   try {
     await client.connect();
     console.log('Connected to MongoDB');
-    
+
     const db = client.db('switchyard_fx');
-    
+
     // Check if admin already exists
     const existingAdmin = await db.collection('users').findOne({ email: 'admin@switchyard.com' });
-    
+
     if (existingAdmin) {
       console.log('❌ Admin user already exists!');
       console.log('\n📧 Email: admin@switchyard.com');
       console.log('🔒 Password: (use existing password or delete user first)');
       return;
     }
-    
+
     // Hash password
     const hashedPassword = await bcrypt.hash('Admin2026!', 10);
-    
+
     // Create admin user
     const adminUser = {
       email: 'admin@switchyard.com',
@@ -38,14 +38,14 @@ async function seedAdmin() {
       createdAt: new Date(),
       lastLogin: null
     };
-    
+
     const result = await db.collection('users').insertOne(adminUser);
     console.log('✅ Admin user created successfully!');
     console.log('\n📧 Email: admin@switchyard.com');
     console.log('🔒 Password: Admin2026!');
     console.log('👤 Role: admin');
     console.log(`🆔 User ID: ${result.insertedId}`);
-    
+
     // Create default preferences
     await db.collection('preferences').insertOne({
       userId: result.insertedId,
@@ -66,9 +66,9 @@ async function seedAdmin() {
       },
       updatedAt: new Date()
     });
-    
+
     console.log('✅ Admin preferences created');
-    
+
     // Also create a test regular user
     const testUserPassword = await bcrypt.hash('User2026!', 10);
     const testUser = {
@@ -83,14 +83,14 @@ async function seedAdmin() {
       createdAt: new Date(),
       lastLogin: null
     };
-    
+
     const userResult = await db.collection('users').insertOne(testUser);
     console.log('\n✅ Test user created successfully!');
     console.log('\n📧 Email: user@switchyard.com');
     console.log('🔒 Password: User2026!');
     console.log('👤 Role: user');
     console.log(`🆔 User ID: ${userResult.insertedId}`);
-    
+
     // Create test user preferences
     await db.collection('preferences').insertOne({
       userId: userResult.insertedId,
@@ -111,9 +111,9 @@ async function seedAdmin() {
       },
       updatedAt: new Date()
     });
-    
+
     console.log('✅ Test user preferences created');
-    
+
     // Create some sample market content
     const sampleContent = [
       {
@@ -150,16 +150,16 @@ async function seedAdmin() {
         currencies: []
       }
     ];
-    
+
     await db.collection('market_content').insertMany(sampleContent);
     console.log('\n✅ Sample market content created (3 items)');
-    
+
     console.log('\n🎉 Database seeding complete!');
     console.log('\n📝 Login URLs:');
     console.log('   Admin Dashboard: http://localhost:3000/dashboard/admin');
     console.log('   User Dashboard:  http://localhost:3000/dashboard');
     console.log('   Login Page:      http://localhost:3000/login');
-    
+
   } catch (error) {
     console.error('❌ Error seeding database:', error);
   } finally {

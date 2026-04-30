@@ -1,5 +1,5 @@
-import { ObjectId } from 'mongodb'
-import { getDatabase } from '@/lib/db/mongodb'
+﻿import { ObjectId } from 'mongodb'
+import { getDatabase } from '@/database/mongodb'
 import type { UserPreferences } from '@/shared/types/models'
 
 const col = async () => (await getDatabase()).collection<UserPreferences>('preferences')

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import { getDatabase } from '@/lib/db/mongodb';
+import { getDatabase } from '@/database/mongodb';
 import { sendEmail, buildHedgePolicyEmail } from '@/lib/email';
 import type { User, HedgePolicyRequest, FxVolumeRange, FxProviderType } from '@/shared/types/models';
 
@@ -9,8 +9,8 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const VALID_VOLUMES: FxVolumeRange[] = [
-  '<1M', '1M–5M', '5M–10M', '10M–20M', '20M–40M',
-  '40M–80M', '80M–150M', '150M–200M', '200M+',
+  '<1M', '1Mâ€“5M', '5Mâ€“10M', '10Mâ€“20M', '20Mâ€“40M',
+  '40Mâ€“80M', '80Mâ€“150M', '150Mâ€“200M', '200M+',
 ];
 
 const VALID_PROVIDERS: FxProviderType[] = [
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
         _id: result.insertedId,
       });
     } else {
-      // Existing user — grant policy access
+      // Existing user â€” grant policy access
       await db.collection('users').updateOne(
         { _id: existingUser._id },
         {
@@ -192,7 +192,7 @@ export async function POST(req: NextRequest) {
     } catch (err: any) {
       emailError = err?.message || String(err);
       console.error('Failed to send hedge policy email:', err);
-      // Don't fail the request if email fails — user can still access via dashboard
+      // Don't fail the request if email fails â€” user can still access via dashboard
     }
 
     // Log analytics event
