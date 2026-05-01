@@ -287,7 +287,7 @@ export default function FxChart({ onPairChange }: FxChartProps) {
     {/* ═══════════════════════════════════════════════════════════════════ */}
     {/* 1. CURRENCY FEED HEADER — pair name + selector + chips             */}
     {/* ═══════════════════════════════════════════════════════════════════ */}
-    <div className="mb-4 rounded-2xl border border-[#2D6A4F]/30 p-5 sm:p-6" style={{ background: "#DCE5E1" }}>
+    <div className="mb-4 rounded-2xl border border-[#2D6A4F]/30 p-5 sm:p-6">
       {/* Top row: label + pair name + live indicator */}
       <div className="flex items-start justify-between gap-4 mb-5">
         <div className="min-w-0">
@@ -312,6 +312,8 @@ export default function FxChart({ onPairChange }: FxChartProps) {
           </span>
         </div>
       </div>
+
+      <hr className="border-[#2D6A4F]/15 mb-5" />
 
       {/* Switch pair selector */}
       <div className="mb-5">
@@ -351,7 +353,8 @@ export default function FxChart({ onPairChange }: FxChartProps) {
       </div>
 
       {/* Add to feed — divider + chips */}
-      <div className="pt-4 border-t border-[#2D6A4F]/20">
+      <hr className="border-[#DCE5E1] mb-4" />
+      <div className="">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
           <p className="text-[11px] font-bold text-[#12261F]">
             Add currencies to your Market commentary
@@ -398,10 +401,12 @@ export default function FxChart({ onPairChange }: FxChartProps) {
       )}
     </div>
 
+    <div className="my-4 h-px bg-[#DCE5E1]" />
+
     {/* ═══════════════════════════════════════════════════════════════════ */}
     {/* 2. CHART AREA — light theme, harmonized with cream parent          */}
     {/* ═══════════════════════════════════════════════════════════════════ */}
-    <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-[#2D6A4F]/25 p-4 sm:p-5 shadow-[0_4px_12px_rgba(18,38,31,0.06)]">
+    <div className="rounded-2xl border border-[#2D6A4F]/25 p-4 sm:p-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-4">
         <p className="text-xs sm:text-sm font-bold text-[#12261F] tracking-wide">
           {pair} <span className="text-[#52796F]">— Historical Rate</span>
@@ -422,6 +427,8 @@ export default function FxChart({ onPairChange }: FxChartProps) {
           ))}
         </div>
       </div>
+
+      <hr className="border-[#2D6A4F]/15 mb-4" />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-4">
         {/* LEFT COLUMN */}

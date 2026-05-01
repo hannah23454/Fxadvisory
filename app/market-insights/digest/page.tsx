@@ -6,7 +6,7 @@ import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Calendar as CalendarIcon, BarChart2 as ChartIcon } from "lucide-react"
 import FxChart, { type Pair } from "@/components/features/fx-chart"
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -322,127 +322,138 @@ export default function InsightsDigestPage() {
       className="rounded-3xl border border-[#2D6A4F]/30 p-6 sm:p-8 shadow-xl shadow-[#12261F]/10"
       style={{ background: "#F5F0EC" }}
     >
-      {/* Market Commentary */}
-      <div className="mb-8">
-        <div className="flex items-start gap-4">
-          <CompassIcon />
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-              General Market News
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-3">
-              Market Commentary
-            </h2>
+      {/* ── Header ─────────────────────────────────────────── */}
+      <div className="flex items-start gap-4 mb-6">
+        <CompassIcon />
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+            General Market News
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-3">
+            Market Commentary
+          </h2>
 
-            {/* Preview - always visible (2 lines) */}
-            <p className="text-[#4A5A55] leading-relaxed">
-              This week markets were largely driven by shifting{" "}
-              <strong className="text-[#12261F]">interest-rate expectations</strong>, with{" "}
-              <strong className="text-[#12261F]">softer US data</strong> easing some of the recent USD strength.
-            </p>
+          {/* Preview - always visible */}
+          <p className="text-[#4A5A55] leading-relaxed">
+            This week markets were largely driven by shifting{" "}
+            <strong className="text-[#12261F]">interest-rate expectations</strong>, with{" "}
+            <strong className="text-[#12261F]">softer US data</strong> easing some of the recent USD strength.
+          </p>
 
-            {/* Expandable content */}
-            <div
-              className={`grid transition-all duration-500 ease-in-out ${
-                isExpanded ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden">
-                <p className="text-[#4A5A55] leading-relaxed">
-                  At the same time, improving{" "}
-                  <strong className="text-[#12261F]">risk sentiment</strong> and steady{" "}
-                  <strong className="text-[#12261F]">commodity prices</strong> provided support for the Australian dollar.
-                </p>
-                <p className="text-[#4A5A55] leading-relaxed mt-3">
-                  Looking ahead, upcoming{" "}
-                  <strong className="text-[#12261F]">economic data releases</strong> and ongoing{" "}
-                  <strong className="text-[#12261F]">central bank expectations</strong> are likely to remain key drivers of currency movements across the pairs most relevant to businesses. The RBA's tone at its next meeting will be closely watched, particularly given recent labour market resilience.
-                </p>
-                <p className="text-[#4A5A55] leading-relaxed mt-3">
-                  In Europe, ECB commentary around the pace of rate cuts continues to influence EUR pairs. Meanwhile, geopolitical developments and energy price swings remain background risks that can amplify volatility — especially during lower-liquidity overnight sessions. For businesses with regular FX exposure, maintaining standing orders and reviewing hedge ratios ahead of key data releases remains a prudent discipline.
-                </p>
-              </div>
+          {/* Expandable content */}
+          <div
+            className={`grid transition-all duration-500 ease-in-out ${
+              isExpanded ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <p className="text-[#4A5A55] leading-relaxed">
+                At the same time, improving{" "}
+                <strong className="text-[#12261F]">risk sentiment</strong> and steady{" "}
+                <strong className="text-[#12261F]">commodity prices</strong> provided support for the Australian dollar.
+              </p>
+              <p className="text-[#4A5A55] leading-relaxed mt-3">
+                Looking ahead, upcoming{" "}
+                <strong className="text-[#12261F]">economic data releases</strong> and ongoing{" "}
+                <strong className="text-[#12261F]">central bank expectations</strong> are likely to remain key drivers of currency movements across the pairs most relevant to businesses. The RBA's tone at its next meeting will be closely watched, particularly given recent labour market resilience.
+              </p>
+              <p className="text-[#4A5A55] leading-relaxed mt-3">
+                In Europe, ECB commentary around the pace of rate cuts continues to influence EUR pairs. Meanwhile, geopolitical developments and energy price swings remain background risks that can amplify volatility — especially during lower-liquidity overnight sessions. For businesses with regular FX exposure, maintaining standing orders and reviewing hedge ratios ahead of key data releases remains a prudent discipline.
+              </p>
             </div>
-
-            <button
-              type="button"
-              onClick={() => setIsExpanded((prev) => !prev)}
-              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
-              aria-expanded={isExpanded}
-            >
-              {isExpanded ? (
-                <>
-                  Read less
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 7.5L6 3.5L10 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </>
-              ) : (
-                <>
-                  Read more
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </>
-              )}
-            </button>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setIsExpanded((prev) => !prev)}
+            className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
+            aria-expanded={isExpanded}
+          >
+            {isExpanded ? (
+              <>
+                Read less
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 7.5L6 3.5L10 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </>
+            ) : (
+              <>
+                Read more
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* FX Chart */}
-      <div className="mb-8">
+      {/* ── Divider ────────────────────────────────────────── */}
+      <hr className="border-[#2D6A4F]/15 mb-6" />
+
+      {/*
+        ── FX Chart (includes Currency Feed + Historical Rate + Key Rates)
+        The [&>*] and nested selectors strip all inner borders/shadows/rounded
+        so FxChart renders flush inside this parent card with no nested boxes.
+      */}
+      <div
+        className="mb-6 [&_*]:!border-0 [&_*]:!shadow-none [&_*]:!rounded-none"
+        style={{ background: "transparent" }}
+      >
         <FxChart onPairChange={setSelectedDigestPair} />
       </div>
 
-      {/* Near-term Direction / Outlook */}
-<div className="rounded-2xl border border-[#2D6A4F]/25 bg-[#A9C5BB] p-5 sm:p-6">
-  <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-    Near-term Direction
-  </p>
-  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
-    <h3 className="text-xl sm:text-2xl font-black text-[#12261F]">
-      {selectedDigestPair} Outlook
-    </h3>
-    <button
-      type="button"
-      onClick={() => setIsOutlookModalOpen(true)}
-      className="text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors underline-offset-2 hover:underline"
-    >
-      (Click to View full analysis)
-    </button>
-  </div>
+      {/* ── Divider ────────────────────────────────────────── */}
+      <hr className="border-[#2D6A4F]/15 mb-6" />
 
-  <p
-    className="text-[#4A5A55] leading-relaxed"
-    style={{
-      display: "-webkit-box",
-      WebkitLineClamp: 2,
-      WebkitBoxOrient: "vertical",
-      overflow: "hidden",
-    }}
-  >
-    {PAIR_FORECASTS[selectedDigestPair].direction}{" "}
-    {PAIR_FORECASTS[selectedDigestPair].outlook}
-  </p>
+      {/* ── Near-term Direction / Outlook ──────────────────── */}
+      <div>
+        <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
+          Near-term Direction
+        </p>
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+          <h3 className="text-xl sm:text-2xl font-black text-[#12261F]">
+            {selectedDigestPair} Outlook
+          </h3>
+          <button
+            type="button"
+            onClick={() => setIsOutlookModalOpen(true)}
+            className="text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors underline-offset-2 hover:underline"
+          >
+            (Click to View full analysis)
+          </button>
+        </div>
 
-  <button
-    type="button"
-    onClick={() => setIsOutlookModalOpen(true)}
-    className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
-  >
-    Click to View full analysis
-    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 2L8 6L4 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  </button>
-</div>
+        <p
+          className="text-[#4A5A55] leading-relaxed"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {PAIR_FORECASTS[selectedDigestPair].direction}{" "}
+          {PAIR_FORECASTS[selectedDigestPair].outlook}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => setIsOutlookModalOpen(true)}
+          className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] hover:text-[#12261F] transition-colors"
+        >
+          Click to View full analysis
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 2L8 6L4 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
 {/* ── WEEKLY KEY DATA SPOTLIGHT ────────────────────────────────────── */}
-<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10 ">
+<section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
   <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
     <div className="p-6 rounded-2xl bg-[#DCE5E1] border border-[#2D6A4F]/30 shadow-2xl shadow-black/40">
       <div className="flex items-start gap-5">
@@ -455,15 +466,69 @@ export default function InsightsDigestPage() {
             Australian Employment Data{" "}
             <span className="text-[#2D6A4F]">(AUD Catalyst)</span>
           </h2>
-          <p className="text-[#4A5A55] leading-relaxed mb-6">
-            Employment figures are a direct input to RBA rate expectations — markets can reprice the rate outlook quickly, and AUD tends to move first, often in thin overnight conditions. Having a plan{" "}
-            <strong className="text-[#12261F]">before</strong> the release avoids forced decisions in volatile post-data moves.
-          </p>
 
-          {/* ── Rate and Volume Sliders ──────────────────────────────────── */}
+          {/* ── Data Event Rows ─────────────────────────────────── */}
+          <div className="flex flex-col gap-2.5 mb-6">
+            {[
+              {
+                icon: CalendarIcon,
+                date: "May 15, 2026",
+                currencies: [
+                  { code: "AUD", color: "bg-[#2D6A4F]" },
+                  { code: "NZD", color: "bg-[#52796F]" },
+                ],
+                label: "Previous",
+                value: "+32.2K",
+              },
+              {
+                icon: ChartIcon,
+                date: "May 15, 2026",
+                currencies: [
+                  { code: "AUD", color: "bg-[#2D6A4F]" },
+                  { code: "USD", color: "bg-[#3a7ca5]" },
+                ],
+                label: "Forecasted",
+                value: "+25.0K",
+              },
+            ].map((row, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 bg-white/55 rounded-xl border border-[#2D6A4F]/15 px-4 py-2.5 flex-wrap"
+              >
+                <div className="w-8 h-8 rounded-lg bg-[#2D6A4F] flex items-center justify-center shrink-0">
+                  <row.icon className="text-white w-4 h-4" />
+                </div>
+                <span className="text-sm font-bold text-[#12261F] min-w-[100px]">{row.date}</span>
+                <div className="flex gap-1">
+                  {row.currencies.map((c) => (
+                    <span
+                      key={c.code}
+                      className={`${c.color} text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded`}
+                    >
+                      {c.code}
+                    </span>
+                  ))}
+                </div>
+                <span className="text-xs text-[#52796F] font-semibold">{row.label}</span>
+                <span className="text-base font-black text-[#12261F] ml-auto">{row.value}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* ── Main Content Grid ──────────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
-            {/* LEFT COLUMN - SLIDERS */}
+            {/* LEFT COLUMN - IMAGE + SLIDERS */}
             <div className="space-y-4 flex flex-col justify-center">
+              {/* Image / Icon Placeholder */}
+              <div className="w-full aspect-[4/3] rounded-2xl relative overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80&fit=crop"
+                  alt="FX trading dashboard"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
               {/* Rate slider */}
               <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
@@ -521,24 +586,40 @@ export default function InsightsDigestPage() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN - STRATEGY ITEMS */}
+            {/* RIGHT COLUMN - TEXT INPUT + MEANING CARDS */}
             <div className="space-y-4 flex flex-col justify-center">
-            {[
-              { label: "Limit / target orders", desc: "Capture favourable spikes overnight automatically" },
-              { label: "Layered forwards", desc: "Lock a portion of budget rates ahead of the event" },
-              { label: "Options (e.g., collars)", desc: "Protect downside while keeping upside participation" },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="flex items-start gap-3 p-4 rounded-xl bg-white/60 border border-[#2D6A4F]/25"
-              >
-                <span className="text-[#2D6A4F] text-xs font-bold mt-0.5">◆</span>
-                <div>
-                  <p className="text-sm font-bold text-[#12261F]">{item.label}</p>
-                  <p className="text-xs text-[#52796F] mt-0.5">{item.desc}</p>
+              {/* Text input */}
+              <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
+                <label className="block text-[10px] font-bold text-[#52796F] uppercase tracking-[0.08em] mb-2">
+                  Type to enter text
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. We have $1.2M AUD payables due in June…"
+                  className="w-full border border-[#2D6A4F]/20 rounded-lg px-3 py-2 text-xs text-[#12261F] bg-white resize-y outline-none"
+                />
+              </div>
+
+              {/* What could this mean? */}
+              <div>
+                <h3 className="text-lg font-black text-[#12261F] mb-2.5">
+                  What could this mean?
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "A strong beat could push RBA rate-cut expectations out further, supporting AUD in the near term.",
+                    "A miss versus forecast may accelerate easing bets, weighing on AUD — especially against USD and JPY.",
+                    "Even an in-line print can move markets if participation rate or full-time / part-time mix surprises.",
+                  ].map((text, i) => (
+                    <div
+                      key={i}
+                      className="bg-white/70 rounded-xl border border-[#2D6A4F]/12 px-3.5 py-3 text-xs text-[#2a3f37] leading-relaxed shadow-sm"
+                    >
+                      {text}
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
             </div>
           </div>
 
@@ -560,43 +641,169 @@ export default function InsightsDigestPage() {
 
       {/* ── THOUGHT LEADERSHIP ───────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
-          <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#EBFEDA" }}>
-            <div className="flex items-start gap-5">
-              <CompassIcon />
-              <div>
-                <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">
-                  Thought Leadership
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-[#12261F] mb-6">
-                  Thought provoking talking points
-                </h2>
+  <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+    <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#EBFEDA" }}>
 
-                <div className="space-y-4 mb-8">
-                  {[
-                    "What % of your EBITDA is exposed to FX volatility over the next 12 months?",
-                    "Fully hedged? Partially hedged? Intentionally unhedged?",
-                    "Are you using data and technology to drive measurable FX outcomes for your business?",
-                    "How does your current hedging program compare against peers in your industry?",
-                  ].map((point, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
-                      <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <a
-                  href="/market-insights"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
-                >
-                  LEARN MORE
-                </a>
-              </div>
-            </div>
+      {/* ── Top Bar: Header + News Highlights + Filters ──────── */}
+      <div className="flex items-start justify-between gap-4 mb-6">
+        <div className="flex items-start gap-4">
+          <CompassIcon />
+          <div>
+            <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-1">
+              Thought Leadership
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#12261F]">
+              Thought provoking talking points
+            </h2>
           </div>
         </div>
-      </section>
+
+        {/* Latest News Highlights + Sync Filters */}
+        <div className="hidden md:flex items-center gap-3 shrink-0 mt-1">
+          <span className="text-xs font-semibold text-[#52796F]">Latest News highlights</span>
+          <div className="flex items-center gap-1.5">
+            {["AUD", "USD", "EUR", "GBP"].map((ccy) => (
+              <button
+                key={ccy}
+                className="px-2 py-1 rounded text-[9px] font-bold bg-[#2D6A4F] text-white hover:bg-[#1B4332] transition-colors"
+              >
+                {ccy}
+              </button>
+            ))}
+          </div>
+          <button className="text-[10px] text-[#52796F] border border-[#2D6A4F]/30 rounded-lg px-2.5 py-1 hover:bg-white/50 transition-colors">
+            Synced with your dashboard
+          </button>
+        </div>
+      </div>
+
+      {/* ── Main Grid: Topics Left | Talking Points + News Right ── */}
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6">
+
+        {/* LEFT: Enrolled Topic Icons (scattered layout) */}
+        <div className="relative">
+          <div className="grid grid-cols-3 gap-3 auto-rows-min">
+            {[
+              {
+                label: "Interest Rates",
+                offset: "",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 12L6 6l3 3 5-7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="13" cy="3" r="2" stroke="white" strokeWidth="1.2" fill="none" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Central Banks",
+                offset: "",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 13V7h2v6M7 13V5h2v8M11 13V7h2v6" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
+                    <path d="M2 6l6-4 6 4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    <line x1="1" y1="13.5" x2="15" y2="13.5" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Commodities",
+                offset: "",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2L3 5v6l5 3 5-3V5L8 2z" stroke="white" strokeWidth="1.3" strokeLinejoin="round" fill="none" />
+                    <path d="M8 8v6M8 8L3 5M8 8l5-3" stroke="white" strokeWidth="1" opacity="0.6" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Trade Policy",
+                offset: "mt-2",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M1 8h4l2-3 2 6 2-4h4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="8" cy="7" r="1" fill="white" opacity="0.5" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Geopolitics",
+                offset: "mt-4",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6" stroke="white" strokeWidth="1.3" fill="none" />
+                    <ellipse cx="8" cy="8" rx="3" ry="6" stroke="white" strokeWidth="1" fill="none" />
+                    <line x1="2" y1="8" x2="14" y2="8" stroke="white" strokeWidth="1" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Inflation Data",
+                offset: "mt-1",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 13V7M8 13V4M12 13V8" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M2 4l4 1 4-2 4 1" stroke="white" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Risk Sentiment",
+                offset: "mt-3",
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2L1 14h14L8 2z" stroke="white" strokeWidth="1.3" strokeLinejoin="round" fill="none" />
+                    <line x1="8" y1="6" x2="8" y2="10" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <circle cx="8" cy="12" r="0.8" fill="white" />
+                  </svg>
+                ),
+              },
+            ].map((topic, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center justify-center p-3 rounded-xl bg-[#2D6A4F]/10 border border-[#2D6A4F]/20 hover:bg-[#2D6A4F]/20 cursor-pointer transition-colors ${topic.offset || ""}`}
+              >
+                <div className="w-9 h-9 rounded-lg bg-[#2D6A4F] flex items-center justify-center mb-1.5">
+                  {topic.icon}
+                </div>
+                <span className="text-[10px] font-bold text-[#12261F] text-center leading-tight">
+                  {topic.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <a
+            href="/market-insights"
+            className="inline-flex items-center gap-2 px-6 py-2.5 mt-5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
+          >
+            LEARN MORE
+          </a>
+        </div>
+
+        {/* RIGHT: Talking Points + News Articles */}
+        <div className="space-y-5">
+
+          {/* Talking Points */}
+          <div className="space-y-3">
+            {[
+              "What % of your EBITDA is exposed to FX volatility over the next 12 months?",
+              "Fully hedged? Partially hedged? Intentionally unhedged?",
+              "Are you using data and technology to drive measurable FX outcomes for your business?",
+              "How does your current hedging program compare against peers in your industry?",
+            ].map((point, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
+                <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
+              </div>
+            ))}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ── POLLS SECTION ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
