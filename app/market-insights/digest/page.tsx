@@ -486,33 +486,39 @@ export default function InsightsDigestPage() {
               { Icon: TrendingUp, iconBg: "bg-[#1B5E8A]",   date: "May 15, 2026", label: "Forecasted", value: "+25.0K" },
             ]
             return (
-              <div className="flex flex-col gap-2.5 mb-6">
-                {dataRows.map((row, i) => (
-                  <div
-                    key={i}
-                    className="group flex items-center gap-3 bg-white/55 rounded-xl border border-[#2D6A4F]/15 px-4 py-2.5 flex-wrap hover:border-[#2D6A4F]/35 hover:bg-white/80 transition-all"
-                  >
-                    <div className={`w-8 h-8 rounded-lg ${row.iconBg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-200`}>
-                      <row.Icon className="text-white w-4 h-4" strokeWidth={2.5} />
-                    </div>
-                    <span className="text-sm font-bold text-[#12261F] min-w-[100px]">{row.date}</span>
-                    <div className="flex gap-1">
-                      {[base, quote].map((code) => (
-                        <span
-                          key={code}
-                          className="inline-flex items-center gap-1 bg-[#2D6A4F] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded"
-                        >
-                          <span className="text-[13px] leading-none">
-                            {code.toUpperCase().split("").map((c) => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join("")}
+              <div className="mb-6 bg-white/55 rounded-xl border border-[#2D6A4F]/15 overflow-hidden">
+                <div className="grid grid-cols-2 divide-x divide-[#2D6A4F]/15">
+                  {dataRows.map((row, i) => (
+                    <div
+                      key={i}
+                      className="group flex flex-col gap-2 px-4 py-3 hover:bg-white/60 transition-all"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className={`w-7 h-7 rounded-lg ${row.iconBg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-200`}>
+                          <row.Icon className="text-white w-3.5 h-3.5" strokeWidth={2.5} />
+                        </div>
+                        <span className="text-xs text-[#52796F] font-semibold">{row.label}</span>
+                      </div>
+                      <div className="flex gap-1 flex-wrap">
+                        {[base, quote].map((code) => (
+                          <span
+                            key={code}
+                            className="inline-flex items-center gap-1 bg-[#2D6A4F] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded"
+                          >
+                            <span className="text-[13px] leading-none">
+                              {code.toUpperCase().split("").map((c) => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join("")}
+                            </span>
+                            {code}
                           </span>
-                          {code}
-                        </span>
-                      ))}
+                        ))}
+                      </div>
+                      <div className="flex items-end justify-between">
+                        <span className="text-[10px] text-[#52796F]">{row.date}</span>
+                        <span className="text-base font-black text-[#12261F]">{row.value}</span>
+                      </div>
                     </div>
-                    <span className="text-xs text-[#52796F] font-semibold">{row.label}</span>
-                    <span className="text-base font-black text-[#12261F] ml-auto">{row.value}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )
           })()}
@@ -530,16 +536,7 @@ export default function InsightsDigestPage() {
                   className="object-cover"
                 />
               </div>
-<div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
-                <label className="block text-[10px] font-bold text-[#52796F] uppercase tracking-[0.08em] mb-2">
-                  Type to enter text
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="e.g. We have $1.2M AUD payables due in June…"
-                  className="w-full border border-[#2D6A4F]/20 rounded-lg px-3 py-2 text-xs text-[#12261F] bg-white resize-y outline-none"
-                />
-              </div>
+
               {/* Rate slider */}
               {/* <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
@@ -647,6 +644,7 @@ export default function InsightsDigestPage() {
     <div className="p-6 rounded-2xl border border-[#2D6A4F]/25" style={{ background: "#EBFEDA" }}>
 
       {/* ── Top Bar: Header + News Highlights + Filters ──────── */}
+      
       <div className="flex items-start justify-between gap-4 mb-6">
         <div className="flex items-start gap-4">
           <CompassIcon />
@@ -683,7 +681,9 @@ export default function InsightsDigestPage() {
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6">
 
         {/* LEFT: Enrolled Topic Icons (scattered layout) */}
+
         <div className="relative">
+          
           <div className="grid grid-cols-3 gap-3 auto-rows-min">
             {[
               {
@@ -779,6 +779,34 @@ export default function InsightsDigestPage() {
                   </svg>
                 ),
               },
+              {
+                label: "Economic Growth",
+                offset: "mt-2",
+                grad: "from-[#1B7A5E] to-[#0F5240]",
+                glow: "rgba(27,122,94,0.55)",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M2 16 C5 16 6 10 9 10 C12 10 12 13 15 11 C17 9.5 17.5 7 18 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    <path d="M15 5h3v3" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                    <line x1="2" y1="17.5" x2="18" y2="17.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.4"/>
+                  </svg>
+                ),
+              },
+              {
+                label: "Currency Flows",
+                offset: "mt-4",
+                grad: "from-[#2D4A8A] to-[#1C305E]",
+                glow: "rgba(45,74,138,0.55)",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 7h14M3 13h14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.45"/>
+                    <path d="M6 4l-3 3 3 3" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 10l3 3-3 3" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="10" cy="7" r="1.5" fill="white" fillOpacity="0.6"/>
+                    <circle cx="10" cy="13" r="1.5" fill="white" fillOpacity="0.6"/>
+                  </svg>
+                ),
+              },
             ].map((topic, i) => (
               <div
                 key={i}
@@ -800,16 +828,12 @@ export default function InsightsDigestPage() {
             ))}
           </div>
 
-          <a
-            href="/market-insights"
-            className="inline-flex items-center gap-2 px-6 py-2.5 mt-5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
-          >
-            LEARN MORE
-          </a>
+          
         </div>
 
         {/* RIGHT: Talking Points + News Articles */}
         <div className="space-y-5">
+          
 
           {/* Talking Points */}
           <div className="space-y-3">
@@ -823,9 +847,25 @@ export default function InsightsDigestPage() {
                 <span className="text-[#2D6A4F] font-bold mt-0.5 shrink-0">♦</span>
                 <p className="text-[#4A5A55] text-sm leading-relaxed">{point}</p>
               </div>
+              
             ))}
           </div>
-
+          <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
+                <label className="block text-[10px] font-bold text-[#52796F] uppercase tracking-[0.08em] mb-2">
+                  Type to enter text
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. We have $1.2M AUD payables due in June…"
+                  className="w-full border border-[#2D6A4F]/20 rounded-lg px-3 py-2 text-xs text-[#12261F] bg-white resize-y outline-none"
+                />
+              </div>
+<a
+            href="/market-insights"
+            className="inline-flex items-center gap-2 px-6 py-2.5 mt-5 rounded-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white text-sm font-bold tracking-wide transition-colors"
+          >
+            Submit
+          </a>
 
         </div>
       </div>
