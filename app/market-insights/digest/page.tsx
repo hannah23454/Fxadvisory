@@ -193,7 +193,7 @@ export default function InsightsDigestPage() {
       </div>      
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-xl z-10" style={{ height: "auto", minHeight: "280px", fontFamily: "'DM Sans', sans-serif" }}>
+      <section className="relative overflow-hidden rounded-xl z-10" style={{ height: "auto", minHeight: "200px", fontFamily: "'DM Sans', sans-serif" }}>
 
   {/* Dark green base */}
   <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #071C14 0%, #0d2e1e 40%, #0a2218 100%)" }} />
@@ -214,37 +214,16 @@ export default function InsightsDigestPage() {
   <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(7,28,20,0.92) 0%, rgba(7,28,20,0.6) 55%, rgba(7,28,20,0.15) 100%)" }} />
 
   {/* Main content */}
-  <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 flex flex-col justify-center gap-3 sm:gap-4">
+  <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col justify-center gap-2">
 
     {/* Logo row */}
-    <div className="flex items-center gap-2 sm:gap-3">
-      <Image src="/logo.png" alt="SwitchYardFX Logo" width={50} height={50} style={{ borderRadius: 6 }} className="sm:w-[70px] sm:h-[70px]" />
-      <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(16px, 4vw, 22px)", color: "#fff", letterSpacing: 0.5 }}>
-        SwitchYard<span style={{ color: "#2ecc71" }}>FX</span>
+    <div className="flex items-center gap-3 sm:gap-4">
+      <Image src="/logo.png" alt="SwitchYardFX Logo" width={72} height={72} style={{ borderRadius: 8 }} className="sm:w-[96px] sm:h-[96px]" />
+      <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(26px, 5vw, 40px)", color: "#fff", letterSpacing: 0.5 }}>
+        SwitchYard<span style={{ color: "#2ecc71" }}> Capital</span>
       </span>
     </div>
 
-    <p style={{ fontSize: "clamp(10px, 2vw, 12px)", color: "rgba(255,255,255,0.5)", letterSpacing: "1.5px", textTransform: "uppercase" }}>
-      Professional Forex Trading
-    </p>
-
-    <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(20px, 5vw, 28px)", color: "#fff", lineHeight: 1.3, maxWidth: "100%", marginTop: 0 }}>
-      Trade smarter with{" "}
-      <span style={{ color: "#2ecc71" }}>real-time</span> market intelligence
-    </h1>
-
-    {/* Stats */}
-    <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-1 sm:mt-2">
-      {[["180+", "Currency pairs"], ["0.1 pip", "Avg spread"], ["24/5", "Live support"]].map(([val, lbl], i) => (
-        <div key={i} className="flex items-center gap-2 sm:gap-3">
-          {i > 0 && <div style={{ width: 1, height: 20, background: "rgba(255,255,255,0.15)" }} />}
-          <div className="flex flex-col gap-0.5">
-            <span style={{ fontSize: "clamp(14px, 3vw, 18px)", fontWeight: 500, color: "#fff" }}>{val}</span>
-            <span style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.45)", letterSpacing: "0.5px", textTransform: "uppercase" }}>{lbl}</span>
-          </div>
-        </div>
-      ))}
-    </div>
   </div>
 
   {/* Live ticker bar - animated */}
@@ -1149,7 +1128,7 @@ export default function InsightsDigestPage() {
             <div className="flex items-start justify-between gap-4 mb-5">
               <div>
                 <p className="text-[10px] font-bold text-[#52796F] uppercase tracking-[0.14em] mb-2">Near-term Direction</p>
-                <h3 className="text-2xl sm:text-3xl font-black text-[#12261F]">{selectedDigestPair} Outlook</h3>
+                <h5 className="text-base sm:text-lg font-black text-[#12261F]">{selectedDigestPair} Outlook</h5>
               </div>
               <button
                 type="button"
@@ -1161,7 +1140,7 @@ export default function InsightsDigestPage() {
             </div>
             <p className="text-[#12261F] font-semibold leading-relaxed mb-4">{PAIR_FORECASTS[selectedDigestPair].direction}</p>
             <p className="text-[#4A5A55] leading-relaxed">{PAIR_FORECASTS[selectedDigestPair].outlook}</p>
-          </div>
+          </div>F
         </div>
       )}
 <div className="relative z-10">
