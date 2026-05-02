@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Plus, Minus, Check, Sparkles, MessageSquarePlus } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
+import { Plus, Minus, Check, Sparkles, MessageSquarePlus, X, ChevronDown } from "lucide-react"
 import Link from "next/link"
 
 const ALL_TOPICS = [
@@ -12,6 +12,12 @@ const ALL_TOPICS = [
 ]
 
 const DEFAULT_TOPICS = ["AUD/USD", "EUR/AUD", "Hedging Strategy", "RBA Commentary"]
+
+const ALL_CURRENCIES = [
+  "AUD", "USD", "EUR", "GBP", "JPY", "CAD", "CNY", "SGD", "HKD", "NZD", "INR", "MXN"
+]
+
+const DEFAULT_CURRENCIES = ["AUD", "USD", "EUR"]
 
 interface TopicPersonalizationProps {
   isLoggedIn: boolean
@@ -27,7 +33,10 @@ export default function TopicPersonalization({
   variant = "compact",
 }: TopicPersonalizationProps) {
   const [localTopics, setLocalTopics] = useState<string[]>(DEFAULT_TOPICS)
+  const [localCurrencies, setLocalCurrencies] = useState<string[]>(DEFAULT_CURRENCIES)
   const [showAll, setShowAll] = useState(false)
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
+  const currencyDropdownRef = useRef<HTMLDivElement>(null)
 
   const selected = controlledTopics ?? localTopics
   const setSelected = (topics: string[]) => {
@@ -43,8 +52,31 @@ export default function TopicPersonalization({
     }
   }
 
+  const toggleCurrency = (currency: string) => {
+    if (localCurrencies.includes(currency)) {
+      setLocalCurrencies(localCurrencies.filter((c) => c !== currency))
+    } else {
+      setLocalCurrencies([...localCurrencies, currency])
+    }
+  }
+
+  const removeCurrency = (currency: string) => {
+    setLocalCurrencies(localCurrencies.filter((c) => c !== currency))
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (currencyDropdownRef.current && !currencyDropdownRef.current.contains(event.target as Node)) {
+        setShowCurrencyDropdown(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
   const availableTopics = ALL_TOPICS.filter((t) => !selected.includes(t))
   const visibleAvailable = showAll ? availableTopics : availableTopics.slice(0, 4)
+  const availableCurrencies = ALL_CURRENCIES.filter((c) => !localCurrencies.includes(c))
 
   /* ── Compact variant (for hero/sidebar) ── */
   if (variant === "compact") {
@@ -111,6 +143,67 @@ export default function TopicPersonalization({
                 )}
               </>
             )}
+
+            {/* Currencies Section */}
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <div className="relative" ref={currencyDropdownRef}>
+                <button
+                  onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
+                >
+                  <span className="flex items-center gap-1">
+                    <Plus size={12} />
+                    Add currencies to your Market commentary
+                  </span>
+                  <ChevronDown size={14} className={`transition-transform ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                </button>
+
+                {showCurrencyDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#1B4332] border border-white/20 rounded-lg shadow-lg z-50">
+                    <div className="max-h-56 overflow-y-auto p-2">
+                      {availableCurrencies.length === 0 ? (
+                        <p className="text-[11px] text-[#A8C5BA] text-center py-3">All currencies added</p>
+                      ) : (
+                        availableCurrencies.map((currency) => (
+                          <button
+                            key={currency}
+                            onClick={() => {
+                              toggleCurrency(currency)
+                              if (availableCurrencies.length === 1) {
+                                setShowCurrencyDropdown(false)
+                              }
+                            }}
+                            className="w-full text-left px-2.5 py-2 rounded text-[11px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all"
+                          >
+                            {currency}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Selected Currencies */}
+              {localCurrencies.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {localCurrencies.map((currency) => (
+                    <div
+                      key={currency}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#2D6A4F] text-white"
+                    >
+                      {currency}
+                      <button
+                        onClick={() => removeCurrency(currency)}
+                        className="hover:bg-white/20 rounded-full p-0.5 transition-all"
+                      >
+                        <X size={10} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Request new topic */}
             <div className="mt-3 pt-3 border-t border-white/10">
@@ -183,6 +276,68 @@ export default function TopicPersonalization({
             {showAll ? "Show less" : `Show all (${availableTopics.length})`}
           </button>
         )}
+      </div>
+
+      {/* Currencies Section */}
+      <div className="mb-5 pt-5 border-t border-[#E8EEEB]">
+        <p className="text-xs uppercase tracking-wider text-[#52796F] font-semibold mb-3">Your Currencies</p>
+
+        {localCurrencies.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {localCurrencies.map((currency) => (
+              <div
+                key={currency}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#2D6A4F] text-white"
+              >
+                {currency}
+                <button
+                  onClick={() => removeCurrency(currency)}
+                  className="hover:bg-white/20 rounded-full p-0.5 transition-all"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="relative" ref={currencyDropdownRef}>
+          <button
+            onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+            className="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-semibold bg-[#F5F7F6] border border-[#DCE5E1] text-[#12261F] hover:border-[#2D6A4F] hover:bg-[#E8EEEB] transition-all"
+          >
+            <span className="flex items-center gap-2">
+              <Plus size={14} />
+              Add currencies to your Market commentary
+            </span>
+            <ChevronDown size={16} className={`transition-transform ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+          </button>
+
+          {showCurrencyDropdown && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#DCE5E1] rounded-lg shadow-lg z-50">
+              <div className="max-h-56 overflow-y-auto p-2">
+                {availableCurrencies.length === 0 ? (
+                  <p className="text-xs text-[#52796F] text-center py-4">All currencies added</p>
+                ) : (
+                  availableCurrencies.map((currency) => (
+                    <button
+                      key={currency}
+                      onClick={() => {
+                        toggleCurrency(currency)
+                        if (availableCurrencies.length === 1) {
+                          setShowCurrencyDropdown(false)
+                        }
+                      }}
+                      className="w-full text-left px-3 py-2.5 rounded text-sm font-medium text-[#4A5A55] hover:bg-[#E8EEEB] hover:text-[#2D6A4F] transition-all"
+                    >
+                      {currency}
+                    </button>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Request */}

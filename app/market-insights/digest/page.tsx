@@ -6,8 +6,13 @@ import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, Calendar as CalendarIcon, BarChart2 as ChartIcon } from "lucide-react"
+import { CheckCircle2, RotateCcw, TrendingUp, X } from "lucide-react"
 import FxChart, { type Pair } from "@/components/features/fx-chart"
+
+const COUNTRY_MAP: Record<string, string> = {
+  USD: "us", EUR: "eu", GBP: "gb", JPY: "jp", NZD: "nz",
+  AUD: "au", CAD: "ca", CNY: "cn", SGD: "sg", HKD: "hk", INR: "in", MXN: "mx",
+}
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -24,20 +29,6 @@ function CompassIcon({ light = false, size = 36 }: { light?: boolean; size?: num
   )
 }
 
-const TICKER_ITEMS = [
-  "AUD/USD ▲ 0.6512",
-  "AUD/EUR ▼ 0.3891",
-  "AUD/GBP ▲ 0.3245",
-  "AUD/JPY ▲ 98.42",
-  "AUD/NZD ▼ 1.0821",
-  "USD/JPY ▲ 151.23",
-  "EUR/USD ▼ 1.0534",
-  "GBP/USD ▲ 1.2688",
-  "USD/CAD ▼ 1.3512",
-]
-
-const GENERAL_MARKET_NEWS =
-  "Rate-cut repricing and softer US inflation have shifted USD sentiment this week, while commodity resilience is supporting AUD crosses. Liquidity around upcoming US jobs and central bank commentary remains the key volatility trigger."
 
 const PAIR_FORECASTS: Record<Pair, { direction: string; outlook: string }> = {
   "AUD/USD": {
@@ -103,7 +94,7 @@ export default function InsightsDigestPage() {
   const [selectedDigestPair, setSelectedDigestPair] = useState<Pair>("AUD/USD")
   const [isOutlookModalOpen, setIsOutlookModalOpen] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
-
+  
   // ── Poll state ──────────────────────────────────────────────────────────
   type PollOption = { id: string; label: string; votes: number }
   const [poll, setPoll] = useState<{ options: PollOption[]; total: number } | null>(null)
@@ -120,6 +111,7 @@ export default function InsightsDigestPage() {
       .catch(() => {})
   }, [])
 
+  
   const handlePollSubmit = async () => {
     if (!selectedOption || hasVoted || pollSubmitting) return
     setPollSubmitting(true)
@@ -315,6 +307,9 @@ export default function InsightsDigestPage() {
 </section>
 
 
+     {/* ── SWITCH PAIR SECTION (ABOVE CHART) ─────────────────────────────── */}
+
+
      {/* ── 2nd CONNECTED MARKET SECTION ─────────────────────────────────────── */}
 <section className="relative overflow-hidden border-b border-[#1B4332]/60 z-10">
   <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
@@ -334,11 +329,27 @@ export default function InsightsDigestPage() {
           </h2>
 
           {/* Preview - always visible */}
-          <p className="text-[#4A5A55] leading-relaxed">
-            This week markets were largely driven by shifting{" "}
-            <strong className="text-[#12261F]">interest-rate expectations</strong>, with{" "}
-            <strong className="text-[#12261F]">softer US data</strong> easing some of the recent USD strength.
-          </p>
+          <div className="text-[#4A5A55] leading-relaxed space-y-2 text-justify hyphens-auto">
+            <p>
+              This week markets were largely driven by shifting{" "}
+              <strong className="text-[#12261F]">interest-rate expectations</strong>, with{" "}
+              <strong className="text-[#12261F]">softer US data</strong> easing some of the recent USD
+              strength. Treasury yields edged lower as markets repriced the pace of Fed tightening,
+              weighing on the dollar across the board.
+            </p>
+            <p>
+              Improving <strong className="text-[#12261F]">risk sentiment</strong> provided additional
+              support, while steady <strong className="text-[#12261F]">commodity prices</strong> helped
+              underpin the Australian dollar against major peers. Equity markets stabilised through
+              the week, reducing safe-haven demand for the USD and JPY.
+            </p>
+            <p>
+              Central bank commentary remains the key near-term driver — particularly any shift in{" "}
+              <strong className="text-[#12261F]">RBA guidance</strong> given recent labour market
+              resilience. Businesses with ongoing FX exposure should review hedge levels ahead of
+              next week's key data releases.
+            </p>
+          </div>
 
           {/* Expandable content */}
           <div
@@ -412,9 +423,9 @@ export default function InsightsDigestPage() {
           Near-term Direction
         </p>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
-          <h3 className="text-xl sm:text-2xl font-black text-[#12261F]">
-            {selectedDigestPair} Outlook
-          </h3>
+          <h5 className="text-xl sm:text-2xl font-black text-[#12261F]">
+             Outlook
+          </h5>
           <button
             type="button"
             onClick={() => setIsOutlookModalOpen(true)}
@@ -468,52 +479,43 @@ export default function InsightsDigestPage() {
           </h2>
 
           {/* ── Data Event Rows ─────────────────────────────────── */}
-          <div className="flex flex-col gap-2.5 mb-6">
-            {[
-              {
-                icon: CalendarIcon,
-                date: "May 15, 2026",
-                currencies: [
-                  { code: "AUD", color: "bg-[#2D6A4F]" },
-                  { code: "NZD", color: "bg-[#52796F]" },
-                ],
-                label: "Previous",
-                value: "+32.2K",
-              },
-              {
-                icon: ChartIcon,
-                date: "May 15, 2026",
-                currencies: [
-                  { code: "AUD", color: "bg-[#2D6A4F]" },
-                  { code: "USD", color: "bg-[#3a7ca5]" },
-                ],
-                label: "Forecasted",
-                value: "+25.0K",
-              },
-            ].map((row, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 bg-white/55 rounded-xl border border-[#2D6A4F]/15 px-4 py-2.5 flex-wrap"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[#2D6A4F] flex items-center justify-center shrink-0">
-                  <row.icon className="text-white w-4 h-4" />
-                </div>
-                <span className="text-sm font-bold text-[#12261F] min-w-[100px]">{row.date}</span>
-                <div className="flex gap-1">
-                  {row.currencies.map((c) => (
-                    <span
-                      key={c.code}
-                      className={`${c.color} text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded`}
-                    >
-                      {c.code}
-                    </span>
-                  ))}
-                </div>
-                <span className="text-xs text-[#52796F] font-semibold">{row.label}</span>
-                <span className="text-base font-black text-[#12261F] ml-auto">{row.value}</span>
+          {(() => {
+            const [base, quote] = selectedDigestPair.split("/")
+            const dataRows = [
+              { Icon: RotateCcw,  iconBg: "bg-[#2D6A4F]",  date: "May 15, 2026", label: "Previous",   value: "+32.2K" },
+              { Icon: TrendingUp, iconBg: "bg-[#1B5E8A]",   date: "May 15, 2026", label: "Forecasted", value: "+25.0K" },
+            ]
+            return (
+              <div className="flex flex-col gap-2.5 mb-6">
+                {dataRows.map((row, i) => (
+                  <div
+                    key={i}
+                    className="group flex items-center gap-3 bg-white/55 rounded-xl border border-[#2D6A4F]/15 px-4 py-2.5 flex-wrap hover:border-[#2D6A4F]/35 hover:bg-white/80 transition-all"
+                  >
+                    <div className={`w-8 h-8 rounded-lg ${row.iconBg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-200`}>
+                      <row.Icon className="text-white w-4 h-4" strokeWidth={2.5} />
+                    </div>
+                    <span className="text-sm font-bold text-[#12261F] min-w-[100px]">{row.date}</span>
+                    <div className="flex gap-1">
+                      {[base, quote].map((code) => (
+                        <span
+                          key={code}
+                          className="inline-flex items-center gap-1 bg-[#2D6A4F] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded"
+                        >
+                          <span className="text-[13px] leading-none">
+                            {code.toUpperCase().split("").map((c) => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join("")}
+                          </span>
+                          {code}
+                        </span>
+                      ))}
+                    </div>
+                    <span className="text-xs text-[#52796F] font-semibold">{row.label}</span>
+                    <span className="text-base font-black text-[#12261F] ml-auto">{row.value}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )
+          })()}
 
           {/* ── Main Content Grid ──────────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
@@ -522,15 +524,24 @@ export default function InsightsDigestPage() {
               {/* Image / Icon Placeholder */}
               <div className="w-full aspect-[4/3] rounded-2xl relative overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80&fit=crop"
+                  src="https://eu-images.contentstack.com/v3/assets/bltaec35894448c7261/blt56a3ce4b1877f28f/687de1a69501c76750db3352/Expert_advisor_in_forex_trading.jpeg"
                   alt="FX trading dashboard"
                   fill
                   className="object-cover"
                 />
               </div>
-
+<div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
+                <label className="block text-[10px] font-bold text-[#52796F] uppercase tracking-[0.08em] mb-2">
+                  Type to enter text
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. We have $1.2M AUD payables due in June…"
+                  className="w-full border border-[#2D6A4F]/20 rounded-lg px-3 py-2 text-xs text-[#12261F] bg-white resize-y outline-none"
+                />
+              </div>
               {/* Rate slider */}
-              <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
+              {/* <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
                   <div>
                     <label className="block text-xs font-bold text-[#12261F] mb-0.5">
@@ -557,7 +568,7 @@ export default function InsightsDigestPage() {
                 </div>
               </div>
 
-              {/* Volume slider */}
+              
               <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
                 <div className="flex items-end justify-between mb-4">
                   <div>
@@ -583,22 +594,13 @@ export default function InsightsDigestPage() {
                   <span>&lt; $100K</span>
                   <span>&gt; $10M</span>
                 </div>
-              </div>
-            </div>
+              </div>*/}
+            </div> 
 
             {/* RIGHT COLUMN - TEXT INPUT + MEANING CARDS */}
             <div className="space-y-4 flex flex-col justify-center">
               {/* Text input */}
-              <div className="bg-white/60 rounded-lg border border-[#2D6A4F]/25 p-5">
-                <label className="block text-[10px] font-bold text-[#52796F] uppercase tracking-[0.08em] mb-2">
-                  Type to enter text
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="e.g. We have $1.2M AUD payables due in June…"
-                  className="w-full border border-[#2D6A4F]/20 rounded-lg px-3 py-2 text-xs text-[#12261F] bg-white resize-y outline-none"
-                />
-              </div>
+              
 
               {/* What could this mean? */}
               <div>
@@ -687,85 +689,111 @@ export default function InsightsDigestPage() {
               {
                 label: "Interest Rates",
                 offset: "",
+                grad: "from-[#2D6A4F] to-[#1B4332]",
+                glow: "rgba(45,106,79,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 12L6 6l3 3 5-7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="13" cy="3" r="2" stroke="white" strokeWidth="1.2" fill="none" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <polyline points="2,15 7,8 11,11 17,3" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="17" cy="3" r="2.3" fill="white" fillOpacity="0.25" stroke="white" strokeWidth="1.4"/>
+                    <line x1="2" y1="17" x2="18" y2="17" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.35"/>
                   </svg>
                 ),
               },
               {
                 label: "Central Banks",
                 offset: "",
+                grad: "from-[#1B5E8A] to-[#134472]",
+                glow: "rgba(27,94,138,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 13V7h2v6M7 13V5h2v8M11 13V7h2v6" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
-                    <path d="M2 6l6-4 6 4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                    <line x1="1" y1="13.5" x2="15" y2="13.5" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 17V9h2.5v8M8.75 17V6h2.5v11M14.5 17V9H17v8" stroke="white" strokeWidth="1.7" strokeLinecap="round"/>
+                    <path d="M1.5 8l8.5-5.5L18.5 8" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                    <line x1="1" y1="17.5" x2="19" y2="17.5" stroke="white" strokeWidth="1.7" strokeLinecap="round"/>
                   </svg>
                 ),
               },
               {
                 label: "Commodities",
                 offset: "",
+                grad: "from-[#7B5E2A] to-[#5C4220]",
+                glow: "rgba(123,94,42,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 2L3 5v6l5 3 5-3V5L8 2z" stroke="white" strokeWidth="1.3" strokeLinejoin="round" fill="none" />
-                    <path d="M8 8v6M8 8L3 5M8 8l5-3" stroke="white" strokeWidth="1" opacity="0.6" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L3.5 5.8v7.4L10 17l6.5-3.8V5.8L10 2z" stroke="white" strokeWidth="1.7" strokeLinejoin="round"/>
+                    <path d="M10 10v7M10 10L3.5 5.8M10 10l6.5-4.2" stroke="white" strokeWidth="1" strokeOpacity="0.45"/>
+                    <circle cx="10" cy="10" r="1.8" fill="white" fillOpacity="0.55"/>
                   </svg>
                 ),
               },
               {
                 label: "Trade Policy",
                 offset: "mt-2",
+                grad: "from-[#5B2D8A] to-[#3D1D5E]",
+                glow: "rgba(91,45,138,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M1 8h4l2-3 2 6 2-4h4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="8" cy="7" r="1" fill="white" opacity="0.5" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M2 10h4.5l2.5-4 3 8 2.5-5H20" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="10" cy="8.5" r="1.6" fill="white" fillOpacity="0.3"/>
                   </svg>
                 ),
               },
               {
                 label: "Geopolitics",
                 offset: "mt-4",
+                grad: "from-[#2A6A7B] to-[#1C4D5C]",
+                glow: "rgba(42,106,123,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="8" r="6" stroke="white" strokeWidth="1.3" fill="none" />
-                    <ellipse cx="8" cy="8" rx="3" ry="6" stroke="white" strokeWidth="1" fill="none" />
-                    <line x1="2" y1="8" x2="14" y2="8" stroke="white" strokeWidth="1" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="7.5" stroke="white" strokeWidth="1.7"/>
+                    <ellipse cx="10" cy="10" rx="3.5" ry="7.5" stroke="white" strokeWidth="1.1" strokeOpacity="0.55"/>
+                    <line x1="2.5" y1="10" x2="17.5" y2="10" stroke="white" strokeWidth="1.1" strokeOpacity="0.55"/>
+                    <line x1="4" y1="6.5" x2="16" y2="6.5" stroke="white" strokeWidth="0.9" strokeOpacity="0.3"/>
+                    <line x1="4" y1="13.5" x2="16" y2="13.5" stroke="white" strokeWidth="0.9" strokeOpacity="0.3"/>
                   </svg>
                 ),
               },
               {
                 label: "Inflation Data",
                 offset: "mt-1",
+                grad: "from-[#8A2D2D] to-[#5E1C1C]",
+                glow: "rgba(138,45,45,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M4 13V7M8 13V4M12 13V8" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                    <path d="M2 4l4 1 4-2 4 1" stroke="white" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="9" width="3.5" height="8" rx="1" fill="white" fillOpacity="0.5"/>
+                    <rect x="8.25" y="5" width="3.5" height="12" rx="1" fill="white" fillOpacity="0.85"/>
+                    <rect x="14" y="7" width="3.5" height="10" rx="1" fill="white" fillOpacity="0.65"/>
+                    <path d="M3 6l5.5-2 4 1.5L18 3" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeDasharray="1.5 1.5" strokeOpacity="0.65"/>
                   </svg>
                 ),
               },
               {
                 label: "Risk Sentiment",
                 offset: "mt-3",
+                grad: "from-[#8A6B2D] to-[#5E4820]",
+                glow: "rgba(138,107,45,0.55)",
                 icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 2L1 14h14L8 2z" stroke="white" strokeWidth="1.3" strokeLinejoin="round" fill="none" />
-                    <line x1="8" y1="6" x2="8" y2="10" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                    <circle cx="8" cy="12" r="0.8" fill="white" />
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2.5L2 17h16L10 2.5z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" fill="white" fillOpacity="0.1"/>
+                    <line x1="10" y1="8" x2="10" y2="12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+                    <circle cx="10" cy="14.8" r="1.1" fill="white"/>
                   </svg>
                 ),
               },
             ].map((topic, i) => (
               <div
                 key={i}
-                className={`flex flex-col items-center justify-center p-3 rounded-xl bg-[#2D6A4F]/10 border border-[#2D6A4F]/20 hover:bg-[#2D6A4F]/20 cursor-pointer transition-colors ${topic.offset || ""}`}
+                className={`group relative flex flex-col items-center justify-center p-3 rounded-xl bg-gradient-to-b from-[#2D6A4F]/10 to-[#2D6A4F]/4 border border-[#2D6A4F]/20 hover:from-[#2D6A4F]/18 hover:to-[#2D6A4F]/8 hover:border-[#2D6A4F]/40 cursor-pointer transition-all duration-200 hover:scale-[1.06] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(45,106,79,0.13)] ${topic.offset || ""}`}
               >
-                <div className="w-9 h-9 rounded-lg bg-[#2D6A4F] flex items-center justify-center mb-1.5">
-                  {topic.icon}
+                <div
+                  className={`relative w-11 h-11 rounded-xl bg-gradient-to-br ${topic.grad} flex items-center justify-center mb-2 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-200`}
+                  style={{ boxShadow: `0 4px 14px ${topic.glow}` }}
+                >
+                  <div className="group-hover:scale-110 transition-transform duration-150">
+                    {topic.icon}
+                  </div>
+                  <div className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/10 transition-colors duration-200" />
                 </div>
-                <span className="text-[10px] font-bold text-[#12261F] text-center leading-tight">
+                <span className="text-[10px] font-bold text-[#12261F] group-hover:text-[#2D6A4F] text-center leading-tight transition-colors duration-200">
                   {topic.label}
                 </span>
               </div>
