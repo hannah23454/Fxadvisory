@@ -21,15 +21,6 @@ export default function Disclaimer() {
           <p className="text-xs text-[#4A5A55] leading-relaxed">
             {t('disclaimer_programme_prefix')}{" "}
             <a
-              href="https://www.ebury.au/legal/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#2D6A4F]"
-            >
-              ebury.au/legal
-            </a>{" "}
-            {t('disclaimer_programme_conjunction')}{" "}
-            <a
               href="https://ebury.com/en-au/compliance-legal/legal"
               target="_blank"
               rel="noopener noreferrer"

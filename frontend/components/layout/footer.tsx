@@ -108,15 +108,6 @@ export default function Footer() {
             <p className="text-gray-400">
               {t('footer_switchyard')}{" "}
               <a
-                href="https://www.ebury.au/legal/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-[#A8C5BA]"
-              >
-                ebury.au/legal
-              </a>{" "}
-              {t('footer_switchyard_conjunction')}{" "}
-              <a
                 href="https://ebury.com/en-au/compliance-legal/legal"
                 target="_blank"
                 rel="noopener noreferrer"
