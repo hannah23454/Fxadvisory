@@ -137,7 +137,10 @@ const dictionaries: Dictionaries = {
     
     // Disclaimer
     disclaimer_title: "Legal Disclaimer",
-    disclaimer_text: "SwitchYard Capital Pty Ltd is an Authorised Representative (001318359) of Ebury Partners Australia Pty Limited (ACN 632 570 702), which holds an Australian Financial Services Licence (AFSL 520548).\n\nThis website provides general information only. It does not constitute personal financial advice and does not take into account your circumstances, objectives, or financial situation. Past performance is not indicative of future results. Before making any financial decisions, assess whether the information is appropriate for your situation and seek professional advice from a licensed financial advisor.\n\nEbury Partners Australia Pty Limited (ACN 632 570 702) is authorised and regulated by the Australian Securities and Investments Commission (ASIC) and registered with the Australian Transaction Reports and Analysis Centre (AUSTRAC). Registered office: Level 20, 201 Elizabeth Street, Sydney NSW 2000.",
+    disclaimer_text_1: "Switchyard Capital Pty Ltd is an Authorised Representative (ASIC AR No. 001318359) of Ebury Partners Australia Pty Limited (ACN 632 570 702) which holds an Australian Financial Services Licence (AFSL 520548).",
+    disclaimer_text_2: "Ebury Partners Australia Pty Limited ('Ebury') ACN 632 570 702, Registered Office: Level 20, 201 Elizabeth Street, Sydney NSW 2000. Ebury is authorised and regulated by the Australian Securities and Investments Commission (ASIC) to provide financial services under Australian Financial Services Licence (AFSL) 520548 and is registered with the Australian Transaction Reports and Analysis Centre (AUSTRAC).",
+    disclaimer_programme_prefix: "For Australia and New Zealand the Programme Manager must also display Ebury's Legal & Compliance documentation:",
+    disclaimer_programme_conjunction: "and",
     
     // Market Commentary
     market_commentary: "Market Commentary",
@@ -689,7 +692,10 @@ const dictionaries: Dictionaries = {
     
     // Disclaimer
     disclaimer_title: "法律免责声明",
-    disclaimer_text: "SwitchYard Capital Pty Ltd是Ebury Partners Australia Pty Limited（ACN 632 570 702）的授权代表（001318359），该公司持有澳大利亚金融服务牌照（AFSL 520548）。\n\n本网站仅提供一般信息。不构成个人财务建议，不考虑您的情况、目标或财务状况。过往表现不代表未来结果。在做出任何财务决策之前，请评估该信息是否适合您的情况，并寻求持证财务顾问的专业建议。\n\nEbury Partners Australia Pty Limited（ACN 632 570 702）由澳大利亚证券和投资委员会（ASIC）授权和监管，并已向澳大利亚交易报告和分析中心（AUSTRAC）注册。注册地址：澳大利亚新南威尔士州悉尼伊丽莎白街201号20楼。",
+    disclaimer_text_1: "Switchyard Capital Pty Ltd是Ebury Partners Australia Pty Limited（ACN 632 570 702）的授权代表（ASIC AR编号：001318359），该公司持有澳大利亚金融服务牌照（AFSL 520548）。",
+    disclaimer_text_2: "Ebury Partners Australia Pty Limited（'Ebury'）ACN 632 570 702，注册地址：澳大利亚新南威尔士州悉尼伊丽莎白街201号20楼。Ebury获澳大利亚证券和投资委员会（ASIC）授权和监管，持有澳大利亚金融服务牌照（AFSL）520548，并已向澳大利亚交易报告和分析中心（AUSTRAC）注册。",
+    disclaimer_programme_prefix: "在澳大利亚和新西兰，计划管理方还须展示Ebury的法律与合规文件：",
+    disclaimer_programme_conjunction: "和",
     
     // Market Commentary
     market_commentary: "市场评论",
