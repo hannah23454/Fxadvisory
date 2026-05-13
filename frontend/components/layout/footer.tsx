@@ -1,11 +1,15 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import { Mail, Phone, MapPin } from "lucide-react"
 import { useI18n } from "@/components/context/i18n/i18n"
+import { useSiteSettings } from "@/components/context/site-settings/site-settings"
 
 export default function Footer() {
   const { t } = useI18n()
+  const { settings } = useSiteSettings()
+
+  const s = (key: string, fallback: string) => settings[key] || fallback
 
   return (
     <footer className="bg-[#12261F] text-white pt-16 pb-8">
@@ -19,7 +23,7 @@ export default function Footer() {
               <div className="text-xs text-[#A8C5BA] font-medium">FX ADVISORY</div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              {t('footer_tagline')}
+              {s('footer_tagline', t('footer_tagline'))}
             </p>
           </div>
 
@@ -83,11 +87,15 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">02 7226 3680</span>
+                <span className="text-gray-400 text-sm">
+                  {s('footer_phone', '02 7226 3680')}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">admin@switchyard.com.au</span>
+                <span className="text-gray-400 text-sm">
+                  {s('footer_email_address', 'admin@switchyard.com.au')}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#A8C5BA] shrink-0 mt-0.5" />
@@ -103,10 +111,10 @@ export default function Footer() {
         {/* AFSL Compliance Footer */}
         <div className="bg-[#1a3a2f] rounded-lg p-6 mb-6">
           <div className="text-xs text-gray-300 leading-relaxed space-y-3">
-            <p>{t('footer_afsl')}</p>
-            <p>{t('footer_afsl_detail')}</p>
+            <p>{s('footer_afsl', t('footer_afsl'))}</p>
+            <p>{s('footer_afsl_detail', t('footer_afsl_detail'))}</p>
             <p className="text-gray-400">
-              {t('footer_switchyard')}{" "}
+              {s('footer_switchyard', t('footer_switchyard'))}{" "}
               <a
                 href="https://ebury.com/en-au/compliance-legal/legal"
                 target="_blank"
@@ -133,7 +141,7 @@ export default function Footer() {
               {t('footer_compliance')}
             </Link>
           </div>
-          <p>{t('footer_copyright')}</p>
+          <p>{s('footer_copyright', t('footer_copyright'))}</p>
           <p>
             Designed &amp; developed by{" "}
             <a

@@ -123,3 +123,40 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Styles for dynamically-rendered HTML content from the site text editor */
+.site-html-content {
+  line-height: 1.7;
+}
+.site-html-content p {
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+.site-html-content h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+.site-html-content a {
+  color: #2D6A4F;
+  text-decoration: underline;
+}
+.site-html-content a:hover {
+  color: #1B4332;
+}
+.site-html-content em {
+  font-style: italic;
+}
+.site-html-content strong {
+  font-weight: 600;
+}
+.site-html-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.site-html-content li {
+  margin-bottom: 0.25rem;
+}

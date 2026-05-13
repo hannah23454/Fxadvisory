@@ -4,18 +4,19 @@ import { useSession, signOut } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import { useEffect } from "react"
-import { 
-  LayoutDashboard, 
-  Users, 
-  FileText, 
-  BarChart3, 
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  BarChart3,
   Upload,
   Calendar,
   MessageSquare,
   Settings,
   LogOut,
   Shield,
-  Globe
+  Globe,
+  Type
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/components/context/i18n/i18n"
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Meeting Requests', href: '/dashboard/admin/meetings', icon: Calendar },
   { name: 'Messages', href: '/dashboard/admin/messages', icon: MessageSquare },
   { name: 'Content Management', href: '/dashboard/admin/content', icon: FileText },
+  { name: 'Site Text Editor', href: '/dashboard/admin/site-text', icon: Type },
   { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
   { name: 'Trade Oversight', href: '/dashboard/admin/trades', icon: Upload },
 ]
