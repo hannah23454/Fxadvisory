@@ -1,6 +1,7 @@
 ﻿import type React from "react"
 import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
+import Script from "next/script"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { Toaster } from "@/components/ui/sonner"
@@ -25,6 +26,12 @@ export default function RootLayout({
         </Providers>
         <Toaster />
         <Analytics />
+        <Script
+          src="https://switchyard-fx-chatbot-production.up.railway.app/widget/switchyard-fx-chat.js"
+          integrity="sha384-PXchUd5FCS88CLKZSNb6hoRXovqBdXk+DfqSTzNWutEd4DFvZscaRhjlZzsx1VPF"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )

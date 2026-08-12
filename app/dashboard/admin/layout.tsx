@@ -16,7 +16,8 @@ import {
   LogOut,
   Shield,
   Globe,
-  Type
+  Type,
+  DatabaseZap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/components/context/i18n/i18n"
@@ -24,6 +25,7 @@ import { useI18n } from "@/components/context/i18n/i18n"
 const navigation = [
   { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
   { name: 'User Management', href: '/dashboard/admin/users', icon: Users },
+  { name: 'Leads Import', href: '/dashboard/admin/leads-import', icon: DatabaseZap },
   { name: 'Meeting Requests', href: '/dashboard/admin/meetings', icon: Calendar },
   { name: 'Messages', href: '/dashboard/admin/messages', icon: MessageSquare },
   { name: 'Content Management', href: '/dashboard/admin/content', icon: FileText },

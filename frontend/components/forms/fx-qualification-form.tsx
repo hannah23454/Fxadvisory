@@ -95,26 +95,34 @@ export default function FXQualificationForm() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const tier = formData.fxVolume === "A$15m+" ? "detailed" : "standard"
 
-    const payload = {
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-      fxVolume: formData.fxVolume,
-      interests: formData.interests,
-      tier: tier,
-      language: formData.language,
-      timestamp: new Date().toISOString(),
+    const noteParts = [
+      `Role: ${formData.role}`,
+      `FX Volume: ${formData.fxVolume}`,
+      `Tier: ${tier}`,
+      `Language: ${formData.language}`,
+      formData.interests.length > 0 ? `Interests: ${formData.interests.join(", ")}` : null,
+    ].filter(Boolean).join(" | ")
+
+    try {
+      await fetch("/api/airtable/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          source: "FX Qualification Form",
+          requestType: tier === "detailed" ? "Strategic Partnership" : "FX Resources",
+          notes: noteParts,
+        }),
+      })
+    } catch {
+      // Don't block form success if Airtable call fails
     }
-
-    console.log("[v0] FX Qualification form submitted:", payload)
-
-    // Mock Airtable sync - replace with actual API call
-    // await fetch('/api/airtable/sync-lead', { method: 'POST', body: JSON.stringify(payload) })
 
     setFormData((prev) => ({ ...prev, submitted: true, tier }))
   }
