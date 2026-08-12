@@ -141,3 +141,14 @@
   }
 }
 
+/* Third-party chat widget (switchyard-fx-chat.js) mounts a shadow-DOM root at
+   #syfx-chat-root. Its internal .syfx-launcher/.syfx-panel are position:fixed
+   with z-index:auto, so page content with an explicit z-index (e.g. the
+   homepage hero's floating currency badges) can paint above it. Promoting
+   the shadow host into its own high stacking context fixes that without
+   touching the widget's own script or positioning. */
+#syfx-chat-root {
+  position: relative;
+  z-index: 999999;
+}
+
